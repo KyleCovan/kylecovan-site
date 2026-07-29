@@ -93,18 +93,23 @@
      sits right, and both are 0.85rem sans in --ink-faint so they read as
      typographic peers rather than one outranking the other.
 
-     `space-between` plus `flex-wrap` is doing real work, and the exact flex
-     shorthand on `.watching` matters more than it looks:
+     `justify-content` was `space-between` until July 29, which pinned the
+     video line to the column's far right edge. On a 1440px laptop that left a
+     wide empty gap between "Contact" and the line, and Kyle read the two as
+     unrelated rather than as one utility row. It is now `flex-start`: the
+     video line sits directly after the nav, separated by the 2.2rem column
+     gap - wider than the 1.4rem between nav items, so it reads as a
+     neighbour rather than a fifth pillar.
+
+     The exact flex shorthand on `.watching` still matters more than it looks:
 
        flex: 0 0 auto   the box is content-width and REFUSES to shrink.
 
-     That single choice produces all three behaviours. A title that fits
-     sits flush against the column's right edge, because space-between
-     pushes a content-width box all the way over. A title that doesn't fit
-     can't shrink, so it wraps to its own flex line instead — and a lone
-     item under space-between sits at the start, which lands it flush left
-     on the same edge as the nav and every heading below. That is §5's
-     left-edge rule surviving intact in the wrapped case.
+     A title that fits sits on the same line as the nav. A title that doesn't
+     fit can't shrink, so it wraps to its own flex line instead - and under
+     flex-start that lands it flush left, on the same edge as the nav and
+     every heading below. That is the left-edge rule surviving intact in the
+     wrapped case, exactly as it did under space-between.
 
      `flex: 0 1 auto` with a min-width looks equivalent and isn't: the box
      then stays min-width wide even for a three-word title, so short titles
@@ -120,8 +125,8 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    justify-content: space-between;
-    gap: 0.8rem 2rem;
+    justify-content: flex-start;
+    gap: 0.8rem 2.2rem;
     margin-bottom: clamp(3rem, 7vh, 4rem);
   }
 
@@ -174,14 +179,19 @@
 
   /* ---------- Top bar on phones ----------
      Below 34rem the nav and the video line have no room to share a row. The
-     line used to wrap underneath the nav and sit flush left; Kyle asked for it
-     above the nav and centred instead, where it reads as a standing header
-     line rather than an orphaned tail of the nav.
+     line used to wrap underneath the nav, where it read as an orphaned tail of
+     the nav rather than a line of its own. It now sits ABOVE the nav.
 
-     This is a bounded exception to the left-alignment rule in handoff section
-     2: it applies only below 34rem and only to .watching. Desktop is
-     untouched -- nav left, video line flush right on one row, exactly as
-     before, including the flex: 0 0 auto behaviour documented above.
+     It was briefly centred as well (July 29) and that was reverted the same
+     day: moving it above the nav was the fix, centring was a separate change
+     solving nothing, and it made the video line the only element on either
+     page not sitting on the column's left edge. Wrapping settled it -- 8 of 32
+     titles wrap at 320px, and centred two-line text goes ragged on both sides
+     while left-aligned wraps break cleanly against the same edge the nav uses.
+
+     So: order only. No text-align here. Desktop is untouched -- nav left,
+     video line flush right on one row, exactly as before, including the
+     flex: 0 0 auto behaviour documented above.
 
      The same query trims the page's top padding. 15vh of it on an 844px-tall
      phone is ~127px of empty cream above the nav, which reads as a rendering
@@ -197,7 +207,7 @@
       margin-bottom: clamp(2.25rem, 5vh, 3rem);
     }
 
-    .watching { order: -1; text-align: center; }
+    .watching { order: -1; }
   }
 
   /* Anchor targets get a little air so a jumped-to heading isn't flush

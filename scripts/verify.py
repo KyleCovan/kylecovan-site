@@ -79,11 +79,9 @@ with sync_playwright() as pw:
     #   (c) when it drops to its own flex row it lands flush on the column's
     #       left edge — the surviving half of §5's rule.
     #   (d) below 34rem (544px) the top bar becomes a column and the video
-    #       line moves ABOVE the nav, centred in the column. Kyle asked for
-    #       this on July 29 after seeing it on iOS. The flush-left assertion
-    #       in (c) is therefore desktop-only; asserting it on a phone would
-    #       now fail by design, which is exactly the kind of stale test the
-    #       July two-page split taught us to update rather than delete.
+    #       line moves ABOVE the nav, still flush on the column's left edge.
+    #       Kyle asked for this on July 29 after seeing it on iOS. Note the
+    #       left-edge rule survives on phones too -- only the ORDER changed.
     wraps = {}
     for w in (1440, 768, 430, 390, 320):
         pg = b.new_page(viewport={'width': w, 'height': 900})
@@ -115,12 +113,15 @@ with sync_playwright() as pw:
             if r['right'] > r['colR'] + 0.5 or min(r['lefts']) < r['colL'] - 0.5:
                 bad.append(('escapes column', w, t[:28], r['lefts'], r['right'], r['colR']))
             if w <= 544:
-                # Phone layout: the line sits above the nav, centred.
+                # Phone layout: the line sits ABOVE the nav and, like every
+                # other element on both pages, flush on the column's left edge.
+                # It was centred for a few hours on July 29 and reverted; if a
+                # future change re-centres it, this is the assertion that will
+                # say so rather than letting it drift in unnoticed.
                 if not r['aboveNav']:
                     bad.append(('phone: video line not above nav', w, t[:28]))
-                off = max(abs(c - r['colC']) for c in r['centers'])
-                if off > 1.5:
-                    bad.append(('phone: video line not centred', w, t[:28], off))
+                if abs(min(r['lefts']) - r['colL']) > 0.5:
+                    bad.append(('phone: not flush left', w, t[:28], min(r['lefts']), r['colL']))
             elif r['ownRow'] and abs(min(r['lefts']) - r['colL']) > 0.5:
                 bad.append(('own row not flush left', w, t[:28], min(r['lefts']), r['colL']))
         wraps[w] = n_wrapped
