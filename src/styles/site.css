@@ -211,9 +211,16 @@
 
      The portrait is the page's only image. It is a WebP data URI, so the
      "zero external requests / one file" rule holds: nothing is fetched, it
-     travels inside the HTML. It ships at 360px for a slot that never
+     travels inside the HTML. It ships at 340px for a slot that never
      exceeds 156px, so it stays sharp at 2x and beyond. Don't scale the CSS
-     box past 180px without re-exporting a larger source.
+     box past 170px without re-exporting a larger source.
+
+     340px, not the original 360px, because on July 29 Kyle asked for the
+     backdrop gap above his head trimmed. That was cut from the existing
+     360px crop rather than re-exported, so 20px came off the top and
+     nothing was added below. A genuine zoom-OUT showing more shirt needs
+     the original headshot.jpg, which is not in this repo. The favicon was
+     re-cut from the same new crop so the two agree.
 
      Square, not a circle, and that is a layout decision rather than a taste
      one: the square's left edge sits exactly on the 800px column edge, the
