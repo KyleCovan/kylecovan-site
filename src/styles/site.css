@@ -172,6 +172,34 @@
     color: var(--terracotta);
   }
 
+  /* ---------- Top bar on phones ----------
+     Below 34rem the nav and the video line have no room to share a row. The
+     line used to wrap underneath the nav and sit flush left; Kyle asked for it
+     above the nav and centred instead, where it reads as a standing header
+     line rather than an orphaned tail of the nav.
+
+     This is a bounded exception to the left-alignment rule in handoff section
+     2: it applies only below 34rem and only to .watching. Desktop is
+     untouched -- nav left, video line flush right on one row, exactly as
+     before, including the flex: 0 0 auto behaviour documented above.
+
+     The same query trims the page's top padding. 15vh of it on an 844px-tall
+     phone is ~127px of empty cream above the nav, which reads as a rendering
+     bug rather than as generous whitespace. */
+
+  @media (max-width: 34rem) {
+    .page { padding-top: clamp(2.25rem, 6vh, 3.25rem); }
+
+    .topbar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.9rem;
+      margin-bottom: clamp(2.25rem, 5vh, 3rem);
+    }
+
+    .watching { order: -1; text-align: center; }
+  }
+
   /* Anchor targets get a little air so a jumped-to heading isn't flush
      against the top of the viewport. */
   section[id], article[id] { scroll-margin-top: 2.5rem; }
@@ -453,6 +481,22 @@
   }
 
   .socials a + a { margin-left: 0.35rem; }
+
+  /* "Follow along" on the Building page. Styled like .log-label but kept a
+     separate class on purpose: .log-label carries a ::before rule mark that
+     belongs to the build-log heading and would read as a divider here. */
+
+  .follow-label {
+    margin-top: clamp(3rem, 7vh, 4rem);
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .follow-label + .socials { margin-top: 1rem; }
 
   .socials .sep {
     color: var(--terracotta);

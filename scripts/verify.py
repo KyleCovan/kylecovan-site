@@ -78,6 +78,12 @@ with sync_playwright() as pw:
     #   (b) it never collides with the nav,
     #   (c) when it drops to its own flex row it lands flush on the column's
     #       left edge — the surviving half of §5's rule.
+    #   (d) below 34rem (544px) the top bar becomes a column and the video
+    #       line moves ABOVE the nav, centred in the column. Kyle asked for
+    #       this on July 29 after seeing it on iOS. The flush-left assertion
+    #       in (c) is therefore desktop-only; asserting it on a phone would
+    #       now fail by design, which is exactly the kind of stale test the
+    #       July two-page split taught us to update rather than delete.
     wraps = {}
     for w in (1440, 768, 430, 390, 320):
         pg = b.new_page(viewport={'width': w, 'height': 900})
@@ -92,20 +98,30 @@ with sync_playwright() as pw:
                 const col = document.querySelector('main').getBoundingClientRect();
                 const rects = [...a.getClientRects()];
                 const ownRow = p.top >= nav.bottom - 1;
+                const aboveNav = p.bottom <= nav.top + 1;
                 const collide = !(p.right <= nav.left + 1 || p.left >= nav.right - 1 ||
                                   p.bottom <= nav.top + 1 || p.top >= nav.bottom - 1);
-                return {n: rects.length, ownRow, collide,
+                return {n: rects.length, ownRow, aboveNav, collide,
                         lefts: rects.map(x => Math.round(x.left*100)/100),
                         right: Math.round(Math.max(...rects.map(x => x.right))*100)/100,
                         colL: Math.round(col.left*100)/100,
-                        colR: Math.round(col.right*100)/100};
+                        colR: Math.round(col.right*100)/100,
+                        colC: Math.round((col.left+col.right)/2*100)/100,
+                        centers: rects.map(x => Math.round((x.left+x.right)/2*100)/100)};
             }""", t)
             if r['n'] > 1: n_wrapped += 1
             if r['collide']:
                 bad.append(('collision', w, t[:28]))
             if r['right'] > r['colR'] + 0.5 or min(r['lefts']) < r['colL'] - 0.5:
                 bad.append(('escapes column', w, t[:28], r['lefts'], r['right'], r['colR']))
-            if r['ownRow'] and abs(min(r['lefts']) - r['colL']) > 0.5:
+            if w <= 544:
+                # Phone layout: the line sits above the nav, centred.
+                if not r['aboveNav']:
+                    bad.append(('phone: video line not above nav', w, t[:28]))
+                off = max(abs(c - r['colC']) for c in r['centers'])
+                if off > 1.5:
+                    bad.append(('phone: video line not centred', w, t[:28], off))
+            elif r['ownRow'] and abs(min(r['lefts']) - r['colL']) > 0.5:
                 bad.append(('own row not flush left', w, t[:28], min(r['lefts']), r['colL']))
         wraps[w] = n_wrapped
         print(f"[topbar]    {w}px -> {n_wrapped}/32 titles wrap internally | "
