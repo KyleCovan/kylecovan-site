@@ -97,9 +97,14 @@
      video line to the column's far right edge. On a 1440px laptop that left a
      wide empty gap between "Contact" and the line, and Kyle read the two as
      unrelated rather than as one utility row. It is now `flex-start`: the
-     video line sits directly after the nav, separated by the 2.2rem column
-     gap - wider than the 1.4rem between nav items, so it reads as a
-     neighbour rather than a fifth pillar.
+     video line sits directly after the nav on the SAME 1.4rem column gap the
+     nav uses between its own items. Kyle tuned this by eye on July 29:
+     2.2rem read as detached, 1.8rem was closer, 1.4rem was the one he chose.
+     The effect is deliberate - the video line spaces like a fifth item in the
+     row rather than like a separate block sharing the line. What still keeps
+     it from reading as a nav pillar is everything else: it is a <p> not a nav
+     <a>, it carries the resting underline the nav links drop, and it is the
+     only link in the row that leaves the site.
 
      The exact flex shorthand on `.watching` still matters more than it looks:
 
@@ -126,7 +131,7 @@
     flex-wrap: wrap;
     align-items: baseline;
     justify-content: flex-start;
-    gap: 0.8rem 2.2rem;
+    gap: 0.8rem 1.4rem;
     margin-bottom: clamp(3rem, 7vh, 4rem);
   }
 
