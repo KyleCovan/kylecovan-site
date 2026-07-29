@@ -1,0 +1,184 @@
+---
+/**
+ * Home page. Every word of prose below is Kyle's, governed by §6 of the
+ * handoff — do not reword, tighten or "improve" any of it. The corrections
+ * listed there were each made deliberately and several were reverted once
+ * already after a draft undid them.
+ */
+import Base from '../layouts/Base.astro';
+import portrait from '../data/portrait.txt?raw';
+import projects from '../data/projects.json';
+
+const title = 'Kyle Covan — AI Builder, Strategist, and Partner';
+const description =
+  'Kyle Covan — AI Builder, Strategist, and Partner. Startup operations meets AI agent orchestration. ' +
+  'Building a personal AI OS and an AI-powered second brain in public.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': 'https://kylecovan.com/#kyle',
+      name: 'Kyle Covan',
+      url: 'https://kylecovan.com/',
+      image: 'https://kylecovan.com/og.png',
+      jobTitle: 'AI Builder, Strategist, and Partner',
+      email: 'mailto:kyle@kylecovan.com',
+      description:
+        "Kyle Covan builds AI agents and automations that take repetitive work off a person's plate. " +
+        'Years in startup operations, now AI orchestration.',
+      knowsAbout: ['AI agents', 'AI automation', 'Startup operations', 'Workflow automation'],
+      sameAs: [
+        'https://www.youtube.com/@KyleCovan',
+        'https://x.com/kylecovan',
+        'https://www.linkedin.com/in/kylecovan/',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://kylecovan.com/#website',
+      url: 'https://kylecovan.com/',
+      name: 'Kyle Covan',
+      description:
+        'Startup operations meets AI agent orchestration. Building a personal AI OS and an ' +
+        'AI-powered second brain in public.',
+      inLanguage: 'en',
+      publisher: { '@id': 'https://kylecovan.com/#kyle' },
+    },
+    {
+      '@type': 'ProfilePage',
+      '@id': 'https://kylecovan.com/#profilepage',
+      url: 'https://kylecovan.com/',
+      name: title,
+      isPartOf: { '@id': 'https://kylecovan.com/#website' },
+      about: { '@id': 'https://kylecovan.com/#kyle' },
+      primaryImageOfPage: 'https://kylecovan.com/og.png',
+    },
+  ],
+};
+---
+<Base
+  title={title}
+  description={description}
+  path="/"
+  showWatching={true}
+  jsonLd={jsonLd}
+>
+
+  <header class="masthead">
+    <img class="portrait" src={portrait} width="156" height="156"
+         alt="Kyle Covan" decoding="async">
+    <div class="masthead-text">
+      <h1>Kyle Covan</h1>
+      <p class="creed">Striving to put Jesus Christ first</p>
+      <p class="role">AI Builder, Strategist, and Partner</p>
+    </div>
+  </header>
+
+  <section id="story" aria-labelledby="story-heading">
+    <p class="eyebrow">Story</p>
+
+    <h2 id="story-heading">Laying music down</h2>
+    <p>
+      For decades I poured my energy into music, but I realized music had
+      become a stumbling block of pride, even though I was in denial about how
+      much it pulled my focus away from what mattered most. Late in 2025 I was
+      convicted of how big that stumbling block had become. By the grace of
+      God the appetite for creating music left me entirely. What I had chased
+      for decades, I now
+      wanted taken away. So I gladly (and gratefully) laid music down. For me
+      the benefit came immediately. I had more time, energy, and desire to put
+      Jesus Christ first in my life.
+    </p>
+    <p>
+      In the following nine months I wasn't sure what kind of long-term work I
+      would do, or how I would carry the
+      responsibilities Jesus Christ has given me: my wife, our bills, a
+      household to provide for. Other changes were underway too. We had
+      recently moved across the country. In God's timing, the desire and drive
+      to learn and build AI surfaced.
+    </p>
+    <p>
+      Today I build AI agents and automations that take repetitive work off a
+      person's plate, and I aim to help others manage their businesses and
+      lives more effectively. My prayer is that I approach this new work with
+      reverence and an appropriate fear and trembling before God. Music showed
+      me how quietly a good thing can take first place in my life, and I don't
+      want AI to become the thing music was.
+    </p>
+    {/* Anna, in Kyle's exact words. Last on purpose: "every step of this
+        journey" looks back over the whole section, so it only lands once all
+        three paragraphs above have been read. Don't move it or reword it. */}
+    <p>
+      I am deeply grateful for my wife, Anna. She has been my constant
+      partner, supporter, and helper since long before we even started dating,
+      standing by me in every step of this journey.
+    </p>
+  </section>
+
+  <section id="approach" aria-labelledby="approach-heading">
+    <p class="eyebrow">Approach</p>
+
+    <h2 id="approach-heading">Startup operations, now AI orchestration</h2>
+    <p>
+      My years in startup operations gave me an understanding of how work
+      actually moves through a business, and where it gets stuck. I look for
+      the bottlenecks first, then automate only where it earns its place. Done
+      well, a business gets more out of what it already has, and the people
+      doing the work become managers of agents rather than the ones repeating
+      the steps.
+    </p>
+    <p>
+      Building and deploying a system is only half the work. A tool does no
+      good unless people actually use it, so I care as much about hands-on
+      training and steady check-ins as I do about the build itself.
+    </p>
+  </section>
+
+  <section id="building" aria-labelledby="building-heading">
+    <p class="eyebrow">Building in public</p>
+
+    <h2 id="building-heading">Two systems, built for myself first</h2>
+    <p class="lede">
+      Documented as I go. These are personal projects, not packaged offers.
+    </p>
+
+    {projects.map(p => (
+      <article class="project">
+        <p class="project-index">{p.index}</p>
+        <h3 class="project-title">{p.name} <span class="qualifier">{p.qualifier}</span></h3>
+        <p class="one-liner">{p.oneLiner}</p>
+        <p class="more"><a href={`/building/#${p.id}`}>Read the build log</a></p>
+      </article>
+    ))}
+  </section>
+
+  <section id="contact" aria-labelledby="contact-heading">
+    <p class="eyebrow">Contact</p>
+
+    <h2 id="contact-heading">Reach out anytime</h2>
+
+    <p>
+      <a class="email" href="mailto:kyle@kylecovan.com">kyle@kylecovan.com</a>
+    </p>
+
+    {/* The line breaks inside these tags are load-bearing: each sits between a
+        `>` and the next `<a`, so the separators keep their exact 0.35rem
+        margins with no stray whitespace text node. Don't reflow this block. */}
+    <p class="socials">
+      <a href="https://www.youtube.com/@KyleCovan" rel="me">YouTube</a><span class="sep" aria-hidden="true">·</span
+      ><a href="https://x.com/kylecovan" rel="me">X</a><span class="sep" aria-hidden="true">·</span
+      ><a href="https://www.linkedin.com/in/kylecovan/" rel="me">LinkedIn</a>
+    </p>
+
+    <p class="closing">
+      <a href="https://tapocanyon.com">Tapo Canyon</a> is where I work with
+      clients.
+      <span class="note">
+        This page is personal. That one is for business.
+      </span>
+    </p>
+  </section>
+
+</Base>

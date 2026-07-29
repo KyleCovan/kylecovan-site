@@ -1,0 +1,555 @@
+  /* ============================================================
+     kylecovan.com — warm minimalist single page
+     No external requests. System fonts only.
+     One inline script: the rotating video link in the masthead.
+     ============================================================ */
+
+  :root {
+    /* Warm palette */
+    --cream:            #FBF8F2;
+    --ink:              #302D28;  /* warm slate, primary */
+    --ink-soft:         #5C574E;  /* warm slate, body */
+    --ink-faint:        #6E675C;  /* warm slate, labels */
+    --terracotta:       #9E4A28;  /* earthy accent, text-safe */
+    --terracotta-light: #B2673F;  /* earthy accent, marks & rules */
+    --underline:        rgba(178, 103, 63, 0.24);  /* faded link underline */
+    --wash:             rgba(178, 103, 63, 0.15);
+
+    /* Type */
+    --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino,
+             "Book Antiqua", Georgia, "Times New Roman", serif;
+    --sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+             "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    /* Rhythm */
+    --measure: 800px;
+    --gap-section: clamp(5rem, 13vh, 9rem);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(1.0125rem, 0.97rem + 0.22vw, 1.125rem);
+    line-height: 1.75;
+    letter-spacing: 0.001em;
+    text-align: left;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-kerning: normal;
+    font-variant-ligatures: common-ligatures;
+  }
+
+  ::selection { background: var(--wash); color: var(--ink); }
+
+  /* ---------- Layout ----------
+     .page caps at 800px (padding included, via border-box) and is
+     centered with `margin: 0 auto`. All content inside stays flush left.
+     Below 800px the max-width is inert and the fluid padding takes over. */
+
+  .page {
+    max-width: var(--measure);
+    margin-inline: auto;
+    padding: clamp(4.5rem, 15vh, 9rem) clamp(1.5rem, 7vw, 2.5rem)
+             clamp(4rem, 10vh, 6.5rem);
+  }
+
+  section { margin-top: var(--gap-section); }
+
+  /* ---------- Typography ---------- */
+
+  h1, h2, h3 {
+    font-family: var(--serif);
+    font-weight: 400;
+    color: var(--ink);
+    margin: 0;
+    text-wrap: balance;
+    font-synthesis-weight: none;
+  }
+
+  p { margin: 0; text-wrap: pretty; }
+  p + p { margin-top: 1.25em; }
+
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 1.75rem;
+  }
+
+  /* ---------- Top bar: section nav + rotating video link ----------
+     One quiet utility row across the top. Nav sits left, the video line
+     sits right, and both are 0.85rem sans in --ink-faint so they read as
+     typographic peers rather than one outranking the other.
+
+     `space-between` plus `flex-wrap` is doing real work, and the exact flex
+     shorthand on `.watching` matters more than it looks:
+
+       flex: 0 0 auto   the box is content-width and REFUSES to shrink.
+
+     That single choice produces all three behaviours. A title that fits
+     sits flush against the column's right edge, because space-between
+     pushes a content-width box all the way over. A title that doesn't fit
+     can't shrink, so it wraps to its own flex line instead — and a lone
+     item under space-between sits at the start, which lands it flush left
+     on the same edge as the nav and every heading below. That is §5's
+     left-edge rule surviving intact in the wrapped case.
+
+     `flex: 0 1 auto` with a min-width looks equivalent and isn't: the box
+     then stays min-width wide even for a three-word title, so short titles
+     float in the middle of the row instead of sitting right. Don't go back.
+
+     `max-width: 100%` is containment, not the 46ch cap §5 forbids. Since
+     the box can't shrink, without it a long title on a narrow screen would
+     push past the column and scroll the page sideways. It only ever binds
+     at the column edge, so it cannot cause the desktop wrapping the old
+     cap caused. */
+
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.8rem 2rem;
+    margin-bottom: clamp(3rem, 7vh, 4rem);
+  }
+
+  .topnav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.4rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    letter-spacing: 0.004em;
+  }
+
+  /* Nav links carry no resting underline. Four underlines plus the video
+     link on one row turns the top of the page into noise, and these are
+     chrome rather than prose. This is the one deliberate exception to the
+     "--underline governs every link" rule in §3; hover and focus restore
+     the full terracotta treatment, so the affordance is still there. */
+
+  .topnav a {
+    color: var(--ink-faint);
+    text-decoration: none;
+  }
+
+  .topnav a:hover, .topnav a:focus-visible {
+    color: var(--terracotta);
+    text-decoration: underline;
+    text-decoration-color: var(--terracotta);
+    text-underline-offset: 0.24em;
+  }
+
+  .watching {
+    flex: 0 0 auto;
+    max-width: 100%;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    letter-spacing: 0.004em;
+    color: var(--ink-faint);
+    text-wrap: pretty;
+  }
+
+  .watching a {
+    color: var(--ink-faint);
+    text-underline-offset: 0.24em;
+  }
+
+  .watching a:hover, .watching a:focus-visible {
+    color: var(--terracotta);
+  }
+
+  /* Anchor targets get a little air so a jumped-to heading isn't flush
+     against the top of the viewport. */
+  section[id], article[id] { scroll-margin-top: 2.5rem; }
+
+  /* ---------- Masthead ----------
+     Portrait left, name block right — the two sit on one baseline-centred
+     row, which is why the whole hero still reads as a single left-aligned
+     unit inside the 800px column.
+
+     The portrait is the page's only image. It is a WebP data URI, so the
+     "zero external requests / one file" rule holds: nothing is fetched, it
+     travels inside the HTML. It ships at 360px for a slot that never
+     exceeds 156px, so it stays sharp at 2x and beyond. Don't scale the CSS
+     box past 180px without re-exporting a larger source.
+
+     Square, not a circle, and that is a layout decision rather than a taste
+     one: the square's left edge sits exactly on the 800px column edge, the
+     same edge every heading below it uses. A circle touches that edge at a
+     single tangent point and reads as floating slightly inboard. The 3px
+     radius is a whisper of softening, not a card — keep it under ~4px or it
+     starts to look like the bordered boxes §2 rules out.
+
+     The source is *not* pre-masked, so the shape lives entirely in CSS here.
+
+     `.masthead-text { min-width: 0 }` is not optional — without it the
+     flex item refuses to shrink below its content and the h1 pushes the
+     row wider than the column on mid-size screens. */
+
+  .masthead {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 2.4rem);
+  }
+
+  .masthead-text { min-width: 0; }
+
+  .portrait {
+    display: block;
+    flex: 0 0 auto;
+    width: clamp(104px, 17vw, 156px);
+    height: clamp(104px, 17vw, 156px);
+    border-radius: 3px;
+  }
+
+  /* Below ~34rem the row has no room for a photo and a 2.9rem name side by
+     side, so the hero stacks and the page returns to one flush-left column. */
+
+  @media (max-width: 34rem) {
+    .masthead { display: block; }
+    .portrait { margin-bottom: 1.6rem; }
+  }
+
+  .masthead h1 {
+    font-size: clamp(2.6rem, 9vw, 3.9rem);
+    line-height: 1.04;
+    letter-spacing: -0.024em;
+  }
+
+  .creed {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-top: 1.6rem;
+    line-height: 1.6;
+  }
+
+  /* ---------- Standalone page header (building.html) ----------
+     That page's h1 is a page title, not a name, so it takes the h2 scale.
+     A 3.9rem name-sized heading on a content page would outshout the
+     content it introduces. Rules live here because index.html owns the CSS
+     for both pages — see build_site.py. */
+
+  .masthead-page h1 {
+    font-size: clamp(1.75rem, 1.5rem + 1.15vw, 2.3rem);
+    line-height: 1.18;
+    letter-spacing: -0.017em;
+  }
+
+  .masthead-page h1 + .lede { margin-top: 1.5rem; }
+
+  /* The current page in the nav. Darkened rather than coloured: terracotta
+     here would compete with the creed, which is the only terracotta text on
+     the home page. --ink on cream is 12.93:1. */
+
+  .topnav a[aria-current="page"] { color: var(--ink); }
+
+  .role {
+    font-size: clamp(1.1rem, 1.02rem + 0.4vw, 1.28rem);
+    color: var(--ink-soft);
+    margin-top: 0.9rem;
+    letter-spacing: -0.004em;
+  }
+
+  /* ---------- Section headings ---------- */
+
+  h2 {
+    font-size: clamp(1.75rem, 1.5rem + 1.15vw, 2.3rem);
+    line-height: 1.18;
+    letter-spacing: -0.017em;
+  }
+
+  h2 + p, h2 + .lede { margin-top: 1.5rem; }
+
+  /* `.subhead` was removed when "Startup operations, now AI orchestration"
+     was promoted from a subheading inside Background to its own Approach
+     section with its own nav pillar. It is now a plain h2 like every other
+     section heading. If a subheading is ever needed again, reinstate the
+     rule here rather than inlining sizes on the element. */
+
+  .lede {
+    font-size: 1.06em;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Building in public ---------- */
+
+  .project { margin-top: clamp(3.75rem, 9vh, 5.5rem); }
+
+  .project-index {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.85rem;
+  }
+
+  .project-title {
+    font-size: clamp(1.4rem, 1.28rem + 0.7vw, 1.72rem);
+    line-height: 1.25;
+    letter-spacing: -0.014em;
+  }
+
+  .project-title .qualifier {
+    font-family: var(--sans);
+    font-size: 0.56em;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  .one-liner { margin-top: 1.15rem; }
+
+  .outline-label {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 2.5rem;
+  }
+
+  ol.outline {
+    list-style: decimal;
+    margin: 1.35rem 0 0;
+    padding-left: 1.85rem;
+  }
+
+  ol.outline li {
+    padding-left: 0.35rem;
+    margin-top: 0.85rem;
+  }
+
+  ol.outline li:first-child { margin-top: 0; }
+
+  ol.outline li::marker {
+    color: var(--terracotta-light);
+    font-family: var(--serif);
+    font-size: 0.95em;
+  }
+
+  ol.outline b {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* Links between the two pages. The standalone form (the "Back to
+     kylecovan.com" line at the foot of building.html) gets generous space
+     above it; the per-project form sits close under its one-liner so it
+     reads as part of that project rather than as a page-level footer. */
+
+  .more {
+    margin-top: clamp(3rem, 7vh, 4rem);
+    font-size: 0.98rem;
+  }
+
+  .project > .more {
+    margin-top: 1.3rem;
+    font-size: 0.95rem;
+  }
+
+  .log-status {
+    margin-top: 2.25rem;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  .log-status::before,
+  .log-label::before {
+    content: "";
+    display: inline-block;
+    width: 1.5rem;
+    height: 1px;
+    background: var(--terracotta-light);
+    vertical-align: 0.32em;
+    margin-right: 0.75rem;
+  }
+
+  /* ---------- Build log ----------
+     A dated list, not a table. No borders, no cards, no rules between
+     entries — the same discipline as the rest of the page, with the date
+     doing the work a border would otherwise do.
+
+     Project 02 still carries `.log-status` ("first entry coming soon").
+     When its first entry lands, swap that <p> for this same .log-label +
+     .entry structure. Entries stack newest first, so a new one goes
+     directly beneath .log-label, above the existing entries. */
+
+  .log-label {
+    margin-top: 2.75rem;
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .entry { margin-top: 1.85rem; }
+
+  .entry + .entry { margin-top: 3.25rem; }
+
+  .entry-date {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--terracotta);
+    margin-bottom: 0.55rem;
+  }
+
+  .entry-title {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.16rem, 1.08rem + 0.42vw, 1.36rem);
+    line-height: 1.3;
+    letter-spacing: -0.011em;
+    color: var(--ink);
+    text-wrap: balance;
+    font-synthesis-weight: none;
+  }
+
+  .entry-title + p { margin-top: 1.15rem; }
+
+  /* ---------- Contact ---------- */
+
+  .email {
+    display: inline-block;
+    margin-top: 1.6rem;
+    font-family: var(--serif);
+    font-size: clamp(1.3rem, 1.15rem + 0.85vw, 1.7rem);
+    letter-spacing: -0.014em;
+    color: var(--ink);
+  }
+
+  .socials {
+    margin-top: 1.9rem;
+    font-size: 0.98rem;
+    color: var(--ink-faint);
+  }
+
+  .socials a + a { margin-left: 0.35rem; }
+
+  .socials .sep {
+    color: var(--terracotta);
+    margin: 0 0.35rem;
+    user-select: none;
+  }
+
+  /* `text-wrap: balance` matters here. `ui-serif` resolves to a different
+     face on every OS, and a wide one can push this sentence past the 720px
+     measure. When that happens, balance splits it into two even lines
+     instead of stranding two words on the second. Keep the copy short
+     enough to fit on one line in a wide serif, and keep balance as the
+     backstop. Don't swap it for `pretty` — pretty won't rebalance. */
+
+  .closing {
+    margin-top: clamp(4.5rem, 11vh, 6.5rem);
+    font-family: var(--serif);
+    font-size: clamp(1.12rem, 1.02rem + 0.5vw, 1.32rem);
+    line-height: 1.55;
+    letter-spacing: -0.008em;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  .closing .note {
+    display: block;
+    margin-top: 0.7rem;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    letter-spacing: 0;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- Colophon ----------
+     Flex row: copyright hard left, AI credit hard right. Below ~430px
+     the row wraps and both items stack flush left, preserving the
+     page-wide left alignment rather than stranding text mid-line. */
+
+  .colophon {
+    margin-top: clamp(4rem, 10vh, 5.5rem);
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.01em;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+  }
+
+  .colophon p { margin: 0; }
+
+  .colophon .credit { text-align: right; }
+
+  @media (max-width: 27rem) {
+    .colophon .credit { text-align: left; }
+  }
+
+  /* ---------- Links ----------
+     One rule governs every underline on the page — the watching link,
+     the email, the socials, the Tapo Canyon link, and the footer credit.
+     `--underline` is terracotta at 24% over cream (flattens to ~#E9D5C7),
+     so the rule keeps the canyon hue but sits back instead of shouting.
+     Change the alpha in that one token to retune every link at once.
+     Hover restores full terracotta — that contrast is the affordance. */
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    text-decoration-color: var(--underline);
+    transition: color 140ms ease, text-decoration-color 140ms ease;
+  }
+
+  a:hover, a:focus-visible {
+    color: var(--terracotta);
+    text-decoration-color: var(--terracotta);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--terracotta);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  /* ---------- Preferences ---------- */
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: 0.01ms !important; }
+  }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    .page { max-width: none; padding: 0; }
+    a { text-decoration: none; }
+    .topnav { display: none; }   /* section links are meaningless on paper */
+  }

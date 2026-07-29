@@ -1,0 +1,134 @@
+---
+/**
+ * The one layout. Every page's <head>, top bar and footer live here, which is
+ * the whole reason for moving to Astro: the CSS exists once instead of being
+ * duplicated into a generated file and policed by a byte-equality test.
+ *
+ * The stylesheet is imported, not pasted. astro.config.mjs sets
+ * `build.inlineStylesheets: 'always'`, so Astro inlines it into <head> at build
+ * time — the deployed page is still one self-contained file with zero external
+ * requests, which is the property that actually matters (see handoff §2).
+ */
+import '../styles/site.css';
+import favicon from '../data/favicon.txt?raw';
+import videos from '../data/videos.json';
+
+export interface Props {
+  title: string;
+  description: string;
+  path: string;              // "/" or "/building/"
+  ogType?: string;
+  jsonLd?: unknown;
+  showWatching?: boolean;    // the rotating video line — home page only
+  current?: string;          // nav pillar to mark aria-current
+}
+
+const {
+  title,
+  description,
+  path,
+  ogType = 'website',
+  jsonLd,
+  showWatching = false,
+  current,
+} = Astro.props;
+
+const SITE = 'https://kylecovan.com';
+const canonical = `${SITE}${path}`;
+
+/* Three anchors and one page link on the home page; on any other page all four
+   have to become absolute paths, or the anchors would look for #story on a page
+   that has no Story section. */
+const onHome = path === '/';
+const nav = [
+  { label: 'Story',    href: onHome ? '#story'    : '/#story' },
+  { label: 'Approach', href: onHome ? '#approach' : '/#approach' },
+  { label: 'Building', href: '/building/' },
+  { label: 'Contact',  href: onHome ? '#contact'  : '/#contact' },
+];
+
+/* Entry 01 is the no-JS fallback, hardcoded exactly as it was in the hand-built
+   version. The script below swaps in a random pick during parse, before first
+   paint, so there is no flash of the default. */
+const fallback = videos[0];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+<meta name="description" content={description}>
+<meta name="author" content="Kyle Covan">
+<meta name="theme-color" content="#FBF8F2">
+<link rel="canonical" href={canonical}>
+
+<meta property="og:type" content={ogType}>
+<meta property="og:url" content={canonical}>
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:image" content={`${SITE}/og.png`}>
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kyle Covan — striving to put Jesus Christ first — AI Builder, Strategist, and Partner">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content={`${SITE}/og.png`}>
+
+<link rel="alternate" type="application/rss+xml" title="Kyle Covan — Building in public" href={`${SITE}/rss.xml`}>
+
+{jsonLd && (
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />
+)}
+
+<link rel="icon" type="image/png" sizes="any" href={favicon}>
+</head>
+
+<body>
+<div class="page">
+  <main>
+
+    <div class="topbar">
+      <nav class="topnav" aria-label="Sections">
+        {nav.map(item => (
+          <a href={item.href} aria-current={current === item.label ? 'page' : undefined}>
+            {item.label}
+          </a>
+        ))}
+      </nav>
+      {showWatching && (
+        <p class="watching">
+          <a id="watching-link"
+             href={fallback.url}
+             target="_blank"
+             rel="noopener noreferrer">{fallback.title}</a>
+        </p>
+      )}
+    </div>
+
+    {showWatching && (
+      <script is:inline set:html={`
+      (function () {
+        "use strict";
+        var VIDEOS = ${JSON.stringify(videos)};
+        var link = document.getElementById("watching-link");
+        if (!link || !VIDEOS.length) return;
+        var pick = VIDEOS[Math.floor(Math.random() * VIDEOS.length)];
+        link.textContent = pick.title;
+        link.setAttribute("href", pick.url);
+      }());`} />
+    )}
+
+    <slot />
+
+  </main>
+
+  <footer class="colophon">
+    <p>© <span>2026</span> Kyle Covan</p>
+    <p class="credit">Built in partnership with
+      <a href="https://avatar.andrewng.org" target="_blank" rel="noopener noreferrer">AI Andrew Ng</a></p>
+  </footer>
+</div>
+</body>
+</html>

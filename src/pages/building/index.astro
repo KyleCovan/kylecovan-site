@@ -1,0 +1,141 @@
+---
+/**
+ * The Building page.
+ *
+ * Deliberately still ONE page for both projects. Astro would make per-project
+ * URLs almost free — but the reason for not splitting was never tooling
+ * difficulty, it was word count (handoff §1). Project 02 has no entries yet;
+ * its own URL today would be a ~105-word page. Tooling getting easier doesn't
+ * make a thin page less thin.
+ *
+ * When each project has roughly two entries, the split is one new file:
+ * src/pages/building/[project].astro with getStaticPaths over projects.json,
+ * plus changing the two hrefs on the home page. Nothing else moves.
+ */
+import Base from '../../layouts/Base.astro';
+import projects from '../../data/projects.json';
+import { getCollection, render } from 'astro:content';
+
+const entries = (await getCollection('log', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Render each entry's Markdown once, up front, so the template stays readable.
+const rendered = await Promise.all(
+  entries.map(async (e) => ({ entry: e, Content: (await render(e)).Content }))
+);
+
+const byProject = (id: string) => rendered.filter(r => r.entry.data.project === id);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+
+const title = 'Building in public — Kyle Covan';
+const description =
+  'Build logs for two systems Kyle Covan is building for himself first: ' +
+  'a personal AI OS that ranks and tracks ideas, and an AI-powered second brain.';
+
+/* Structured data is derived from the same collection the page renders from,
+   so the markup cannot claim a headline or a date the page doesn't show. That
+   is schema.org's rule and Google penalises breaking it; generating both from
+   one source is the cheapest way to keep it true permanently. */
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Blog',
+      '@id': 'https://kylecovan.com/building/#blog',
+      url: 'https://kylecovan.com/building/',
+      name: 'Building in public',
+      description: 'Build logs for two systems Kyle Covan is building for himself first.',
+      inLanguage: 'en',
+      author: { '@id': 'https://kylecovan.com/#kyle' },
+      publisher: { '@id': 'https://kylecovan.com/#kyle' },
+      ...(entries.length
+        ? {
+            blogPost: entries.map(e => ({
+              '@type': 'BlogPosting',
+              headline: e.data.title,
+              datePublished: iso(e.data.date),
+              url: `https://kylecovan.com/building/#${e.data.project}`,
+              author: { '@id': 'https://kylecovan.com/#kyle' },
+              about: projects.find(p => p.id === e.data.project)?.name,
+              isPartOf: { '@id': 'https://kylecovan.com/building/#blog' },
+            })),
+          }
+        : {}),
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://kylecovan.com/#kyle',
+      name: 'Kyle Covan',
+      url: 'https://kylecovan.com/',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': 'https://kylecovan.com/building/#breadcrumbs',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Kyle Covan', item: 'https://kylecovan.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Building in public', item: 'https://kylecovan.com/building/' },
+      ],
+    },
+  ],
+};
+---
+<Base
+  title={title}
+  description={description}
+  path="/building/"
+  ogType="article"
+  current="Building"
+  jsonLd={jsonLd}
+>
+
+  <header class="masthead-page">
+    <p class="eyebrow">Building in public</p>
+    <h1>Two systems, built for myself first</h1>
+    <p class="lede">
+      Documented as I go. These are personal projects, not packaged offers.
+    </p>
+  </header>
+
+  {projects.map(p => {
+    const posts = byProject(p.id);
+    return (
+      <article class="project" id={p.id}>
+        <p class="project-index">{p.index}</p>
+        {/* h2 here, h3 on the home page — same markup, different level. That is
+            why the styling hangs off .project-title rather than a tag selector:
+            a tag selector breaks the moment the heading is promoted. */}
+        <h2 class="project-title">{p.name} <span class="qualifier">{p.qualifier}</span></h2>
+        <p class="one-liner">{p.oneLiner}</p>
+
+        {/* Present tense once an entry exists, future tense while it doesn't. */}
+        <p class="outline-label">{posts.length ? 'What the log covers' : 'What the log will cover'}</p>
+        <ol class="outline">
+          {p.outline.map(([lead, rest]) => (
+            <li><b>{lead}</b> — {rest}</li>
+          ))}
+        </ol>
+
+        {posts.length > 0 ? (
+          <>
+            <p class="log-label">Build log</p>
+            {posts.map(({ entry, Content }) => (
+              <article class="entry">
+                <p class="entry-date">{fmt(entry.data.date)}</p>
+                <h3 class="entry-title">{entry.data.title}</h3>
+                <Content />
+              </article>
+            ))}
+          </>
+        ) : (
+          <p class="log-status">Build log — first entry coming soon.</p>
+        )}
+      </article>
+    );
+  })}
+
+  <p class="more"><a href="/">Back to kylecovan.com</a></p>
+
+</Base>
