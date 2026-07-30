@@ -1,0 +1,703 @@
+# kylecovan.com — the source of truth
+
+**Status:** Astro project, live at **https://kylecovan.com** on Cloudflare Pages.
+DNS moved to Cloudflare July 29, 2026 and Google Workspace email survived intact.
+**Handoff date:** July 29, 2026.
+
+Ported into the repo from the claude.ai project on July 29, 2026 so that Claude
+Code reads it directly. `CLAUDE.md` at the repo root is the short version and is
+loaded automatically; this document is the long one. **When they disagree, fix
+both.**
+
+---
+
+## Lessons that keep proving themselves
+
+1. **One copy per page — no version numbers in filenames.** Once there were
+   `index_1.html` through `index_10.html` and the newer-looking number held the
+   older content. Git now solves this properly.
+
+2. **Read a file back after writing it.** A stray trailing space sat inside
+   video title #22 for hours because the write "succeeded" and nobody looked.
+
+3. **Render before you rule.** The portrait's shape, its crop, and its
+   tightness were all decided from rendered comparison sheets, and all three
+   would have gone differently on theory alone. This held again on July 29:
+   the favicon was *described* as fine and *looked* wrong the moment it was
+   rendered at 16/32/64px beside a replacement.
+
+4. **Write the test before trusting the change.** The two-page split shipped
+   with three defects and the suite caught all three.
+
+5. **Check the premise, not just the request.** Kyle asked for a four-page
+   split and asked whether his SEO reasoning was right. It was half right, and
+   the half he named pointed the other way.
+
+6. **When a design rule changes, change its test in the same commit.**
+   July 29: the mobile video line moved above the nav, which broke `verify.py`'s
+   flush-left assertion *by design*. The assertion was rewritten, not deleted.
+   Hours later the line was centred and then un-centred; the test tracked both
+   moves. A stale assertion that gets deleted is how a rule quietly dies.
+
+---
+
+## 1. What this site is
+
+Kyle Covan's personal site: who he is, what he believes, and what he's building
+in the open.
+
+**Scope boundary — important.** Commercial services, pricing, and the client FAQ
+live on **tapocanyon.com**. kylecovan.com is personal. The only connection is a
+single closing line at the bottom of the home page.
+
+**The design reference is [andrewng.org](https://www.andrewng.org/).** What was
+taken: a horizontal nav of short section labels, and a hero with the photo left
+of the name. What was *not*: its multi-company structure, its density, or its
+centred layout. The 800px left-aligned column stays.
+
+### The architecture decision — settled, don't relitigate
+
+Kyle asked to split all four nav pillars onto separate pages for SEO/AEO/GEO.
+**He was half right, and the half he named pointed the other way.**
+
+- **Classic SEO:** separate URLs let you target separate queries, but the
+  guidance names portfolios and personal brands as the case where one page is
+  *right*.
+- **AEO/GEO:** the premise is backwards. Generative engines work at the passage
+  level; the recommended pattern is a **pillar page answering sub-questions
+  inside one document**, not one-topic-per-URL silos.
+- **Measured word counts** turned opinion into arithmetic:
+
+  | Section | Words | As its own URL |
+  |---|---|---|
+  | Story | 276 | thin |
+  | Approach | 109 | very thin |
+  | Building | 462 | healthy |
+  | Contact | 23 | very thin |
+
+**Outcome: a hybrid.** Story, Approach and Contact on the home page; Building on
+its own page. Splitting the remaining three is a decision to re-make
+deliberately with fresh word counts, not a correction of an oversight.
+
+---
+
+## 1b. The Astro migration — DONE
+
+Completed July 29, 2026. What it bought, all of it now real:
+
+- **File-based routing.** `/building/` is an extensionless URL for free.
+- **Content collections.** A build-log entry is a Markdown file in
+  `src/content/log/`. Astro renders the page, the index, the JSON-LD and the
+  RSS feed from it. Posting friction was the thing most likely to kill the
+  build log; it is now one file plus `git push`.
+- **One layout.** The CSS exists once. `build_site.py`, the duplicated
+  stylesheet, and the byte-identical drift check are gone as *concepts* —
+  though `verify_site.py` still asserts the two pages' inlined CSS matches,
+  which is now a free tautology rather than a real risk.
+- **Zero JS by default**, which matches the scoped-JS constraint instead of
+  fighting it.
+- **`build.inlineStylesheets: 'always'`** preserves zero-external-requests in
+  the built output.
+
+**What it cost, stated honestly.** "No build step" is formally dead — it was
+already bent by `build_site.py`. The constraint is now *"each **deployed** page
+is one self-contained file"*, which is the property Kyle actually cares about.
+The site is also no longer readable as a single file; source is spread across a
+layout, two pages, a stylesheet and four data files. Real legibility traded for
+real maintainability.
+
+**What ported over unchanged:** every design token in §3, every copy rule in §6,
+the JSON-LD graph, the OG image, the favicon and portrait pipeline's *output*,
+and both verify suites — they check built HTML, so they now run against `dist/`.
+
+---
+
+## 2. Hard constraints
+
+| Constraint | Why |
+|---|---|
+| **Each deployed page is one self-contained file.** All CSS inlined into a style tag, the one script inline. | Reworded from "one file per page, no build step" — Astro builds, but what a visitor receives is still exactly one request. |
+| **Zero external requests at page load.** No web fonts, no CDN, no analytics. Portrait and favicon are data URIs. | "Load instantly." Cloudflare's analytics is server-side, so traffic data costs nothing on the page. |
+| **JavaScript is limited to one thing.** The single inline script that rotates the video link. | The nav is plain anchors; `scroll-behavior: smooth` does the easing in CSS. |
+| **No cards, no borders, no complex graphics.** | Structure comes from whitespace and typographic hierarchy. The portrait's 3px radius is the outer limit. |
+| **System fonts only.** | Zero-latency text rendering. |
+| **Left-aligned content in an 800px centred container.** | Exceptions are bounded and enumerated in §3/§5. There is currently **nothing centred anywhere on either page** — see the July 29 revert in §5. |
+| **WCAG AA contrast on every text/background pair.** | Verified programmatically; 46 nodes on the home page, 60 on Building, 0 failures. |
+
+### `og.png` — the documented exception
+
+Fetched by crawlers when the link is pasted into Slack, iMessage, X or LinkedIn.
+**No visitor's browser ever requests it.** The absolute URL in the meta tag is
+required — crawlers won't resolve a relative path or read a data URI.
+
+### JSON-LD is not a second script
+
+Both pages carry `<script type="application/ld+json">`. **It is inert data.**
+Browsers never execute it and the page renders identically with JS disabled. It
+is flagged here rather than slipped in, because it *looks* like a violation on a
+grep. A second genuinely **executing** script remains a deliberate decision to
+make — which is exactly why the dark-mode toggle was declined (§7).
+
+**Building-page structured data is derived from the content collection**, so the
+markup physically cannot claim a headline or date the page doesn't show.
+`verify_site.py` enforces the same rule from the other side.
+
+The `@id` `https://kylecovan.com/#kyle` is a stable identifier;
+`/building/` carries a stub `Person` referencing it rather than redefining Kyle.
+
+---
+
+## 3. Design system
+
+### Palette
+
+| Token | Value | Use | Contrast on cream |
+|---|---|---|---|
+| `--cream` | `#FBF8F2` | Page background | — |
+| `--ink` | `#302D28` | Headings, bold lead-ins, email | 12.93:1 |
+| `--ink-soft` | `#5C574E` | Body copy | 6.77:1 |
+| `--ink-faint` | `#6E675C` | Eyebrows, nav, watching line, log labels, colophon | 5.27:1 |
+| `--terracotta` | `#9E4A28` | Creed, project numbers, entry dates, hover, separators | 5.72:1 |
+| `--terracotta-light` | `#B2673F` | Decorative marks only | decorative |
+| `--underline` | `rgba(178,103,63,0.24)` | Link underlines | decorative by design |
+| `--wash` | `rgba(178,103,63,0.15)` | `::selection` | — |
+
+`--underline` is the single control for all *prose* link underlines. Retune
+every link at once by changing that alpha; never set `text-decoration-color` on
+individual link rules.
+
+**One documented exception:** `.topnav a` carries `text-decoration: none` at
+rest. Hover and focus restore the full terracotta underline. Don't let it spread.
+
+`--terracotta` was deliberately darkened from a lighter orange that failed AA at
+small sizes (4.35:1). Keep `--terracotta-light` for marks only, never for text.
+
+**July 29 — the video link stays `--ink-faint`, same as the nav.** Kyle asked
+whether colouring it would help it stand out. It was declined and he agreed.
+Three reasons, recorded so it isn't reopened casually: the nav and the video
+line are deliberately the same size and colour so they read as peers rather than
+one outranking the other; terracotta is the only palette-legal option and **the
+creed is the only terracotta text on the home page** — a second, louder
+terracotta *above* it would make a YouTube link the first coloured thing a
+visitor sees; and the two are already differentiated, because nav links drop
+their resting underline and the video link keeps it.
+
+### Type
+
+- `--serif`: `ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif` — headings, entry titles, email, closing line.
+- `--sans`: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif` — everything else.
+- Body: `clamp(1.0125rem, 0.97rem + 0.22vw, 1.125rem)` / line-height `1.75`.
+- All headings are `font-weight: 400`. Weight contrast comes from size and colour.
+- Eyebrows: `0.7rem`, weight 600, `letter-spacing: 0.22em`, uppercase.
+- **Nav and the watching line are both `0.85rem` sans in `--ink-faint`** — see above.
+- h1: `clamp(2.6rem, 9vw, 3.9rem)`, reduced when the portrait moved beside it.
+
+### The portrait
+
+- **Square, 3px radius — not a circle.** Layout decision, not taste: the
+  square's left edge sits exactly on the 800px column edge that every heading
+  below uses. A circle touches that edge at one tangent point and reads as
+  floating inboard. Both were rendered side by side before deciding.
+- Slot is `clamp(104px, 17vw, 156px)`.
+- **The source now ships at 340px, not 360px.** On July 29 Kyle asked for the
+  backdrop gap above his head removed. That was cut from the existing 360px
+  crop — 20px off the top, nothing added below — because the original
+  `headshot.jpg` is not in the repo. **Don't scale the CSS box past ~170px
+  without a fresh export.** A genuine zoom-*out* showing more shirt needs the
+  original; Kyle declined to hunt for it and called crop B final.
+- Format is WebP, quality 80, no JPEG fallback. The source is **not** pre-masked;
+  the shape lives entirely in CSS.
+- Below `34rem` the hero stacks to a single flush-left column.
+
+### The favicon
+
+**Square, re-cut from the same portrait crop, July 29.** It had been a circle
+with cream corners — a leftover from before the portrait was squared — which on
+iOS read as a circle sitting inside a white-cornered box. Rendered old-vs-new at
+16/32/64px before changing it. Keeping it cut from the *same* crop as the
+portrait is deliberate: two separately-tuned crops of one face drift.
+
+Honest limitation, unchanged: legible at 32px, mush at 16px. The "K" monogram
+alternative is preserved commented-out.
+
+### Heading classes — not tag selectors
+
+`.project-title` and `.entry-title` carry the styling for project and log-entry
+headings. They are **classes rather than `.project h3`** because the same markup
+renders at different heading levels on the two pages — `h3`/`h4` on the home
+page under a section `h2`, `h2`/`h3` on `/building/` where the page's own `h1`
+replaces that `h2`. Tag selectors produced an `h1 → h3` skip, which screen
+readers and crawlers both read as a structural error.
+
+`.masthead-page h1` takes the **h2 scale**. `.topnav a[aria-current="page"]`
+darkens to `--ink` rather than terracotta — terracotta there would compete with
+the creed.
+
+### Rhythm
+
+- `--measure: 800px` — `.page` max-width, border-box, centred.
+- `--gap-section: clamp(5rem, 13vh, 9rem)`.
+- Page padding: `clamp(4.5rem, 15vh, 9rem)` top, `clamp(1.5rem, 7vw, 2.5rem)` sides.
+- **Below 34rem the top padding drops to `clamp(2.25rem, 6vh, 3.25rem)`.**
+  Added July 29: `15vh` on an 844px-tall phone is ~127px of empty cream above
+  the nav, which Kyle correctly read as a bug rather than as whitespace.
+- `section[id], article[id] { scroll-margin-top: 2.5rem }`.
+- No horizontal overflow down to 320px, including with the longest video title.
+
+---
+
+## 4. Page structure
+
+### Home page
+
+```
+topbar        nav left, video line immediately after it
+masthead      portrait left, name / creed / role right
+#story        eyebrow "Story"      h2 Laying music down            (5 paragraphs)
+#approach     eyebrow "Approach"   h2 Startup operations, now AI orchestration
+#building     eyebrow "Building in public" — summary + two projects, each
+                                   deep-linking to its anchor on /building/
+#contact      eyebrow "Contact"    h2 Reach out anytime
+colophon
+```
+
+### `/building/`
+
+```
+topbar        nav only, Building marked aria-current, no video line
+masthead-page eyebrow + h1 Two systems, built for myself first + lede
+project 01    Personal AI OS — outline, build log, one entry
+project 02    Second Brain — outline, "first entry coming soon"
+follow        "Follow along" + RSS · YouTube · X · LinkedIn
+more          back to kylecovan.com
+colophon
+```
+
+**IDs are on the sections; `aria-labelledby` points at `*-heading` ids on the
+h2s.** Don't collapse these into one id per heading — the nav would then scroll
+to the heading rather than the section, losing the eyebrow.
+
+**Each project carries its own "Read the build log" link**, deep-linking to that
+project's anchor. A single trailing link used to sit after both articles where
+it read as belonging only to Project 02. Kyle caught that. Keep them symmetric.
+
+**The Building page deliberately carries no portrait and no video line.** The
+rotating link is the home page's signature.
+
+### When each project gets its own URL
+
+The trigger is **content, not preference**: each project page needs enough log
+entries to stand on its own — the same thin-page test as §1. Project 01 has one
+entry, Project 02 has none. Two each is a reasonable floor.
+
+In Astro the split is one new file — `src/pages/building/[project].astro` with
+`getStaticPaths` over `projects.json` — plus changing the two hrefs on the home
+page. **Tooling getting easier does not make a thin page less thin.**
+
+---
+
+## 5. The top bar
+
+### The nav
+
+Four pillars: **Story · Approach · Building · Contact.** Four was chosen over
+three and over five; five would make two barely-started build logs look like
+headline destinations.
+
+Three are in-page anchors, Building is a real page link. On `/building/` the
+three siblings point back at `/#story` and friends.
+
+### The rotating video link
+
+32 `{title, url}` objects in `src/data/videos.json`, serialised into an inline
+`<script>` placed immediately after the `.topbar` markup. **Placement is
+deliberate: the script runs during parse, before first paint**, so the random
+pick is swapped in with no flash of the default. Moving it to the end of
+`<body>` or wrapping it in `DOMContentLoaded` reintroduces the flash.
+
+**Graceful degradation:** entry 01 ships hardcoded as a real, valid link, so the
+page works with JS disabled.
+
+**The link opens in a new tab** — `target="_blank" rel="noopener noreferrer"`.
+The `noopener` matters: it stops the opened tab getting a handle on the page.
+
+### Layout — rewritten July 29, twice. Read this before touching it.
+
+**Desktop: `justify-content: flex-start`, `gap: 0.8rem 1.4rem`.** The video line
+sits **directly after "Contact"**, on the same column gap the nav uses between
+its own items.
+
+It was `space-between` until July 29, which pinned the line to the column's far
+right edge. On a 1440px laptop that left a wide gap between "Contact" and the
+line, and Kyle read the two as unrelated rather than as one utility row. Tuned
+by eye: 2.2rem read as detached, 1.8rem was closer, **1.4rem is what he chose.**
+What keeps it from reading as a fifth nav pillar is everything other than
+spacing — it is a `<p>` not a nav `<a>`, it keeps the resting underline the nav
+links drop, and it is the only link in the row that leaves the site.
+
+**Phones (below 34rem): the top bar becomes a column and the video line moves
+ABOVE the nav, still flush left.** Below 34rem the two cannot share a row; the
+line used to wrap *underneath* the nav, where it read as an orphaned tail of it.
+
+**It was centred for a few hours on July 29 and then reverted, at Kyle's
+choice.** Recorded because the reasoning matters: moving it above the nav was
+the fix; centring was a separate change solving nothing, and it made the video
+line the only element on either page not sitting on the column's left edge.
+Wrapping settled it — 8 of 32 titles wrap at 320px, and centred two-line text
+goes ragged on both sides while left-aligned wraps break cleanly against the
+same edge the nav uses. **`verify.py` now asserts above-nav *and* flush-left on
+phones**, so a drift back to centred fails the suite rather than passing quietly.
+
+### `flex: 0 0 auto` on `.watching` — still load-bearing
+
+```css
+.watching { flex: 0 0 auto; max-width: 100%; }
+```
+
+The box is content-width and **refuses to shrink**. A title that fits sits on
+the nav's line; a title that doesn't **can't shrink, so it wraps to its own flex
+line** — and under `flex-start` that lands it flush left, on the same edge as
+the nav and every heading below.
+
+`flex: 0 1 auto` with a `min-width` looks equivalent and isn't: the box then
+stays min-width wide even for a three-word title, so short titles float
+mid-row. That bug shipped briefly and was caught in a render. Don't go back.
+
+`max-width: 100%` is *containment*, not the 46ch cap that was removed. Without
+it a long title on a narrow screen pushes past the column and scrolls the page
+sideways.
+
+### What survives from the old §5
+
+- **No width cap.** The 46ch cap was the sole cause of desktop wrapping.
+- **No `::before` hairline.** It indented the first line by 36px while wrapped
+  lines started flush left, reading as a broken hang.
+- **Speaker attributions stay stripped.** Trailing credits (`| John MacArthur`,
+  `| Paul Washer`, `: R.C. Sproul`, `| @WesHuff`, `| Costi Hinn`,
+  `- Tim Keller on the Resurrection`) were removed from 9 titles with Kyle's
+  approval. **Apply the same rule to any video added later: keep the subject,
+  drop the credit.**
+
+**Measured wrapping:** 0/32 at 1440 and 768, 2/32 at 430, 4/32 at 390, 8/32 at
+320. If Kyle later wants zero wrapping on phones, the next lever is trimming the
+~6 longest titles to roughly 38 characters; the Psalm 1 quote is the hardest
+case and should be raised with him rather than cut unilaterally.
+
+**Normalizations applied to the source list**, all flagged to Kyle:
+`?si=…` share-tracking tokens stripped from all 32 URLs; the straight/curly
+quote mismatch in the "I feel more like myself" title fixed; the non-breaking
+space in `My testimony is Galatians 2:20...` preserved from the source.
+
+**July 29 title edits, both at Kyle's request:**
+
+- **The 🥹 emoji removed** from `"I feel more like myself."` There are now zero
+  emoji in the list.
+- **`Can I Trust the Bible - Episode 3: The Council of Nicaea` →
+  `Can I Trust the Bible: The Council of Nicaea`.** Episode label dropped and
+  the hyphen with it; the colon was kept because it reads as *title, then
+  subject*, which is what the two halves are. Also 12 characters shorter, so one
+  fewer title wraps on a phone.
+
+`verify.py` reads the titles out of the **built HTML**, so title edits need no
+test update.
+
+---
+
+## 6. Copy rules
+
+**The bio paragraphs are Kyle's own words. Do not reword, tighten, or "improve"
+them.** Any future copy change should come from Kyle as exact text, or from
+options he explicitly picks.
+
+### The creed line
+
+**"Striving to put Jesus Christ first."** Changed from "keep" to "put" on
+July 28 at Kyle's request, matching his YouTube channel description and echoing
+the bio line "more time, energy, and desire to **put** Jesus Christ first in my
+life" exactly. Changed in three places: `.creed`, the `og:image:alt` meta, and
+the share-card source.
+
+### "Laying music down" — four paragraphs
+
+Roughly ten passes with Kyle on July 28. **Every one of the following was a
+specific correction Kyle made. Do not undo any of them.**
+
+- **"My prayer is that I approach this new work…" is a petition, not a claim.**
+  The most important line in the section. A draft read "I approach this new work
+  with reverence…"; Kyle changed it because the declarative asserts he *has* the
+  posture. The prayer framing asks for it. Never tighten this back to a
+  statement — the humility is the entire point.
+- **"For me the benefit came immediately. I had more time, energy, and desire to
+  put Jesus Christ first in my life."** Three corrections converged here. Kyle
+  insisted the change was literally immediate, not "almost." He objected that
+  opening with "Immediately" implies anyone who lays something down gets the
+  same result — "For me" guards the claim without deleting the fact, so keep
+  both halves. He replaced the abstract "more space" with the three things he
+  actually gained. Note the deliberate echo: he "poured my energy into music" in
+  the first sentence and gets energy back here. Don't break that pairing to
+  avoid repetition.
+- **"aim to help others" — not "help others."** Kyle hasn't started doing this
+  yet. The hedge is factual, not modesty. Same reason "Today I build AI agents
+  and automations" describes what he actually builds rather than claiming
+  clients.
+- **"the appetite for creating music" — not just "the appetite."** The bare
+  version implied he wants nothing to do with music at all; what left him was
+  the appetite to *make* it. Narrow and keep it narrow.
+- **"So I gladly (and gratefully) laid music down."** Parentheses are his,
+  verbatim. So is "music" — he replaced "laid it down" because paragraph one
+  leaned on "it" too heavily. There is now exactly one standalone "it" in the
+  section ("how much it pulled my focus"). Keep it that way.
+- **The nine-month gap is load-bearing.** An earlier draft implied the new
+  direction arrived right after he quit. It took about nine months, and the
+  not-knowing in between is the point of paragraph two. "Other changes were
+  underway too" is deliberately unspecific; don't fill it in. It's "long-term
+  work" and "wasn't sure" rather than "didn't know."
+- **"In God's timing, the desire and drive to learn and build AI surfaced."**
+  Previously began "Then the desire…". Kyle rejected that: following "We had
+  recently moved across the country," *then* read as *therefore* and handed the
+  credit to the move. Any transition implying circumstances caused the change is
+  wrong here.
+- **It is "Jesus Christ," not "Christ."** Used everywhere on the page.
+- **No em dashes in these paragraphs.** The em dashes elsewhere (project
+  one-liners, outline items, `.log-status`) were deliberately left, since those
+  are structural rather than prose. He was told this and did not ask for a sweep.
+- **Contractions.** "don't," not "do not," page-wide.
+- **The word "space" is gone from the page entirely.** Don't reintroduce it, or
+  "In that quiet."
+- **Paragraph breaks are Kyle's.** Do not merge them.
+
+### The Anna paragraph
+
+> I am deeply grateful for my wife, Anna. She has been my constant partner,
+> supporter, and helper since long before we even started dating, standing by me
+> in every step of this journey.
+
+**Kyle's exact words, verbatim.** Note "I am," not "I'm" — the page-wide
+contraction sweep does *not* apply to text Kyle supplied directly.
+
+**It sits last in the Story section on purpose.** "Every step of this journey"
+looks back over the whole section, so it only lands correctly once all three
+beats have been read. Placing it earlier reads more naturally sentence-to-
+sentence but breaks the three-beat arc and makes the closing line about AI the
+section's last word instead of gratitude. **Don't move it and don't reword it.**
+
+### "Startup operations, now AI orchestration"
+
+1. **No governing-metaphor language for the professional experience.** A draft
+   read "That is the lens I bring to everything I build now." Kyle cut it: for
+   him the lens is Jesus Christ. Avoid "lens," "worldview," "my philosophy,"
+   "what guides me." Watch "everything" too — it totalizes.
+2. **No second person.** A previous version read "I partner with your team…".
+   That is client-facing sales copy and belongs on tapocanyon.com.
+3. **No claims Kyle can't personally vouch for.** A draft read "It's rarely the
+   big decisions." Kyle cut it: it asserts something about businesses in general
+   that he has no basis to know. Is it a fact about the world, or a report of
+   Kyle's experience? Only the second is allowed.
+4. **"Managers of agents" is Kyle's idea and the heart of the paragraph.** It
+   states what automation is *for* — the person isn't removed, they move up a
+   level. Keep the human on the page.
+
+Also: "automate only where it earns its place" — don't soften "only." "Done
+well, a business gets more out of what it already has" is his ROI point stated
+deliberately without the vocabulary; "ROI," "efficiency," and "returns more on
+what it spends" were all drafted and set aside as too tapocanyon-flavoured.
+"Done well" is a conditional, not a promise.
+
+**Open thread — the concrete version.** Kyle considered naming three real
+examples of friction from his startup years and kept it abstract because the
+specifics have to be things he actually witnessed. Two drafts already died this
+way. **Don't invent them on his behalf.**
+
+### The closing tapocanyon.com line
+
+> Tapo Canyon is where I work with clients.
+> *This page is personal. That one is for business.*
+
+**The note line is untouchable.** Dry, self-aware, and it explains the entire
+two-site architecture in eight words. Kyle asked for it back verbatim after a
+draft replaced it. Never rewrite it.
+
+The line above it is deliberately plain — a straight setup so the dry note lands
+as the punchline. Declarative and first person: imperatives ("visit," "head over
+to") smuggle a *you* back in and were rejected on exactly that ground.
+
+**July 29: "Tapo Canyon" is no longer a hyperlink.** tapocanyon.com does not
+resolve — the link was a dead end for readers and a broken outbound link for
+crawlers. **Kyle's sentence is untouched, word for word; only the `<a>` was
+removed**, and a comment in `src/pages/index.astro` says to restore it the day
+that site goes live.
+
+**The line must fit on one line, and that is a font-metrics problem, not a
+copy-length problem.** `ui-serif` resolves differently on every OS. Keep the
+sentence at ~90% or less of the measure in a wide serif; it currently sits at
+**49%**. `.closing` carries `text-wrap: balance` as the backstop; don't swap it
+for `pretty`.
+
+### "Follow along" — /building/, added July 29
+
+> **FOLLOW ALONG**
+> RSS · YouTube · X · LinkedIn
+
+**A label and four links. No sentence, on purpose.** The July 28 handoff flagged
+the old version of this block as *the only prose on the site not written by
+Kyle*, and left it for him to approve or rewrite. The cleanest resolution wasn't
+a better sentence — it was no sentence. Every word on both pages is now his.
+
+RSS is first because it is the only one of the four that is *this log* rather
+than Kyle generally. **Left-aligned**, like everything else in the column; Kyle
+asked whether it should be centred and agreed it shouldn't.
+
+### The masthead
+
+Name / creed / role, beside the portrait. Kyle considered adding four capability
+areas under his title and decided they belong on tapocanyon.com. Three reasons
+still valid: a four-phase process arc is methodology and methodology is the
+business side; a fourth line means the creed is no longer the last thing read
+before scrolling; and Kyle described these as areas he *wants to excel in*,
+which a masthead would render as an accomplished claim. **Don't reopen.**
+
+### The build log — Project 01, entry one
+
+Written from Kyle's dictated answers, shaped but not invented. Covers four of
+the five outline beats. **"What broke" is deliberately uncovered** — Kyle didn't
+answer that one, and an invented failure story would be the worst possible thing
+to put in a build log.
+
+---
+
+## 7. Open TODOs
+
+1. **Google Search Console + sitemap submission** — `docs/deploy-status.md`
+   Step 5. Not started. The one remaining launch task.
+2. **A DMARC record.** There is currently none. See `docs/deploy-status.md`.
+3. **"What broke" for Project 01.** Usually the most valuable part of a build
+   log and the part everyone skips.
+4. **Project 02's first entry.** Its `<p class="log-status">` is replaced by
+   entries the moment a Markdown file with `project: second-brain` appears in
+   `src/content/log/`.
+5. **Restore the Tapo Canyon link** when that site resolves.
+6. **Dark mode — decided, deferred.** **Automatic via `prefers-color-scheme`,
+   no toggle.** A toggle needs a second executing script plus persistence,
+   breaking the one-script rule, and needs a visible control on a page built with
+   no chrome; avoiding a flash of the wrong theme would need a render-blocking
+   script in the `<head>`, which is worse. The honest counterpoint Kyle accepted:
+   automatic gives the visitor no way to override. It is a real design pass —
+   every token needs a dark counterpart, terracotta most of all since it was
+   darkened specifically to pass AA on cream, and the portrait backdrop and
+   `og.png` are both light.
+7. **`build_assets.py` and `headshot.jpg` are not in the repo.** Recover them
+   before any future image work.
+8. ~~**Cloudflare rewrites `robots.txt`.**~~ **Resolved July 30, 2026** — Kyle
+   disabled Managed robots.txt in Cloudflare's AI Crawl Control and set AI-bot
+   blocking to "Do not block." Training crawlers are now allowed by choice.
+   History and the settings map: `docs/dns-records.md`.
+
+**Optional, not requested:** a current-section highlight *within* the home
+page's nav (needs JS and an IntersectionObserver, so a deliberate decision
+against the scoped-JS rule, not a drive-by addition).
+
+---
+
+## 8. How to verify changes
+
+```bash
+cd ~/Projects/kylecovan-astro
+source .venv/bin/activate      # REQUIRED in a fresh Terminal, for verify only
+npm run build                  # writes dist/
+npm run verify                 # both suites — ALL CHECKS PASSED twice
+```
+
+Both suites run against **`dist/`, not the source** — what matters is the HTML a
+visitor receives, and Astro minifies the CSS and serialises the video array on
+the way through. Headless Chromium via Playwright, launched with
+`--disable-lcd-text` so subpixel fringing doesn't pollute contrast sampling.
+
+Cloudflare runs **only** `npm run build`. The verify suites are a local gate.
+Nothing enforces them on the server — that discipline is Kyle's.
+
+### `verify.py` — the home page
+
+1. **Contrast** — every text node against `#FBF8F2`, correct threshold per size.
+   **46 nodes, 0 failures.**
+2. **Overflow** — `scrollWidth === 320` at 320px **with the longest video title
+   forced in**. A short random pick hides a real overflow.
+3. **Top bar** — all 32 titles at 5 viewports: never escapes the column, never
+   collides with the nav, lands flush left when on its own row (desktop), and
+   sits **above the nav and flush left** below 544px.
+4. **Nav** — every `href="#…"` resolves; nav's left edge equals the column's.
+5. **Randomness** — ~400 reloads, asserts all 32 distinct pairs appear; every
+   URL regex-validated as `https://youtu.be/<11 chars>`.
+6. **No-JS** — loads with JS disabled, asserts the fallback link still works.
+7. **Closing line** — forces a wide serif, fails above 90% of the measure.
+   Currently 49%.
+8. **Visual** — screenshots at 1440×1000 and 390×844 at 2× DPR.
+
+### `verify_site.py` — the two-page checks
+
+1. CSS identical across pages (now a tautology under one layout, kept as a
+   backstop).
+2. **Metadata uniqueness** — title, description and canonical must differ.
+3. **Link integrity, both directions** — every relative href resolves; every
+   fragment exists *in the file it points at*.
+4. Contrast on both pages — 46 and 60 nodes, 0 failures.
+5. Exactly one `h1` per page, no skipped levels.
+6. Overflow on `/building/` at 320px.
+7. Sitemap completeness.
+8. **Structured data** — one JSON-LD block per page; it parses; `Person` carries
+   name/url/jobTitle/sameAs; **every `sameAs` URL is a real `href` on the
+   page**; the cross-page `@id` resolves; **every `BlogPosting` headline and
+   date appears in the rendered HTML**. The last two enforce schema.org's
+   "don't claim more than the page shows" rule mechanically instead of on trust.
+
+---
+
+## 9. Revision log
+
+| # | Change |
+|---|---|
+| 1–17 | Pre-split work: 800px measure, Kyle's copy, rotating video link, muted underlines, closing-line rewrites, trailing-space fix in title #22. |
+| 18 | OG share image; `twitter:card` upgraded to `summary_large_image`. |
+| 19 | Social URLs filled in with `rel="me"`. |
+| 20 | Portrait added, then replaced with the studio headshot across page, share card and favicon. |
+| 21 | Portrait crop widened — 300px of synthesised backdrop above the frame. |
+| 22 | Build log shipped — Project 01, entry one. |
+| 23 | Creed changed "keep" → "put". |
+| 24 | Anna paragraph added, verbatim. |
+| 25 | Restructured after andrewng.org — four-pillar top nav, portrait-left hero. |
+| 26 | Portrait squared, chosen from a rendered comparison. |
+| 27 | Top-bar flex bug fixed — `flex: 0 0 auto` + `max-width: 100%`. |
+| 28 | Portrait crop tightened to `D=720`. |
+| 29 | Site split to two pages — hybrid, not the four Kyle asked for. |
+| 30–32 | `build_site.py`, class-based heading selectors, `verify_site.py`. |
+| 33 | Em dash removed from Project 01's one-liner. |
+| 34 | Per-project build-log links, deep-linking to anchors. |
+| 35 | Project docs renamed to stable names. |
+| 36 | JSON-LD structured data on both pages, generated from page content. |
+| 37 | **Rebuilt on Astro.** One layout, one stylesheet, content collections for the build log, RSS feed, `/building/` as an extensionless URL. `build_site.py` retired. Both suites re-pointed at `dist/`. |
+| 38 | **Shipped.** GitHub repo `KyleCovan/kylecovan-site`, Cloudflare Pages, auto-deploy on push. Live at `kylecovan-site.pages.dev`. |
+| 39 | **Favicon squared**, re-cut from the portrait crop. |
+| 40 | **Mobile top bar rebuilt.** Below 34rem it becomes a column and the video line moves above the nav. Centred at Kyle's request, then reverted the same day. `verify.py` tracked both moves. |
+| 41 | **Mobile top padding cut** from `15vh` (~127px on a phone) to `clamp(2.25rem, 6vh, 3.25rem)`. |
+| 42 | **"Follow along" restored** to the foot of `/building/` — a label and four links, no prose. Every word on the site is now Kyle's. |
+| 43 | **Tapo Canyon unlinked** while that domain doesn't resolve. Sentence untouched. |
+| 44 | **Portrait crop B** — 20px of backdrop trimmed off the top, source now 340px. Favicon re-cut from the same crop. |
+| 45 | **Desktop top bar: `space-between` → `flex-start`, gap 1.4rem.** Tuned by eye: 2.2 → 1.8 → 1.4rem. |
+| 46 | **Video titles:** 🥹 emoji removed; `Can I Trust the Bible - Episode 3: The Council of Nicaea` → `Can I Trust the Bible: The Council of Nicaea`. |
+| **47** | **DNS moved to Cloudflare and kylecovan.com went live.** Google Workspace email verified intact end to end. `www` 301s to the apex. |
+| **48** | **Context ported into the repo.** `CLAUDE.md` plus `docs/` replace the claude.ai project instructions as the source of truth; maintenance moved to Claude Code in VS Code. |
+
+---
+
+## 10. Starting a session
+
+Open `~/Projects/kylecovan-astro` in VS Code and run Claude Code there.
+`CLAUDE.md` loads automatically; read this document when the change touches
+design, copy, or the top bar.
+
+**Highest-value next steps, in order:**
+
+1. **Search Console** (`docs/deploy-status.md` Step 5), so the SEO work becomes
+   measurable. Add the DMARC record in the same sitting.
+2. Get Kyle's "what broke" answer for Project 01, and Project 02's first entry.
+3. Once each project has ~2 entries, split them to their own URLs (§4).
+4. Dark mode, as its own focused pass (§7).

@@ -1,0 +1,255 @@
+# Deploy and DNS — where things stand
+
+**As of July 29, 2026: Steps 1–4 are DONE. Only Step 5 remains.**
+
+**kylecovan.com is live.** DNS is served by Cloudflare, the site is served by
+Cloudflare Pages, and Google Workspace email survived the move intact.
+
+| Thing | Where |
+|---|---|
+| Local project | `~/Projects/kylecovan-astro` |
+| Repo | https://github.com/KyleCovan/kylecovan-site (public) |
+| Host | Cloudflare Pages project `kylecovan-site` |
+| Live URL | **https://kylecovan.com** |
+| Also live | https://kylecovan-site.pages.dev (build/preview URL) |
+| `www` | 301 redirects to the apex |
+| DNS | Cloudflare — `heather.ns.cloudflare.com`, `oswald.ns.cloudflare.com` |
+| Registrar | still GoDaddy (unchanged, and that's fine) |
+
+Full record inventory: **`docs/dns-records.md`.**
+
+---
+
+## Step 1 — Run it locally ✅ DONE
+
+```bash
+npm install
+npm run dev        # http://localhost:4321
+npm run build      # writes dist/
+npm run verify     # both suites — ALL CHECKS PASSED twice
+```
+
+### Four snags, all resolved — these recur on any new machine
+
+1. **The tarball lived on an external drive.** Unpacked to `~/Projects` on the
+   internal drive instead: external volumes are flaky with `npm` and Git and may
+   not be mounted.
+
+2. **"permission denied" was a false alarm** — the bare path was pasted as a
+   command and zsh tried to execute the tarball. Diagnose this before sending
+   anyone into System Settings → Privacy.
+
+3. **npm blocked install scripts** for `esbuild`, `sharp`, `fsevents` (newer npm
+   `allow-scripts` default). Approved with
+   `npm approve-scripts --allow-scripts-pending`. `npm install` also reports 3
+   vulnerabilities — **ignore them, never run `npm audit fix --force`.** They
+   are build-time tooling; the deployed output is static HTML.
+
+4. **`npm run verify` failed on `ModuleNotFoundError: No module named 'playwright'`.**
+   The verify script is `python3 scripts/verify.py && python3 scripts/verify_site.py`
+   and both need Playwright plus a real Chromium:
+
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install playwright
+   playwright install chromium      # ~150 MB
+   ```
+
+   **`source .venv/bin/activate` is required in every new Terminal window before
+   `npm run verify` works.** `npm run dev` and `npm run build` don't need it.
+   `.venv/` and `shot-*.png` are in `.gitignore`.
+
+---
+
+## Step 2 — GitHub ✅ DONE
+
+Repo: **https://github.com/KyleCovan/kylecovan-site**, public, branch `main`.
+
+**Auth:** no Homebrew and no `gh` on this Mac, so the route was a classic
+Personal Access Token (`repo` scope) pasted at the `Password:` prompt, with
+`git config --global credential.helper osxkeychain` so it is stored once.
+
+**Two traps worth writing down:**
+
+- The token is **not** a command. It is only ever typed in response to a
+  `Password:` prompt that `git push` produces. Pasting it on its own line runs
+  it as a program, and it then sits in `~/.zsh_history` in plain text. That
+  happened once on July 29; that token was revoked and replaced.
+- `git init` acts on whatever directory you are standing in. It was once run in
+  `~`, creating a repo that claimed the entire home folder. Fix was
+  `rm -rf /Users/kylecovan/.git`. **Check the prompt ends in `kylecovan-astro %`
+  before any git command.**
+
+**Commit identity:** `122067564+KyleCovan@users.noreply.github.com` — GitHub's
+masked address, so Kyle's real email never appears in the public repo.
+
+---
+
+## Step 3 — Cloudflare Pages ✅ DONE
+
+Project `kylecovan-site`, connected to the GitHub repo, GitHub App scoped to
+**only that repository**.
+
+| Setting | Value |
+|---|---|
+| Production branch | `main` |
+| Framework preset | Astro |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+
+**Cloudflare runs `npm run build` only, never `npm run verify`** — the
+Python/Playwright setup is local-only and does not need to exist on the build
+server.
+
+**Two dashboard traps.** Cloudflare's current UI opens on a Workers-flavoured
+"Ship something new" screen. **"Upload your static files" is the wrong branch** —
+it deploys once and never updates. The Pages/Git flow is behind the small
+*"Looking to deploy Pages? Get started"* link at the bottom. Also, backing out of
+the upload flow can leave an empty project holding the name, which then collides
+("A project with this name already exists"); delete the stray project rather
+than renaming around it.
+
+---
+
+## Step 4 — Point kylecovan.com at it ✅ DONE — July 29, 2026
+
+Done in five moves, in this order, deliberately. **The order is the method:**
+every email record was replicated and verified inside Cloudflare *before* the
+nameservers moved, so there was never a moment when the two DNS providers
+disagreed about where mail should go.
+
+### 1. Deleted the malformed SPF record at GoDaddy, first
+
+```
+"v=spf1 include:_spf.google.com ~all"      ← kept
+"v=spf1include:_spf.google.com"            ← deleted
+```
+
+Missing space after `v=spf1`, no qualifier, and two SPF records at all is a
+`permerror` at the receiving server, which pushes mail toward spam. Deleting it
+**before** Cloudflare scanned the zone meant it was never imported. Fixing it at
+the source is always cheaper than fixing a copy.
+
+### 2. Added the domain to Cloudflare and checked what it imported
+
+Current UI path: **Domains → Overview → Connect a domain.**
+(Not "Add a site", not "+ Add", not "Onboard a domain". Not *Transfer* or *Buy*
+— those move the registration, which we did not want.)
+
+Cloudflare scanned GoDaddy and reported **2 A, 2 CNAME, 5 MX, 3 TXT**. Those
+counts were checked against the verified inventory rather than trusted:
+
+- 3 TXT is correct **because** the malformed SPF was already gone. 4 would have
+  meant it came across; 2 would have meant DKIM was dropped.
+- The DKIM value was compared character by character against the source and
+  hashed — identical, 408 characters, and it base64-decodes to a valid 2048-bit
+  RSA public key.
+
+Deleted at this point: both GoDaddy parking A records (`3.33.130.190`,
+`15.197.148.33`) and the `_domainconnect` CNAME. Left `www` alone.
+
+### 3. Switched nameservers at GoDaddy
+
+To `heather.ns.cloudflare.com` / `oswald.ns.cloudflare.com`. Confirmed by asking
+a `.com` TLD server what the registry delegation says, which is the only answer
+that actually settles it.
+
+**The old GoDaddy zone was deliberately left in place, not deleted.** While it
+exists, switching the nameservers back is a complete instant rollback.
+
+### 4. Attached the domain to Pages
+
+**Workers & Pages → kylecovan-site → Custom domains → Set up a custom domain.**
+Cloudflare creates the DNS record itself — don't hand-write one.
+
+### 5. Redirected `www` to the apex
+
+Immediately after step 4, `www.kylecovan.com` served a **Cloudflare error page**:
+the hostname was proxied but Pages had no route for it. Caught by loading it in
+a real browser, not by assuming.
+
+Fixed with **Rules → Overview → Create rule → Redirect Rule**, using the
+*"Redirect from WWW to root"* template:
+
+- Match: **Wildcard pattern**, Request URL `https://www.kylecovan.com/*`
+- Target: `https://kylecovan.com/${1}`
+- **301**, preserve query string
+
+`${1}` carries the path, so `www.kylecovan.com/building/` lands on
+`kylecovan.com/building/` rather than dumping everyone on the homepage. The rule
+only fires on proxied traffic, so **the `www` CNAME must stay orange-clouded.**
+
+Redirect chosen over adding `www` as a second Pages custom domain: the site's
+canonical tags and JSON-LD `@id` both say `kylecovan.com`, and serving identical
+content on two hostnames splits ranking signals.
+
+### Verified after the cutover
+
+- `https://kylecovan.com/` → **Kyle Covan — AI Builder**, HTTPS, no cert warning
+- `https://kylecovan.com/building/` → **Building in public — Kyle Covan**
+- Page content spot-checked against the copy rules: creed reads **"put"**,
+  four nav pillars present, Tapo Canyon is **plain text not a link**,
+  canonical `https://kylecovan.com/`
+- `www.kylecovan.com/?t=2` → `kylecovan.com/?t=2` (query preserved)
+- `www.kylecovan.com/building/` → `kylecovan.com/building/` (path preserved)
+- MX 5/5, one correct SPF, Workspace verification TXT, DKIM byte-identical
+- **Real mail delivered to `kyle@kylecovan.com` after the switch** — including
+  Cloudflare's own zone-activation notice at 03:47 UTC, which by definition was
+  sent after the nameservers moved and arrived through the new MX path. That is
+  the end-to-end proof; the DNS queries only prove the records exist.
+
+⚠️ **Before trusting any DNS measurement, read the "How to verify DNS honestly"
+section in `docs/dns-records.md`.** A false alarm during this migration cost real
+time, and the cause was the measuring instrument, not the zone.
+
+---
+
+## Step 5 — Turn on the feedback loop — NOT DONE
+
+- **Cloudflare Analytics** — already on, dashboard → the Pages project.
+  Server-side, so nothing on the page and no break to zero-external-requests.
+- **Google Search Console** — search.google.com/search-console, add
+  `kylecovan.com` as a **Domain** property, verify with the DNS TXT record
+  Cloudflare adds in a couple of clicks (now that Cloudflare runs DNS, Search
+  Console can often do this automatically), then submit
+  `https://kylecovan.com/sitemap-index.xml`.
+
+**Worth doing at the same time, while the DNS knowledge is fresh:**
+
+- **Add a DMARC record.** There is currently none. With SPF and DKIM both in
+  place and correct, DMARC is the piece that tells receiving servers what to do
+  when they fail. A safe starting policy is monitor-only:
+  `_dmarc` TXT → `v=DMARC1; p=none; rua=mailto:kyle@kylecovan.com`.
+  Start at `p=none`, read the reports, tighten later. Do **not** start at
+  `p=reject`.
+
+---
+
+## Publishing, from here on
+
+```bash
+# create src/content/log/2026-08-15-what-broke.md with frontmatter + Kyle's words
+source .venv/bin/activate      # only needed for verify
+npm run build && npm run verify
+git add -A && git commit -m "log: what broke" && git push
+```
+
+Cloudflare rebuilds and deploys on push. The entry appears on `/building/`, in
+the structured data, in the sitemap and in the RSS feed. Nothing else to touch.
+
+---
+
+## Still open
+
+1. **Step 5 — Search Console**, and the DMARC record above.
+2. **Dark mode.** Decision recorded in `docs/handoff.md` §7: automatic via
+   `prefers-color-scheme`, no toggle. Deferred; it is a real design pass.
+3. **Restore the Tapo Canyon link** the day tapocanyon.com resolves. The anchor
+   was removed July 29 because it was a dead end; Kyle's sentence is untouched
+   and a comment in `src/pages/index.astro` says to put it back.
+4. **"What broke" entry for Project 01**, and Project 02's first entry.
+5. **The original `headshot.jpg`** is not in the repo. A true zoom-out on the
+   portrait needs it. Kyle declined on July 29 — crop B is final for now.
+6. **The old GoDaddy zone** can be left alone indefinitely — there is no cost to
+   leaving it, and it is the rollback. Don't delete it just to tidy up.

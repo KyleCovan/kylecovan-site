@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(npm run dev)",
+      "Bash(npm run verify)",
+      "Bash(npm install)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(source .venv/bin/activate && npm run build && npm run verify)"
+    ],
+    "ask": [
+      "Bash(git push:*)"
+    ],
+    "deny": [
+      "Bash(npm audit fix:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(rm -rf:*)",
+      "Edit(./dist/**)",
+      "Write(./dist/**)",
+      "Read(./.venv/**)"
+    ]
+  }
+}
