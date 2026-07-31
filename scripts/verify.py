@@ -139,8 +139,8 @@ with sync_playwright() as pw:
         return {
           items: links.map(a => {
             const h = a.getAttribute('href');
-            // Only in-page anchors can be resolved here. "Building" now points
-            // at building.html; cross-page links are verified by verify_site.py.
+            // Only in-page anchors can be resolved here. "Builds" points at
+            // /builds/; cross-page links are verified by verify_site.py.
             return {label: a.textContent.trim(), href: h,
                     target: h.startsWith('#') ? !!document.querySelector(h) : true};
           }),

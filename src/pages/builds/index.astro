@@ -1,0 +1,140 @@
+---
+/**
+ * The Builds index — a directory, not a content page.
+ *
+ * This replaced /building/, which held every project AND every log entry on one
+ * page. That worked at two projects and stops working as the list grows: one
+ * page cannot be the front door and the full text of everything behind it.
+ *
+ * So the split that handoff §4 deferred has happened, and the trigger it named
+ * ("two log entries per project") was retired rather than met. That trigger
+ * assumed a project page was an outline plus whatever entries had accumulated,
+ * which stays thin until entries pile up. A build page is now prose about the
+ * thing itself, written once, so it is substantial from the day it is written.
+ * The old rule was measuring the wrong thing.
+ *
+ * This page deliberately does NOT repeat each build's outline. That belongs on
+ * the build's own page; duplicating it here would put the same paragraphs on two
+ * URLs, which is the one thing §1's SEO reasoning is unambiguous about.
+ */
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const builds = (await getCollection('builds'))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const entries = (await getCollection('log', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const logFor = (id: string) => entries.filter(e => e.data.build.id === id);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
+const label = (n: number) => `Project ${String(n).padStart(2, '0')}`;
+
+const title = 'Building in public — Kyle Covan';
+const description =
+  'What Kyle Covan is building: a personal AI OS that ranks and tracks ideas, ' +
+  'and an AI-powered second brain. Documented as he goes.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      '@id': 'https://kylecovan.com/builds/#page',
+      url: 'https://kylecovan.com/builds/',
+      name: 'Building in public',
+      description: 'What Kyle Covan is building, documented as he goes.',
+      inLanguage: 'en',
+      author: { '@id': 'https://kylecovan.com/#kyle' },
+      /* Every name and url below is rendered on this page as a heading and a
+         link. schema.org forbids claiming more than the page shows, and
+         verify_site.py checks this from the other side. */
+      mainEntity: {
+        '@type': 'ItemList',
+        itemListElement: builds.map((b, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: b.data.name,
+          url: `https://kylecovan.com/builds/${b.id}/`,
+        })),
+      },
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://kylecovan.com/#kyle',
+      name: 'Kyle Covan',
+      url: 'https://kylecovan.com/',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': 'https://kylecovan.com/builds/#breadcrumbs',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Kyle Covan', item: 'https://kylecovan.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Building in public', item: 'https://kylecovan.com/builds/' },
+      ],
+    },
+  ],
+};
+---
+<Base
+  title={title}
+  description={description}
+  path="/builds/"
+  current="Builds"
+  jsonLd={jsonLd}
+>
+
+  <header class="masthead-page">
+    <p class="eyebrow">Building in public</p>
+    <h1>Two systems, built for myself first</h1>
+    <p class="lede">
+      Documented as I go. These are personal projects, not packaged offers.
+    </p>
+  </header>
+
+  {builds.map(b => {
+    const posts = logFor(b.id);
+    return (
+      /* The id is kept deliberately. /building/#personal-ai-os was a real,
+         published URL — the home page linked to it and so does anything anyone
+         shared. A server redirect cannot preserve a fragment, because browsers
+         never send it. Keeping the id here means the old deep link still lands
+         on the right build instead of the top of the page. */
+      <article class="project" id={b.id}>
+        <p class="project-index">{label(b.data.order)}</p>
+        <h2 class="project-title">{b.data.name}</h2>
+        <p class="one-liner">{b.data.oneLiner}</p>
+
+        {posts.length > 0 ? (
+          <p class="log-status">
+            Build log — {posts.length} {posts.length === 1 ? 'entry' : 'entries'},
+            latest {fmt(posts[0].data.date)}.
+          </p>
+        ) : (
+          <p class="log-status">Build log — first entry coming soon.</p>
+        )}
+
+        <p class="more"><a href={`/builds/${b.id}/`}>Read more</a></p>
+      </article>
+    );
+  })}
+
+  {/* Follow along. Deliberately a label plus four links and no sentence of
+      prose: every other word on this site is Kyle's, and an invented line here
+      would be the only exception to handoff section 6. RSS sits first because
+      it is the only one of the four that is this log specifically rather than
+      Kyle generally. Left-aligned like everything else in the column. */}
+  <p class="follow-label">Follow along</p>
+  <p class="socials">
+    <a href="/rss.xml">RSS</a><span class="sep" aria-hidden="true">&#183;</span
+    ><a href="https://www.youtube.com/@KyleCovan" rel="me">YouTube</a><span class="sep" aria-hidden="true">&#183;</span
+    ><a href="https://x.com/kylecovan" rel="me">X</a><span class="sep" aria-hidden="true">&#183;</span
+    ><a href="https://www.linkedin.com/in/kylecovan/" rel="me">LinkedIn</a>
+  </p>
+
+  <p class="more"><a href="/">Back to kylecovan.com</a></p>
+
+</Base>

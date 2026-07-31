@@ -1,7 +1,7 @@
 ---
 title: "Too many ideas, and no way to rank them"
 date: 2026-07-28
-project: personal-ai-os
+build: personal-ai-os
 ---
 
 I tend to have a lot of ideas. I'd start a project, then another idea would pull

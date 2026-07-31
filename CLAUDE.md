@@ -25,34 +25,40 @@ rules, and decision history. **Read it before any change and update it after.**
 | Live | **https://kylecovan.com** (also `kylecovan-site.pages.dev`) |
 | `www` | 301 redirect rule → apex, path and query preserved |
 
-An **Astro** project, not hand-written HTML. Two pages: `/` (Story, Approach,
-Building summary, Contact) and `/building/`.
+An **Astro** project, not hand-written HTML. `/` (Story, Approach, Builds
+summary, Contact), `/builds/`, and one page per build at `/builds/<id>/`.
 
 ```
 src/
   layouts/Base.astro          head, top bar, footer, the one inline script
   pages/index.astro           home
-  pages/building/index.astro  the build-log page
+  pages/builds/index.astro    the builds directory
+  pages/builds/[build].astro  one page per build, from the builds collection
   pages/rss.xml.js            RSS feed
   styles/site.css             ALL the CSS, once
   data/videos.json            the 32 video titles + urls
-  data/projects.json          project names, one-liners, outlines
   data/portrait.txt           WebP data URI, 340px
   data/favicon.txt            PNG data URI, 64px
+  content/builds/*.md         one file per build — frontmatter + prose
   content/log/*.md            build-log entries — one file per entry
-  content.config.ts           the collection schema
-public/                       og.png, robots.txt
+  content.config.ts           both collection schemas
+public/                       og.png, robots.txt, _redirects
 scripts/verify.py             home-page suite
 scripts/verify_site.py        site-level suite
 ```
 
 - **All CSS lives once in `src/styles/site.css`.** Never duplicate it.
-- **Build-log entries are Markdown in `src/content/log/`.** Adding one file is
-  the whole publishing workflow — Astro renders the page, the index, the JSON-LD,
-  the sitemap and the RSS feed from it.
+- **Builds and log entries are both Markdown.** Adding one file is the whole
+  publishing workflow — Astro renders the page, the index, the JSON-LD, the
+  sitemap and the RSS feed from it. `src/data/projects.json` is gone; the
+  `builds` collection replaced it on July 30.
+- **A log entry's `build:` field is a `reference('builds')`.** A typo fails the
+  build instead of silently orphaning the entry.
+- **`public/_redirects` keeps `/building/` alive.** That URL was indexed. Never
+  delete a rule from that file without checking what still links to it.
 - **Never hand-edit `dist/`.** It is build output.
-- Nothing is generated into the source tree. `src/pages/building/index.astro`
-  **is** edited by hand.
+- Nothing is generated into the source tree. Both files under
+  `src/pages/builds/` **are** edited by hand.
 - `build_assets.py` (portrait/favicon/OG pipeline) and the source `headshot.jpg`
   are **not in the repo**. Recover them before any image work.
 

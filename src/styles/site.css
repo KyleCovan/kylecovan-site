@@ -359,14 +359,13 @@
     letter-spacing: -0.014em;
   }
 
-  .project-title .qualifier {
-    font-family: var(--sans);
-    font-size: 0.56em;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    color: var(--ink-faint);
-    white-space: nowrap;
-  }
+  /* `.qualifier` was removed on July 30 along with the "Nate Herk style" /
+     "Andrej Karpathy style" subtitles it styled. Kyle meant them as a nod to
+     where the inspiration came from, but sitting under the project name they
+     read as a borrowed credential. The credit survives in each build's
+     `inspiration` frontmatter and belongs in a sentence of the prose. The rule
+     is deleted rather than left orphaned — if the nod ever returns it returns
+     as prose, which needs no styling of its own. */
 
   .one-liner { margin-top: 1.15rem; }
 

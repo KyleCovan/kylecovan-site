@@ -7,7 +7,16 @@
  */
 import Base from '../layouts/Base.astro';
 import portrait from '../data/portrait.txt?raw';
-import projects from '../data/projects.json';
+import { getCollection } from 'astro:content';
+
+/* Was src/data/projects.json. Now the same collection /builds/ renders from, so
+   a new build appears in this summary, on the index, at its own URL and in the
+   sitemap from one file — with no chance of the home page and /builds/ drifting
+   out of sync, which two separate sources guaranteed eventually. */
+const builds = (await getCollection('builds'))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const buildLabel = (n: number) => `Project ${String(n).padStart(2, '0')}`;
 
 const title = 'Kyle Covan — AI Builder, Strategist, and Partner';
 const description =
@@ -144,12 +153,17 @@ const jsonLd = {
       Documented as I go. These are personal projects, not packaged offers.
     </p>
 
-    {projects.map(p => (
+    {/* Each build links to its own page rather than to an anchor on a shared
+        one. The qualifier span ("Nate Herk style") was removed on July 30 at
+        Kyle's request — as a subtitle it read as a borrowed credential. The
+        credit itself is kept in each build's `inspiration` frontmatter, to be
+        worked into the prose where it reads as a nod rather than a claim. */}
+    {builds.map(b => (
       <article class="project">
-        <p class="project-index">{p.index}</p>
-        <h3 class="project-title">{p.name} <span class="qualifier">{p.qualifier}</span></h3>
-        <p class="one-liner">{p.oneLiner}</p>
-        <p class="more"><a href={`/building/#${p.id}`}>Read the build log</a></p>
+        <p class="project-index">{buildLabel(b.data.order)}</p>
+        <h3 class="project-title">{b.data.name}</h3>
+        <p class="one-liner">{b.data.oneLiner}</p>
+        <p class="more"><a href={`/builds/${b.id}/`}>Read more</a></p>
       </article>
     ))}
   </section>

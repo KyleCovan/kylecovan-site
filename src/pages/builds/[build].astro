@@ -1,0 +1,155 @@
+---
+/**
+ * One page per build. This is the file handoff §4 predicted would be needed
+ * ("src/pages/building/[project].astro with getStaticPaths") — the shape it
+ * predicted was right, the trigger it set was not. See the note in ./index.astro.
+ *
+ * Structure: the thing itself first (prose from the Markdown body), then the
+ * dated log entries underneath. That order is the point of the restructure —
+ * a visitor who has never heard of the project reads what it IS before they
+ * read a changelog about it.
+ */
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const builds = await getCollection('builds');
+  return builds.map(build => ({ params: { build: build.id }, props: { build } }));
+}) satisfies GetStaticPaths;
+
+const { build } = Astro.props;
+const { Content } = await render(build);
+
+/* Astro's `reference()` resolves to { collection, id }, so the filter compares
+   ids rather than raw strings. A typo in an entry's `build:` field fails the
+   build now instead of silently producing an orphan entry — which is what the
+   old hardcoded z.enum was doing by hand. */
+const entries = (await getCollection('log', ({ data }) => !data.draft))
+  .filter(e => e.data.build.id === build.id)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const rendered = await Promise.all(
+  entries.map(async (e) => ({ entry: e, Content: (await render(e)).Content }))
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+
+const label = `Project ${String(build.data.order).padStart(2, '0')}`;
+const url = `https://kylecovan.com/builds/${build.id}/`;
+
+const title = `${build.data.name} — Kyle Covan`;
+/* Descriptions must be unique per page (verify_site.py check 2). The one-liner
+   is already unique per build, so it does that work without a second string to
+   keep in sync with it. */
+const description = build.data.oneLiner;
+
+/* Structured data is derived from the same collection the page renders from, so
+   the markup cannot claim a headline or a date the page doesn't show. That is
+   schema.org's rule and Google penalises breaking it; generating both from one
+   source is the cheapest way to keep it true permanently. */
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Blog',
+      '@id': `${url}#blog`,
+      url,
+      name: build.data.name,
+      description: build.data.oneLiner,
+      inLanguage: 'en',
+      author: { '@id': 'https://kylecovan.com/#kyle' },
+      publisher: { '@id': 'https://kylecovan.com/#kyle' },
+      ...(entries.length
+        ? {
+            blogPost: entries.map(e => ({
+              '@type': 'BlogPosting',
+              headline: e.data.title,
+              datePublished: iso(e.data.date),
+              url: `${url}#${e.id}`,
+              author: { '@id': 'https://kylecovan.com/#kyle' },
+              about: build.data.name,
+              isPartOf: { '@id': `${url}#blog` },
+            })),
+          }
+        : {}),
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://kylecovan.com/#kyle',
+      name: 'Kyle Covan',
+      url: 'https://kylecovan.com/',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${url}#breadcrumbs`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Kyle Covan', item: 'https://kylecovan.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Building in public', item: 'https://kylecovan.com/builds/' },
+        { '@type': 'ListItem', position: 3, name: build.data.name, item: url },
+      ],
+    },
+  ],
+};
+---
+<Base
+  title={title}
+  description={description}
+  path={`/builds/${build.id}/`}
+  ogType="article"
+  current="Builds"
+  jsonLd={jsonLd}
+>
+
+  <header class="masthead-page">
+    <p class="eyebrow">{label}</p>
+    <h1>{build.data.name}</h1>
+    <p class="lede">{build.data.oneLiner}</p>
+  </header>
+
+  {/* The Markdown body. Empty today on both builds — the prose is Kyle's to
+      write and §6 forbids drafting it on his behalf. An empty body renders
+      nothing at all, so the page reads exactly as it did on /building/ until
+      he fills it in. */}
+  <Content />
+
+  {/* Present tense once an entry exists, future tense while it doesn't. */}
+  <p class="outline-label">{entries.length ? 'What the log covers' : 'What the log will cover'}</p>
+  <ol class="outline">
+    {build.data.outline.map(o => (
+      <li><b>{o.lead}</b> — {o.rest}</li>
+    ))}
+  </ol>
+
+  {rendered.length > 0 ? (
+    <>
+      <p class="log-label">Build log</p>
+      {rendered.map(({ entry, Content: EntryBody }) => (
+        /* h2 here, h3 on /builds/ — same markup, different level, which is why
+           the styling hangs off .entry-title rather than a tag selector. On
+           this page the build's own h1 replaces the h2 the old shared page
+           used, so the entries move up one level to keep h1 -> h2 unbroken. */
+        <article class="entry" id={entry.id}>
+          <p class="entry-date">{fmt(entry.data.date)}</p>
+          <h2 class="entry-title">{entry.data.title}</h2>
+          <EntryBody />
+        </article>
+      ))}
+    </>
+  ) : (
+    <p class="log-status">Build log — first entry coming soon.</p>
+  )}
+
+  <p class="follow-label">Follow along</p>
+  <p class="socials">
+    <a href="/rss.xml">RSS</a><span class="sep" aria-hidden="true">&#183;</span
+    ><a href="https://www.youtube.com/@KyleCovan" rel="me">YouTube</a><span class="sep" aria-hidden="true">&#183;</span
+    ><a href="https://x.com/kylecovan" rel="me">X</a><span class="sep" aria-hidden="true">&#183;</span
+    ><a href="https://www.linkedin.com/in/kylecovan/" rel="me">LinkedIn</a>
+  </p>
+
+  <p class="more"><a href="/builds/">All builds</a></p>
+
+</Base>

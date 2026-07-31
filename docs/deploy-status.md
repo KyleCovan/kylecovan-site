@@ -186,6 +186,11 @@ content on two hostnames splits ranking signals.
 
 ### Verified after the cutover
 
+*Historical record of the July 29 cutover — left as it was written. Note that
+`/building/` was retired on July 30 and now 301s to `/builds/` via
+`public/_redirects`; the `www` rule below still preserves the path, so
+`www.kylecovan.com/building/` chains correctly through to `/builds/`.*
+
 - `https://kylecovan.com/` → **Kyle Covan — AI Builder**, HTTPS, no cert warning
 - `https://kylecovan.com/building/` → **Building in public — Kyle Covan**
 - Page content spot-checked against the copy rules: creed reads **"put"**,
@@ -235,8 +240,10 @@ npm run build && npm run verify
 git add -A && git commit -m "log: what broke" && git push
 ```
 
-Cloudflare rebuilds and deploys on push. The entry appears on `/building/`, in
-the structured data, in the sitemap and in the RSS feed. Nothing else to touch.
+Cloudflare rebuilds and deploys on push. The entry appears on its build's page at
+`/builds/<build>/`, in the structured data, in the sitemap and in the RSS feed.
+Nothing else to touch. (The frontmatter field is `build:`, not `project:`, and
+`/building/` became `/builds/` on July 30 — see handoff §4.)
 
 ---
 

@@ -122,7 +122,7 @@ and both verify suites — they check built HTML, so they now run against `dist/
 | **No cards, no borders, no complex graphics.** | Structure comes from whitespace and typographic hierarchy. The portrait's 3px radius is the outer limit. |
 | **System fonts only.** | Zero-latency text rendering. |
 | **Left-aligned content in an 800px centred container.** | Exceptions are bounded and enumerated in §3/§5. There is currently **nothing centred anywhere on either page** — see the July 29 revert in §5. |
-| **WCAG AA contrast on every text/background pair.** | Verified programmatically; 46 nodes on the home page, 60 on Building, 0 failures. |
+| **WCAG AA contrast on every text/background pair.** | Verified programmatically on every page. **Zero failures is the assertion; the node count is not.** The old suite hardcoded "46 nodes and 60 nodes", which meant adding a paragraph failed the test for a legitimate reason and trained you to edit the assertion. Rewritten July 30 — see §8. |
 
 ### `og.png` — the documented exception
 
@@ -261,17 +261,44 @@ masthead      portrait left, name / creed / role right
 colophon
 ```
 
-### `/building/`
+### `/builds/` — the directory
 
 ```
-topbar        nav only, Building marked aria-current, no video line
+topbar        nav only, Builds marked aria-current, no video line
 masthead-page eyebrow + h1 Two systems, built for myself first + lede
-project 01    Personal AI OS — outline, build log, one entry
-project 02    Second Brain — outline, "first entry coming soon"
+project 01    Personal AI OS — one-liner, entry count, "Read more"
+project 02    Second Brain — one-liner, "first entry coming soon", "Read more"
 follow        "Follow along" + RSS · YouTube · X · LinkedIn
 more          back to kylecovan.com
 colophon
 ```
+
+**This page deliberately does not repeat each build's outline or its log.** Those
+live on the build's own page. Duplicating them would put identical paragraphs on
+two URLs, which is the one thing §1's SEO reasoning is unambiguous about.
+
+**Each `<article>` keeps `id="<build-id>"`.** `/building/#personal-ai-os` was a
+real published URL. A server redirect cannot preserve a fragment — browsers never
+send it — so the id is what makes the old deep link land on the right build
+rather than the top of the page. Don't remove them.
+
+### `/builds/<id>/` — one page per build
+
+```
+topbar        nav only, Builds marked aria-current, no video line
+masthead-page eyebrow "Project 01" + h1 build name + lede one-liner
+prose         the Markdown body — the thing itself. EMPTY on both builds today.
+outline       "What the log covers" / "will cover"
+build log     .log-label + dated entries, newest first, each with an id
+follow        "Follow along" + RSS · YouTube · X · LinkedIn
+more          all builds
+colophon
+```
+
+**Prose first, log second.** That order is the point of the July 30 restructure:
+someone who has never heard of the project reads what it *is* before they read a
+changelog about it. The body is empty on both builds until Kyle writes it, and an
+empty body renders nothing, so the pages read as they did on `/building/`.
 
 **IDs are on the sections; `aria-labelledby` points at `*-heading` ids on the
 h2s.** Don't collapse these into one id per heading — the nav would then scroll
@@ -284,15 +311,32 @@ it read as belonging only to Project 02. Kyle caught that. Keep them symmetric.
 **The Building page deliberately carries no portrait and no video line.** The
 rotating link is the home page's signature.
 
-### When each project gets its own URL
+### ~~When each project gets its own URL~~ — DONE July 30, trigger retired
 
-The trigger is **content, not preference**: each project page needs enough log
-entries to stand on its own — the same thin-page test as §1. Project 01 has one
-entry, Project 02 has none. Two each is a reasonable floor.
+The old rule was: **each project page needs two log entries before it earns its
+own URL**, on the same thin-page test as §1. That rule was **retired rather than
+met**, and the reasoning is recorded here so it isn't reinstated by accident.
 
-In Astro the split is one new file — `src/pages/building/[project].astro` with
-`getStaticPaths` over `projects.json` — plus changing the two hrefs on the home
-page. **Tooling getting easier does not make a thin page less thin.**
+The trigger assumed a project page is *an outline plus whatever entries have
+accumulated*. On that model the page genuinely does stay thin until entries pile
+up, and the rule was correct. The July 30 restructure changed the model: a build
+page is now **prose about the thing itself, written once** — what it is, why it
+exists, how it's built, a decision worth explaining, what broke. That is
+substantial from the day it is written, and it does not depend on entry count.
+
+**The old rule was measuring the wrong thing.** It is not a rule that was broken;
+it is a rule whose premise stopped being true. What has *not* changed is the
+principle underneath it — **tooling getting easier does not make a thin page less
+thin.** That still applies, and it is why the build pages carry prose rather than
+just being an outline moved to its own URL.
+
+The shape §4 predicted was right: `getStaticPaths` over the collection, one new
+file. It landed as `src/pages/builds/[build].astro`.
+
+**The honest caveat:** the prose is empty on both builds today, so until Kyle
+writes it those two pages are exactly as thin as the old rule feared. The
+structure exists so he has somewhere to write into. **This is the reason commit A
+was not pushed on its own** — see §7.
 
 ---
 
@@ -300,12 +344,24 @@ page. **Tooling getting easier does not make a thin page less thin.**
 
 ### The nav
 
-Four pillars: **Story · Approach · Building · Contact.** Four was chosen over
+Four pillars: **Story · Approach · Builds · Contact.** Four was chosen over
 three and over five; five would make two barely-started build logs look like
 headline destinations.
 
-Three are in-page anchors, Building is a real page link. On `/building/` the
-three siblings point back at `/#story` and friends.
+Three are in-page anchors, Builds is a real page link. On any page other than the
+home page the three siblings point back at `/#story` and friends.
+
+**July 30: "Building" became "Builds".** Kyle caught the tense problem — a
+finished project sitting under a present-progressive verb is a contradiction, and
+it gets worse as more things finish. "Builds" is a noun that commits to neither
+state. The old URL redirects; see `public/_redirects`.
+
+**Pending, decided but not built:** the nav becomes **Kyle Covan · Builds ·
+Unless the Lord · Contact** in commit B. Story leaves the nav — it pointed at an
+anchor on the page you are already on, which is a scroll-to-here rather than a
+destination, while nothing in the nav said "home" at all. Approach leaves too;
+its 109 words become the first post in the writing section rather than being
+deleted. See §7.
 
 ### The rotating video link
 
@@ -573,8 +629,8 @@ to put in a build log.
 3. **"What broke" for Project 01.** Usually the most valuable part of a build
    log and the part everyone skips.
 4. **Project 02's first entry.** Its `<p class="log-status">` is replaced by
-   entries the moment a Markdown file with `project: second-brain` appears in
-   `src/content/log/`.
+   entries the moment a Markdown file with `build: second-brain` appears in
+   `src/content/log/`. (The field was `project:` before July 30.)
 5. **Restore the Tapo Canyon link** when that site resolves.
 6. **Dark mode — decided, deferred.** **Automatic via `prefers-color-scheme`,
    no toggle.** A toggle needs a second executing script plus persistence,
@@ -595,6 +651,46 @@ to put in a build log.
 **Optional, not requested:** a current-section highlight *within* the home
 page's nav (needs JS and an IntersectionObserver, so a deliberate decision
 against the scoped-JS rule, not a drive-by addition).
+
+### The July 30 restructure — where it stands
+
+Agreed with Kyle in full; being built in three commits, each shippable alone.
+
+| | State |
+|---|---|
+| **A — `/builds/`** | **Built, both suites green, NOT pushed.** Collection, per-build URLs, redirect, RSS fixed, verify rewritten. |
+| **B — `/writing/`** | Not started. New collection, `/writing/` titled **"Unless the Lord"**, per-post pages, nav to `Kyle Covan · Builds · Unless the Lord · Contact`, Approach's 109 words become post one. |
+| **C — copy** | Not started. Needs Kyle's words — see below. |
+
+**Why A was not pushed on its own:** the build pages carry no prose yet, so
+shipping A alone puts two genuinely thin pages on a live indexed site. The
+structure is right; it is waiting on content, not on code.
+
+**The vocabulary, settled — three internal words, two kinds of content.**
+*Portfolio* = the index of things made. *Blog* = the index of things written.
+*Build log* = the dated entries under a build. **None of those three words appear
+on the site.** They are for talking about it, not labels for visitors.
+
+**Only Kyle can supply, and it blocks C:**
+
+1. A heading and lede for the builds section — "Two systems, built for myself
+   first" is wrong on both count and framing once client websites are included.
+2. The prose body for each build. §6 forbids drafting it on his behalf, and
+   two drafts of the concrete Approach examples already died this way.
+3. Whether the Second Brain / LLM wiki entry links to the live thing, and if so
+   what is safe to expose.
+
+**Open naming question, raised by Kyle July 30:** the nav reads **Builds** while
+the page itself is titled **Upon the Waters** (Ecclesiastes 11:1) — functional
+label, named room. Not yet built. Two details still to settle: which translation
+of the verse, and whether the two sections match in register (bare taglines like
+"Not by chariots", or quoted verses with references). They should match.
+
+**Decided July 30, do not reopen without cause:** the `second-brain` slug was
+kept rather than renamed to `llm-wiki`. Kyle uses both names and was explicitly
+unsure in the same breath he approved the plan. A slug is the most expensive
+thing on this list to change later, and the rename is one filename plus one
+redirect line whenever he is sure — so nothing was gained by guessing now.
 
 ---
 
@@ -632,22 +728,51 @@ Nothing enforces them on the server — that discipline is Kyle's.
    Currently 49%.
 8. **Visual** — screenshots at 1440×1000 and 390×844 at 2× DPR.
 
-### `verify_site.py` — the two-page checks
+### `verify_site.py` — the site-level checks
 
-1. CSS identical across pages (now a tautology under one layout, kept as a
-   backstop).
-2. **Metadata uniqueness** — title, description and canonical must differ.
+**Rewritten July 30 for a growing site.** Every check that used to name
+`building/index.html` now runs over **every page discovered in `dist/`**, so a
+new build is covered the day its Markdown file exists. Nothing was deleted in the
+rewrite — each assertion was regeneralised. Two changes are worth knowing:
+
+- **Pages are discovered, not enumerated.** `PAGES` was a hand-maintained list of
+  two paths. A hand-maintained list silently stops covering new pages, which is
+  the exact failure mode a growing site produces.
+- **The hardcoded contrast counts are gone.** "46 nodes and 60 nodes" failed
+  whenever a paragraph was added — a legitimate change — so the only way forward
+  was to edit the assertion, which teaches you to edit assertions. **Zero
+  failures** is now the claim; the count is printed, not asserted.
+
+1. CSS identical across **all** pages (a tautology under one layout, kept as a
+   backstop against Astro tree-shaking one page differently).
+2. **Metadata uniqueness** — title, description and canonical must differ, and
+   duplicates are named in the failure output.
 3. **Link integrity, both directions** — every relative href resolves; every
    fragment exists *in the file it points at*.
-4. Contrast on both pages — 46 and 60 nodes, 0 failures.
+4. Contrast on every page — **0 failures asserted**, node count reported.
 5. Exactly one `h1` per page, no skipped levels.
-6. Overflow on `/building/` at 320px.
-7. Sitemap completeness.
+6. Overflow at 320px on **every** page, not just one.
+7. Sitemap completeness — count must equal the discovered page count.
 8. **Structured data** — one JSON-LD block per page; it parses; `Person` carries
    name/url/jobTitle/sameAs; **every `sameAs` URL is a real `href` on the
-   page**; the cross-page `@id` resolves; **every `BlogPosting` headline and
-   date appears in the rendered HTML**. The last two enforce schema.org's
-   "don't claim more than the page shows" rule mechanically instead of on trust.
+   page**; **every** non-home page's stub `@id` resolves to the home page's
+   definition; **every `BlogPosting` headline, date and anchor appears in the
+   rendered HTML** of the page declaring it; **every `ItemList` name is a real
+   heading and every `ItemList` url is a page that exists.** These enforce
+   schema.org's "don't claim more than the page shows" rule mechanically
+   instead of on trust.
+9. **Redirects** — `public/_redirects` survives into `dist/`, every target is a
+   page that exists, no source shadows a live page, and the retired
+   `/building/#<id>` deep links still have targets on `/builds/`.
+10. **RSS integrity — new, and it caught a real bug immediately.** Every item
+    link must resolve to a real page and its fragment must exist on that page.
+    The first version of the per-entry links rendered as
+    `.../#2026-07-28-too-many-ideas/` because `@astrojs/rss` runs a *relative*
+    link through the site's `trailingSlash: 'always'` and appends the slash to
+    the end of the whole string, fragment included. The feed was valid XML, the
+    build passed, every other check passed, and every link in the feed was
+    broken. **Item links must be absolute** — `isValidURL` passes those through
+    untouched.
 
 ---
 
@@ -685,6 +810,7 @@ Nothing enforces them on the server — that discipline is Kyle's.
 | 46 | **Video titles:** 🥹 emoji removed; `Can I Trust the Bible - Episode 3: The Council of Nicaea` → `Can I Trust the Bible: The Council of Nicaea`. |
 | **47** | **DNS moved to Cloudflare and kylecovan.com went live.** Google Workspace email verified intact end to end. `www` 301s to the apex. |
 | **48** | **Context ported into the repo.** `CLAUDE.md` plus `docs/` replace the claude.ai project instructions as the source of truth; maintenance moved to Claude Code in VS Code. |
+| **49** | **`/building/` → `/builds/`, one page per build.** `projects.json` became the `builds` content collection; `log` entries now use `build: reference('builds')` so a typo fails the build. Nav pillar renamed (Kyle caught the tense contradiction). `.qualifier` subtitles removed, the credit kept in `inspiration` frontmatter. `public/_redirects` added — `/building/` was indexed. **RSS item links fixed**: they were relative, so `@astrojs/rss` appended a trailing slash *after* the fragment and every anchor was broken. **`verify_site.py` rewritten** to discover pages instead of enumerating two, to assert zero contrast failures instead of two hardcoded node counts, and to cover redirects and the RSS feed. Both suites green. **Not pushed** — the build pages have no prose yet. |
 
 ---
 

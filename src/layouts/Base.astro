@@ -16,7 +16,7 @@ import videos from '../data/videos.json';
 export interface Props {
   title: string;
   description: string;
-  path: string;              // "/" or "/building/"
+  path: string;              // "/", "/builds/", "/builds/<id>/"
   ogType?: string;
   jsonLd?: unknown;
   showWatching?: boolean;    // the rotating video line — home page only
@@ -43,7 +43,7 @@ const onHome = path === '/';
 const nav = [
   { label: 'Story',    href: onHome ? '#story'    : '/#story' },
   { label: 'Approach', href: onHome ? '#approach' : '/#approach' },
-  { label: 'Building', href: '/building/' },
+  { label: 'Builds',   href: '/builds/' },
   { label: 'Contact',  href: onHome ? '#contact'  : '/#contact' },
 ];
 
