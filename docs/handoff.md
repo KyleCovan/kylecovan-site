@@ -711,7 +711,23 @@ Agreed with Kyle in full; being built in three commits, each shippable alone.
 |---|---|
 | **A — `/builds/`** | **Built, both suites green, NOT pushed.** Collection, per-build URLs, redirect, RSS fixed, verify rewritten. |
 | **B — `/writing/`** | **Built, both suites green, NOT pushed.** One `writing` collection with an optional `build:` tag, `/writing/` + per-post pages, epigraphs, small-caps LORD, nav rebuilt, Approach moved to a post, `second-brain` renamed `llm-wiki`, `prompts` no longer rendered. |
-| **C — copy** | Not started. Needs Kyle's words — see below. |
+| **C — copy** | **In progress.** Lede deleted. Personal AI OS has prose for "what it is" and "how it's built", dictated by Kyle and shaped. `kylecovan.com` added as build 03 with a full draft assembled from this document. |
+
+**Exactly what is left, July 30:**
+
+1. **Kyle reviews two drafts.** `src/content/builds/personal-ai-os.md` and
+   `src/content/builds/kylecovan-com.md`. Both carry a DRAFT comment naming
+   their source. Neither is his final voice until he says so.
+2. **Personal AI OS — "what broke".** Still unanswered after three sessions.
+   **Nothing in this repo records it**; the failures documented here are the
+   *website's*, not that system's. Do not borrow them across.
+3. **kylecovan.com — "where it goes next".** The only prompt left blank on it.
+4. **LLM Wiki — all prose.** Opens with the second-brain line: a slice of his
+   second brain, published so people can poke around in it.
+5. **The `.qualifier` nod.** Each build's `inspiration` frontmatter still holds
+   a credit ("Nate Herk", "Andrej Karpathy") waiting to be worked into prose.
+6. **Then push.** Nothing has been pushed. Everything is on branch
+   `restructure-builds`.
 
 **Why neither was pushed:** the build pages carry no prose yet, so shipping puts
 genuinely thin pages on a live indexed site. The structure is right; it is

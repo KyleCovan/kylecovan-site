@@ -103,9 +103,13 @@ const jsonLd = {
     </p>
     <p class="epigraph-cite">Ecclesiastes 11:1</p>
     <h1>The things I build, finished or not</h1>
-    <p class="lede">
-      Documented as I go. These are personal projects, not packaged offers.
-    </p>
+    {/* The lede was removed July 30: "Documented as I go. These are personal
+        projects, not packaged offers." It had two jobs, and the h1 took both.
+        "Personal projects" stopped being true once client websites were
+        included, and "not packaged offers" was guarding against reading as a
+        services page — which "finished or not" does by itself, since no agency
+        would ever write it. A third line under the epigraph and the h1 diluted
+        both. Kyle's sentence is retired, not reworded. */}
   </header>
 
   {builds.map(b => {
