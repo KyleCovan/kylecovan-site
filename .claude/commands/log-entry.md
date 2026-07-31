@@ -1,26 +1,29 @@
 ---
-description: Add a build-log entry to a build's page
-argument-hint: [build slug] [what the entry is about]
+description: Add a post — tagged to a build, or standalone
+argument-hint: [build slug or "none"] [what it is about]
 ---
 
-Add a new build-log entry: $ARGUMENTS
+Add a new post: $ARGUMENTS
 
 Steps:
 
-1. Read `src/content.config.ts` for the collection schema and an existing file
-   in `src/content/log/` for the frontmatter shape. Match them exactly.
-2. Create `src/content/log/YYYY-MM-DD-<slug>.md`. The `build` frontmatter field
-   must match a filename in `src/content/builds/` — this is what routes the
-   entry onto the right build's page at `/builds/<build>/`. It is a
-   `reference()`, so a wrong value fails the build rather than passing quietly.
-3. **Write the entry from Kyle's own words only.** If I haven't given you the
-   content, ask me for it — do not draft prose on my behalf and do not invent
-   details. An invented failure story in a build log is the worst possible
-   outcome. See `docs/handoff.md` §6.
+1. Read `src/content.config.ts` for the `writing` schema and an existing file in
+   `src/content/writing/` for the frontmatter shape. Match them exactly.
+2. Create `src/content/writing/<slug>.md`. **The filename is the URL** — name it
+   for the URL, and no date prefix.
+   - Tagged to a build: set `build:` to a filename in `src/content/builds/`. The
+     post renders in full on that build's page. It is a `reference()`, so a
+     wrong value fails the build rather than passing quietly.
+   - Standalone: omit `build:` entirely and it gets its own `/writing/` page.
+   - If it isn't obvious which, ask. Don't guess — the tag decides the URL.
+3. **Write from Kyle's own words only.** If I haven't given you the content, ask
+   me for it — do not draft prose on my behalf and do not invent details. An
+   invented failure story in a build log is the worst possible outcome. See
+   `docs/handoff.md` §6.
 4. Run `/verify`.
-5. Show me the rendered entry before committing.
+5. Show me the rendered post before committing.
 
-Nothing else needs touching: Astro regenerates the page, the JSON-LD, the
-sitemap and the RSS feed from the Markdown file. If this is a build's first
-entry, the `<p class="log-status">` placeholder disappears on its own and the
-entry count on `/builds/` updates itself.
+Nothing else needs touching: Astro regenerates the page, the writing index, the
+home page's recent-posts list, the JSON-LD, the sitemap and the RSS feed from the
+one Markdown file. If this is a build's first entry, its "first entry coming
+soon" placeholder disappears on its own.

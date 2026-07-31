@@ -1,10 +1,16 @@
 ---
-name: Second Brain
+name: LLM Wiki
 order: 2
 oneLiner: An AI-powered knowledge base that centralizes internal documentation and unstructured data so hard-won knowledge is never lost.
-# See the note in personal-ai-os.md — the nod is held here, not rendered.
+# Renamed from "Second Brain" on July 30. Kyle's answer to "is this yours, or is
+# it something other people use?" was: both. The private thing is a second brain;
+# the public thing is a curated slice of it, published as a wiki people can query.
+# The page is named for what a visitor actually gets. The second brain belongs in
+# the first line of the prose, which also keeps that searchable phrase on the page
+# without making it the name.
 inspiration: Andrej Karpathy
-outline:
+# NOT RENDERED. Writing prompts for the prose below — see content.config.ts.
+prompts:
   - lead: The problem
     rest: what I was losing track of, and where it was scattered.
   - lead: How it's structured

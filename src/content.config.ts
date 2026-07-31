@@ -1,16 +1,26 @@
 /**
  * Two collections.
  *
- * `builds` — one Markdown file per thing Kyle has made. The frontmatter carries
- * the structured parts (name, one-liner, the outline); the body carries the
- * prose. Adding a build is adding one file: it appears on /builds/, gets its own
- * URL at /builds/<id>/, and lands in the sitemap with no other edit.
+ * `builds` — one Markdown file per thing Kyle has made. Frontmatter carries the
+ * structured parts; the body carries the prose about the thing itself.
  *
- * `log` — dated entries that hang underneath a build. Adding an entry is also
- * one file. The build page, the JSON-LD and the RSS feed all pick it up.
+ * `writing` — everything dated. One collection, not two, and this is the July 30
+ * decision worth understanding before changing it:
  *
- * Posting friction is the thing most likely to kill both of these, so the whole
- * pipeline is built to make one file the entire cost of publishing.
+ *   A post with a `build:` field renders IN FULL on that build's page and is
+ *   listed (not duplicated) in the writing index. A post without one gets its
+ *   own page at /writing/<id>/.
+ *
+ * That means Kyle never has to decide "is this a log entry or a blog post?" when
+ * he sits down — he just writes, and one optional field decides where it lands.
+ * The tag can be added or removed later without rewriting anything.
+ *
+ * It also keeps each build page a PILLAR PAGE: description plus every dated
+ * entry about it, in one document. handoff §1 settled that generative engines
+ * work at the passage level and reward exactly that shape. Splitting build
+ * writing onto separate URLs was considered and rejected for this reason — see
+ * §7. There is only ever ONE full copy of any text, so nothing is duplicate
+ * content.
  */
 import { defineCollection, reference, z } from 'astro:content';
 import { glob } from 'astro/loaders';
@@ -19,32 +29,39 @@ const builds = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/builds' }),
   schema: z.object({
     name: z.string(),
-    // Drives display order and the "Project 01" index label, which is derived
-    // rather than stored. Storing the label meant renumbering by hand every
-    // time a build was inserted anywhere but the end.
+    // Drives display order and the "Project 01" label, which is derived rather
+    // than stored — storing it meant renumbering by hand on every insert.
     order: z.number().int().positive(),
     oneLiner: z.string(),
-    // Where the idea came from. Deliberately not rendered — see the note in
-    // src/content/builds/personal-ai-os.md.
+    // Where the idea came from. Not rendered — see the note in the build files.
     inspiration: z.string().optional(),
-    outline: z.array(z.object({ lead: z.string(), rest: z.string() })),
+    // NOT RENDERED. These were the old "What the log will cover" outline, which
+    // published a list of promises on a page with nothing behind it. They are
+    // now writing prompts for the Markdown body: Kyle answers them in prose and
+    // the answers become the page. Never render this array again.
+    prompts: z.array(z.object({ lead: z.string(), rest: z.string() })),
   }),
 });
 
-const log = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/log' }),
+const writing = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/writing' }),
   schema: z.object({
     title: z.string(),
-    // Kyle's dates render as "July 28, 2026" but are authored as ISO so they
-    // sort correctly and land in JSON-LD without a parsing step.
+    // Authored as ISO so it sorts correctly and lands in JSON-LD without a
+    // parsing step; rendered as "July 28, 2026".
     date: z.coerce.date(),
-    // `reference` instead of the old hardcoded z.enum: Astro now fails the
-    // BUILD if this points at a build that doesn't exist, and the valid set
-    // updates itself when a build is added. The enum had to be hand-edited
-    // every time, which is exactly the kind of step that gets forgotten.
-    build: reference('builds'),
+    // Optional. Set it and the post lands on that build's page; leave it off
+    // and the post gets its own URL. `reference` means a typo fails the BUILD
+    // rather than silently orphaning the post.
+    build: reference('builds').optional(),
+    // Free text, not an enum. These come from Kyle's chat-to-obsidian skill,
+    // which writes them when a note is captured out of a conversation. An enum
+    // here would reject a valid vault file over a value this repo hasn't seen
+    // yet, turning a publish into a debugging session.
+    voice: z.string().optional(),
+    audience: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });
 
-export const collections = { builds, log };
+export const collections = { builds, writing };

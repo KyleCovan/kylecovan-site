@@ -7,31 +7,36 @@ constraints, the design tokens, and — most importantly — the copy rules.
 Section 6 lists every correction Kyle has made to his own words. Several of them
 have been undone once already by a well-meaning rewrite.
 
-## Publishing a build-log entry
+## Publishing anything you write
 
-One file. That is the whole workflow.
+One file, and one optional field decides where it lands.
 
 ```bash
-# 1. create src/content/log/2026-08-15-what-broke.md
+# create src/content/writing/what-broke.md
 ---
 title: "The version I threw away"
 date: 2026-08-15
-build: personal-ai-os     # must match a filename in src/content/builds/
+build: personal-ai-os     # OPTIONAL. Omit it and this is just a post.
 ---
 
 Your words here. Plain Markdown paragraphs.
 
-# 2. check it
 npm run build && npm run verify
-
-# 3. ship
-git add -A && git commit -m "log: what broke" && git push
+git add -A && git commit -m "writing: what broke" && git push
 ```
 
-The entry automatically appears on that build's page, in the JSON-LD, in
-`sitemap-0.xml`, and in `rss.xml`. Nothing else needs editing.
+- **With `build:`** → renders in full on that build's page at
+  `/builds/<build>/#<filename>`, and is listed on `/writing/`.
+- **Without it** → gets its own page at `/writing/<filename>/`.
 
-Set `draft: true` in the frontmatter to write ahead without publishing.
+Either way it lands in the JSON-LD, `sitemap-0.xml` and `rss.xml` with no other
+edit. The filename is the URL, so name it for the URL you want and skip the date
+prefix. You can add or remove `build:` later without rewriting anything.
+
+**There is only ever one full copy of any text**, which is why a tagged post has
+no second URL under `/writing/`. Don't "fix" that by giving it one.
+
+Set `draft: true` to write ahead without publishing.
 
 ## Adding a build
 
@@ -61,9 +66,11 @@ src/
 │   ├── index.astro           home. Kyle's prose lives here — see §6.
 │   ├── builds/index.astro    the builds directory
 │   ├── builds/[build].astro  one page per build
+│   ├── writing/index.astro   the writing index — "Unless the Lord"
+│   ├── writing/[post].astro  one page per UNTAGGED post
 │   └── rss.xml.js            feed
 ├── content/builds/*.md       ← a build: frontmatter + prose
-├── content/log/*.md          ← build-log entries go here
+├── content/writing/*.md      ← everything dated goes here
 ├── content.config.ts         both collection schemas
 ├── data/
 │   ├── videos.json           the 32 approved YouTube titles

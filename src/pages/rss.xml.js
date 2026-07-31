@@ -19,18 +19,19 @@ import rss from '@astrojs/rss';
 import { getCollection, getEntry } from 'astro:content';
 
 export async function GET(context) {
-  const entries = (await getCollection('log', ({ data }) => !data.draft))
+  const entries = (await getCollection('writing', ({ data }) => !data.draft))
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-  // Resolve each entry's build once, up front — the description needs the
-  // build's display name, and `reference()` gives us an id, not the record.
+  // Resolve each entry's build once, up front — `reference()` gives us an id,
+  // not the record. `build` is optional, so an untagged essay resolves to null
+  // and links to its own page instead.
   const items = await Promise.all(
     entries.map(async (e) => {
-      const build = await getEntry(e.data.build);
+      const build = e.data.build ? await getEntry(e.data.build) : null;
       return {
         title: e.data.title,
         pubDate: e.data.date,
-        description: build?.data.name ?? '',
+        description: build?.data.name ?? 'Writing',
         /* ABSOLUTE, deliberately. @astrojs/rss runs a relative link through
            createCanonicalURL, which honours the site's `trailingSlash: always`
            and appends a slash to the END OF THE WHOLE STRING — producing
@@ -38,7 +39,10 @@ export async function GET(context) {
            the page. An already-valid URL is passed through untouched instead
            (see isValidURL in @astrojs/rss/dist/index.js). Caught by the RSS
            check in verify_site.py, which exists because of this bug. */
-        link: new URL(`builds/${e.data.build.id}/#${e.id}`, context.site).href,
+        link: new URL(
+          build ? `builds/${build.id}/#${e.id}` : `writing/${e.id}/`,
+          context.site
+        ).href,
       };
     })
   );

@@ -18,6 +18,20 @@ const builds = (await getCollection('builds'))
 
 const buildLabel = (n: number) => `Project ${String(n).padStart(2, '0')}`;
 
+/* The three most recent posts, for the summary section. Each links to wherever
+   it actually lives: a post tagged to a build renders in full on that build's
+   page, an untagged one has its own URL. Same resolution as /writing/. */
+const allPosts = (await getCollection('writing', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const recentPosts = allPosts.slice(0, 3).map(p => ({
+  ...p,
+  href: p.data.build ? `/builds/${p.data.build.id}/#${p.id}` : `/writing/${p.id}/`,
+}));
+
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
 const title = 'Kyle Covan — AI Builder, Strategist, and Partner';
 const description =
   'Kyle Covan — AI Builder, Strategist, and Partner. Startup operations meets AI agent orchestration. ' +
@@ -72,6 +86,7 @@ const jsonLd = {
   description={description}
   path="/"
   showWatching={true}
+  current="Kyle Covan"
   jsonLd={jsonLd}
 >
 
@@ -126,24 +141,11 @@ const jsonLd = {
     </p>
   </section>
 
-  <section id="approach" aria-labelledby="approach-heading">
-    <p class="eyebrow">Approach</p>
-
-    <h2 id="approach-heading">Startup operations, now AI orchestration</h2>
-    <p>
-      My years in startup operations gave me an understanding of how work
-      actually moves through a business, and where it gets stuck. I look for
-      the bottlenecks first, then automate only where it earns its place. Done
-      well, a business gets more out of what it already has, and the people
-      doing the work become managers of agents rather than the ones repeating
-      the steps.
-    </p>
-    <p>
-      Building and deploying a system is only half the work. A tool does no
-      good unless people actually use it, so I care as much about hands-on
-      training and steady check-ins as I do about the build itself.
-    </p>
-  </section>
+  {/* The Approach section moved OUT on July 30, it was not deleted. Kyle's two
+      paragraphs are now the first post, verbatim, at
+      src/content/writing/startup-operations-now-ai-orchestration.md — every §6
+      rule that governed them travelled with them as a comment in that file.
+      The nav pillar went with it. */}
 
   <section id="building" aria-labelledby="building-heading">
     <p class="eyebrow">Building in public</p>
@@ -166,6 +168,25 @@ const jsonLd = {
         <p class="more"><a href={`/builds/${b.id}/`}>Read more</a></p>
       </article>
     ))}
+  </section>
+
+  {/* The writing summary, added July 30 to mirror the builds summary above.
+      Every word here is either Kyle's or an approved line: the eyebrow is the
+      section's name, the h2 is the heading he picked for /writing/, and the
+      rest is post titles. No prose was invented for this block. */}
+  <section id="writing" aria-labelledby="writing-heading">
+    <p class="eyebrow">Unless the L<span class="sc">ord</span></p>
+
+    <h2 id="writing-heading">Writing on faith, technology, and the daily striving</h2>
+
+    {recentPosts.map(p => (
+      <article class="project">
+        <p class="entry-date">{fmtDate(p.data.date)}</p>
+        <h3 class="project-title"><a href={p.href}>{p.data.title}</a></h3>
+      </article>
+    ))}
+
+    <p class="more"><a href="/writing/">All writing</a></p>
   </section>
 
   <section id="contact" aria-labelledby="contact-heading">

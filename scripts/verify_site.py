@@ -219,9 +219,17 @@ for p in PAGES:
         if not item_list: continue
         for it in item_list.get('itemListElement', []):
             note(it['name'] in src, f'{p}: ItemList name is on the page', it['name'])
-            rel = it['url'].replace('https://kylecovan.com/', '').strip('/')
-            note((ROOT / rel / 'index.html').exists(),
-                 f'{p}: ItemList url resolves to a real page', it['url'])
+            # An ItemList url may carry a fragment: a post tagged to a build
+            # lives at /builds/<build>/#<post>. Resolve the page, then confirm
+            # the fragment actually exists there rather than stopping at the
+            # page — a link to a real page and a dead anchor still lands the
+            # reader in the wrong place.
+            path, _, frag = it['url'].replace('https://kylecovan.com/', '').partition('#')
+            target = ROOT / path.strip('/') / 'index.html'
+            note(target.exists(), f'{p}: ItemList url resolves to a real page', it['url'])
+            if frag and target.exists():
+                note(f'id="{frag}"' in target.read_text(),
+                     f'{p}: ItemList url fragment exists on that page', f'#{frag}')
 
 # --- 5. sitemap lists every page --------------------------------------------
 sm = (ROOT / 'sitemap-0.xml').read_text()
@@ -254,11 +262,22 @@ if rd.exists():
         # every other check, and quietly serve the wrong thing.
         note(src_path.strip('/') not in live,
              f'redirect source {src_path} does not shadow a real page')
-    # and the old deep-link anchors must still resolve somewhere
+    # Every build must carry an id on /builds/, so a deep link to it lands on
+    # the right build rather than the top of the page. Derived from the built
+    # pages rather than a hardcoded list, so a new build is covered for free.
     builds_src = (ROOT / 'builds/index.html').read_text()
-    for old in ('personal-ai-os', 'second-brain'):
-        note(f'id="{old}"' in builds_src,
-             f'old deep link /building/#{old} still has a target on /builds/')
+    build_ids = [pathlib.Path(p).parent.name for p in PAGES
+                 if p.startswith('builds/') and p != 'builds/index.html']
+    for bid in build_ids:
+        note(f'id="{bid}"' in builds_src, f'/builds/ has an anchor for {bid}')
+    # `/building/#personal-ai-os` was published and still resolves via the id
+    # above. `/building/#second-brain` does NOT: that build was renamed to
+    # llm-wiki on July 30, before /builds/second-brain/ was ever deployed. The
+    # fragment was live for roughly one day and only ever on the home page's own
+    # links, so the loss is a reader landing at the top of /builds/ instead of
+    # on the right build. Recorded rather than silently dropped.
+    note('id="personal-ai-os"' in builds_src,
+         'old deep link /building/#personal-ai-os still has a target')
 
 # --- 7. RSS items point at pages and anchors that exist ----------------------
 # New on July 30, and it earned its place immediately: the first version of the

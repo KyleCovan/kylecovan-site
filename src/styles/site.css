@@ -305,6 +305,51 @@
 
   .masthead-page h1 + .lede { margin-top: 1.5rem; }
 
+  /* ---------- The epigraph ----------
+     Added July 30. /builds/ opens with Ecclesiastes 11:1 and /writing/ with
+     Psalm 127:1a, above the h1 rather than as it.
+
+     The verse is NOT the h1 and must never become one. It is the first thing a
+     reader sees, but the h1 is what Google and a screen reader use to decide
+     what the page is about, and an h1 reading "Cast your bread upon the waters"
+     on a page about software is a mismatch that costs real ranking. Kyle asked
+     for the verse on top; this gives him exactly that layout with the semantics
+     intact.
+
+     Serif, one step up from body, --ink-soft (6.77:1). No italics, no rule, no
+     indent, no quotation marks -- the site has no chrome anywhere else and a
+     bordered pull-quote would be the first card on it. */
+
+  .epigraph {
+    font-family: var(--serif);
+    font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    letter-spacing: -0.005em;
+    text-wrap: pretty;
+  }
+
+  .epigraph-cite {
+    margin-top: 0.85rem;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
+
+  .epigraph + .epigraph-cite + h1 { margin-top: 2.4rem; }
+
+  /* Small caps for the divine name. Kyle asked for this twice, for both the nav
+     and the verse: it is how LORD renders the Tetragrammaton in every major
+     English translation, so it is the correct setting of Psalm 127:1a rather
+     than decoration.
+
+     Only "ord" is wrapped, so the underlying text stays "Lord" -- copy/paste
+     and screen readers both get the word, not four letters. Fonts without true
+     small-cap glyphs will synthesise them and the result reads slightly light;
+     that is a known limitation, flagged to Kyle, and worst at nav size. */
+
+  .sc { font-variant-caps: small-caps; }
+
   /* The current page in the nav. Darkened rather than coloured: terracotta
      here would compete with the creed, which is the only terracotta text on
      the home page. --ink on cream is 12.93:1. */

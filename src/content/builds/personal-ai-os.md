@@ -8,7 +8,10 @@ oneLiner: An AI operating system that runs quietly in the background like a digi
 # was worth keeping, and belongs in a sentence of the prose below rather than in
 # the title. Kept here so the fact survives until that prose is written.
 inspiration: Nate Herk
-outline:
+# NOT RENDERED. Writing prompts for the prose below — see content.config.ts.
+# These used to publish as "What the log will cover", which put a list of
+# promises on a page that had nothing behind them yet.
+prompts:
   - lead: The friction that started it
     rest: the specific thing in my own week that kept slipping.
   - lead: How it works today

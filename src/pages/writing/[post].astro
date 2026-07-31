@@ -1,0 +1,83 @@
+---
+/**
+ * One page per UNTAGGED post.
+ *
+ * getStaticPaths deliberately skips any post carrying a `build:` field. Those
+ * render in full on their build's page, and giving them a second URL here would
+ * put the same text on two addresses — the one thing handoff §1's SEO reasoning
+ * is unambiguous about. The writing index links to wherever a post actually
+ * lives, so nothing becomes unreachable.
+ */
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('writing', ({ data }) => !data.draft && !data.build);
+  return posts.map(post => ({ params: { post: post.id }, props: { post } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+
+const url = `https://kylecovan.com/writing/${post.id}/`;
+const title = `${post.data.title} — Kyle Covan`;
+/* Descriptions must be unique per page. There is no excerpt field, so this is
+   derived from the title rather than invented — writing marketing copy for
+   Kyle's posts would violate §6 as surely as rewriting the posts would. */
+const description = `${post.data.title}. Writing by Kyle Covan on faith, technology, and the daily striving.`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BlogPosting',
+      '@id': `${url}#post`,
+      url,
+      headline: post.data.title,
+      datePublished: iso(post.data.date),
+      inLanguage: 'en',
+      author: { '@id': 'https://kylecovan.com/#kyle' },
+      publisher: { '@id': 'https://kylecovan.com/#kyle' },
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://kylecovan.com/#kyle',
+      name: 'Kyle Covan',
+      url: 'https://kylecovan.com/',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${url}#breadcrumbs`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Kyle Covan', item: 'https://kylecovan.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Unless the Lord', item: 'https://kylecovan.com/writing/' },
+        { '@type': 'ListItem', position: 3, name: post.data.title, item: url },
+      ],
+    },
+  ],
+};
+---
+<Base
+  title={title}
+  description={description}
+  path={`/writing/${post.id}/`}
+  ogType="article"
+  current="Unless the Lord"
+  jsonLd={jsonLd}
+>
+
+  <header class="masthead-page">
+    <p class="entry-date">{fmt(post.data.date)}</p>
+    <h1>{post.data.title}</h1>
+  </header>
+
+  <Content />
+
+  <p class="more"><a href="/writing/">All writing</a></p>
+
+</Base>

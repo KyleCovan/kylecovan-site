@@ -87,8 +87,8 @@ Completed July 29, 2026. What it bought, all of it now real:
 
 - **File-based routing.** `/building/` is an extensionless URL for free.
 - **Content collections.** A build-log entry is a Markdown file in
-  `src/content/log/`. Astro renders the page, the index, the JSON-LD and the
-  RSS feed from it. Posting friction was the thing most likely to kill the
+  `src/content/writing/` (it was `src/content/log/` until July 30). Astro
+  renders the page, the index, the JSON-LD and the RSS feed from it. Posting friction was the thing most likely to kill the
   build log; it is now one file plus `git push`.
 - **One layout.** The CSS exists once. `build_site.py`, the duplicated
   stylesheet, and the byte-identical drift check are gone as *concepts* —
@@ -261,11 +261,51 @@ masthead      portrait left, name / creed / role right
 colophon
 ```
 
+### `/writing/` — nav label "Unless the L**ORD**", URL `/writing/`
+
+```
+topbar        nav only, Unless the Lord marked aria-current, no video line
+masthead-page epigraph Psalm 127:1a + cite + h1 + list of posts
+follow        "Follow along" + RSS · YouTube · X · LinkedIn
+more          back to kylecovan.com
+```
+
+The label is expressive and the URL is plain **on purpose**: URLs are functional
+and someone typing one guesses "writing", not a psalm. The name does its work on
+the page.
+
+**One `writing` collection, not two.** A post with a `build:` field renders in
+full on that build's page and is *listed* here. A post without one gets its own
+page at `/writing/<id>/`. Kyle never decides "log entry or blog post?" when he
+sits down — he writes, and one optional field decides where it lands. The tag
+can be added or removed later without rewriting anything.
+
+**There is exactly one full copy of any text on the site.** That is why
+`/writing/[post].astro` skips tagged posts in `getStaticPaths`. Giving them a
+second URL would be duplicate content, which §1 is unambiguous about.
+
+### The epigraphs — the verse is never the `h1`
+
+Both section pages open with a verse above the heading: Ecclesiastes 11:1 on
+`/builds/`, Psalm 127:1a (ESV, first clause only, at Kyle's instruction) on
+`/writing/`. **The verse is a `<p class="epigraph">`, not the `h1`, and must
+never become one.** Kyle asked for the verse on top; this gives that layout with
+the semantics intact. An `h1` reading "Cast your bread upon the waters" on a page
+about software is a mismatch Google punishes, and a screen-reader user
+navigating by heading would hear a verse instead of a page name.
+
+**LORD is small-capped** — how every major English translation sets the divine
+name, so it is correct typesetting rather than decoration. Only `ord` is
+wrapped in `.sc`, so the underlying text stays "Lord" for copy/paste and screen
+readers. Kyle asked for it in the nav *and* the verse, after being told fonts
+without true small-cap glyphs synthesise them and read slightly light. Verified
+in a render at nav size: correct on macOS.
+
 ### `/builds/` — the directory
 
 ```
 topbar        nav only, Builds marked aria-current, no video line
-masthead-page eyebrow + h1 Two systems, built for myself first + lede
+masthead-page epigraph Ecclesiastes 11:1 + cite + h1 + lede
 project 01    Personal AI OS — one-liner, entry count, "Read more"
 project 02    Second Brain — one-liner, "first entry coming soon", "Read more"
 follow        "Follow along" + RSS · YouTube · X · LinkedIn
@@ -344,24 +384,28 @@ was not pushed on its own** — see §7.
 
 ### The nav
 
-Four pillars: **Story · Approach · Builds · Contact.** Four was chosen over
-three and over five; five would make two barely-started build logs look like
-headline destinations.
+Four pillars: **Kyle Covan · Builds · Unless the L**ORD** · Contact.**
+Rebuilt July 30 from Story · Approach · Building · Contact. Still four.
 
-Three are in-page anchors, Builds is a real page link. On any page other than the
-home page the three siblings point back at `/#story` and friends.
+**Every pillar is now a real destination.** Contact is the one remaining
+in-page anchor, and off the home page it becomes `/#contact`.
 
-**July 30: "Building" became "Builds".** Kyle caught the tense problem — a
-finished project sitting under a present-progressive verb is a contradiction, and
-it gets worse as more things finish. "Builds" is a noun that commits to neither
-state. The old URL redirects; see `public/_redirects`.
+**"Building" became "Builds".** Kyle caught the tense problem: a finished
+project sitting under a present-progressive verb is a contradiction, and it gets
+worse as more things finish. "Builds" is a noun that commits to neither state.
+The old URL redirects; see `public/_redirects`.
 
-**Pending, decided but not built:** the nav becomes **Kyle Covan · Builds ·
-Unless the Lord · Contact** in commit B. Story leaves the nav — it pointed at an
-anchor on the page you are already on, which is a scroll-to-here rather than a
-destination, while nothing in the nav said "home" at all. Approach leaves too;
-its 109 words become the first post in the writing section rather than being
-deleted. See §7.
+**Story left the nav.** Kyle spotted that it pointed at an anchor on the page you
+are already standing on — a scroll-to-here rather than a destination — while
+**nothing in the nav said "home" at all**; the only way back was a text link at
+the very bottom of the page. His name now does that job and the site gets the
+wordmark it never had. `#story` stays in the HTML, so `/#story` still resolves.
+
+**Approach left the nav**, and its 109 words were **moved, not deleted** — see §6.
+
+Considered and rejected: five pillars. The original reason (five would promote
+two barely-started build logs) no longer applied, but four still reads better and
+Story and Approach both had somewhere better to be.
 
 ### The rotating video link
 
@@ -537,7 +581,14 @@ beats have been read. Placing it earlier reads more naturally sentence-to-
 sentence but breaks the three-beat arc and makes the closing line about AI the
 section's last word instead of gratitude. **Don't move it and don't reword it.**
 
-### "Startup operations, now AI orchestration"
+### "Startup operations, now AI orchestration" — MOVED July 30, not deleted
+
+**These two paragraphs now live at
+`src/content/writing/startup-operations-now-ai-orchestration.md`**, verbatim,
+as the first post. Not a word changed. The Approach section and its nav pillar
+were retired; the words were promoted to a post with room to breathe rather than
+being cut. **Every rule below still governs them and travelled with them as a
+comment at the top of that file.** If the post is ever edited, read them first.
 
 1. **No governing-metaphor language for the professional experience.** A draft
    read "That is the lens I bring to everything I build now." Kyle cut it: for
@@ -659,12 +710,12 @@ Agreed with Kyle in full; being built in three commits, each shippable alone.
 | | State |
 |---|---|
 | **A — `/builds/`** | **Built, both suites green, NOT pushed.** Collection, per-build URLs, redirect, RSS fixed, verify rewritten. |
-| **B — `/writing/`** | Not started. New collection, `/writing/` titled **"Unless the Lord"**, per-post pages, nav to `Kyle Covan · Builds · Unless the Lord · Contact`, Approach's 109 words become post one. |
+| **B — `/writing/`** | **Built, both suites green, NOT pushed.** One `writing` collection with an optional `build:` tag, `/writing/` + per-post pages, epigraphs, small-caps LORD, nav rebuilt, Approach moved to a post, `second-brain` renamed `llm-wiki`, `prompts` no longer rendered. |
 | **C — copy** | Not started. Needs Kyle's words — see below. |
 
-**Why A was not pushed on its own:** the build pages carry no prose yet, so
-shipping A alone puts two genuinely thin pages on a live indexed site. The
-structure is right; it is waiting on content, not on code.
+**Why neither was pushed:** the build pages carry no prose yet, so shipping puts
+genuinely thin pages on a live indexed site. The structure is right; it is
+waiting on content, not on code. Everything sits on branch `restructure-builds`.
 
 **The vocabulary, settled — three internal words, two kinds of content.**
 *Portfolio* = the index of things made. *Blog* = the index of things written.
@@ -680,17 +731,24 @@ on the site.** They are for talking about it, not labels for visitors.
 3. Whether the Second Brain / LLM wiki entry links to the live thing, and if so
    what is safe to expose.
 
-**Open naming question, raised by Kyle July 30:** the nav reads **Builds** while
-the page itself is titled **Upon the Waters** (Ecclesiastes 11:1) — functional
-label, named room. Not yet built. Two details still to settle: which translation
-of the verse, and whether the two sections match in register (bare taglines like
-"Not by chariots", or quoted verses with references). They should match.
+**"Upon the Waters" was NOT used and is deliberately unspent.** Kyle proposed it
+as the `/builds/` page title. It was set aside because two allusive scripture
+names in one nav ("Upon the Waters" and "Unless the Lord" — both three words,
+both prepositional, both starting with U) stop functioning as names. Quoting the
+verse instead means the phrase still appears, inside its own source text. The
+name is held for a future series, section or newsletter.
 
-**Decided July 30, do not reopen without cause:** the `second-brain` slug was
-kept rather than renamed to `llm-wiki`. Kyle uses both names and was explicitly
-unsure in the same breath he approved the plan. A slug is the most expensive
-thing on this list to change later, and the rename is one filename plus one
-redirect line whenever he is sure — so nothing was gained by guessing now.
+**"Not by chariots" (Psalm 20:7) is reserved by Kyle for a post title.** It was
+the `Unless the Lord` vault folder's tagline and is no longer used on the site.
+Don't spend it elsewhere.
+
+**`second-brain` was renamed `llm-wiki` on July 30.** Kyle's answer to "is this
+yours, or something other people use?" was *both*: the private thing is a second
+brain, the public thing is a curated slice of it published as a wiki people can
+query. The page is named for **what a visitor actually gets**, and "second brain"
+belongs in the first line of the prose — which also keeps that far more
+searchable phrase on the page without making it the name. Renaming was free
+because `/builds/second-brain/` had never been deployed.
 
 ---
 
@@ -810,6 +868,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | 46 | **Video titles:** 🥹 emoji removed; `Can I Trust the Bible - Episode 3: The Council of Nicaea` → `Can I Trust the Bible: The Council of Nicaea`. |
 | **47** | **DNS moved to Cloudflare and kylecovan.com went live.** Google Workspace email verified intact end to end. `www` 301s to the apex. |
 | **48** | **Context ported into the repo.** `CLAUDE.md` plus `docs/` replace the claude.ai project instructions as the source of truth; maintenance moved to Claude Code in VS Code. |
+| **50** | **The writing section.** One `writing` collection replaces `log`, with an optional `build:` tag deciding whether a post renders on a build page or gets its own URL — so there is never a "log entry or blog post?" decision, and never two copies of one text. `/writing/` added, nav rebuilt to **Kyle Covan · Builds · Unless the L**ORD** · Contact** (Story and Approach both left, Approach's words moved verbatim to a post). Epigraphs added above the h1 on both section pages, with small-caps LORD. `second-brain` → `llm-wiki`. The `outline` array stopped rendering and became writing `prompts` — it was publishing five bullets of promises on a page with nothing behind them. Both suites green, **not pushed**. |
 | **49** | **`/building/` → `/builds/`, one page per build.** `projects.json` became the `builds` content collection; `log` entries now use `build: reference('builds')` so a typo fails the build. Nav pillar renamed (Kyle caught the tense contradiction). `.qualifier` subtitles removed, the credit kept in `inspiration` frontmatter. `public/_redirects` added — `/building/` was indexed. **RSS item links fixed**: they were relative, so `@astrojs/rss` appended a trailing slash *after* the fragment and every anchor was broken. **`verify_site.py` rewritten** to discover pages instead of enumerating two, to assert zero contrast failures instead of two hardcoded node counts, and to cover redirects and the RSS feed. Both suites green. **Not pushed** — the build pages have no prose yet. |
 
 ---
