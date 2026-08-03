@@ -2,6 +2,8 @@
 name: kylecovan.com
 order: 3
 oneLiner: The site you are reading. Every page is a single file with no external requests, and a test suite fails the build when the design drifts.
+# Sitemap <lastmod>. Seeded from this file's last commit date, not invented.
+updated: 2026-07-30
 # NOT RENDERED. Writing prompts — see content.config.ts.
 prompts:
   - lead: What it is

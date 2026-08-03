@@ -2,6 +2,8 @@
 name: LLM Wiki
 order: 2
 oneLiner: An AI-powered knowledge base that centralizes internal documentation and unstructured data so hard-won knowledge is never lost.
+# Sitemap <lastmod>. Seeded from this file's last commit date, not invented.
+updated: 2026-07-30
 # Renamed from "Second Brain" on July 30. Kyle's answer to "is this yours, or is
 # it something other people use?" was: both. The private thing is a second brain;
 # the public thing is a curated slice of it, published as a wiki people can query.

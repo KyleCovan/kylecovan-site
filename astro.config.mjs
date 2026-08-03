@@ -1,6 +1,94 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { readFileSync, readdirSync } from 'node:fs';
+
+const SITE = 'https://kylecovan.com';
+
+/**
+ * <lastmod> for the sitemap, derived from the CONTENT rather than from build
+ * time. This is the one element in that file Google documents itself as using;
+ * it ignores <priority> and <changefreq> outright, which is why neither is set
+ * below any more.
+ *
+ * The temptation is to stamp every URL with the deploy timestamp. Don't. A
+ * sitemap claiming all seven pages changed on every push is a sitemap Google
+ * learns to ignore, and then the one page that really did change gets no
+ * signal either. Every date here traces to a file Kyle actually edited:
+ *
+ *   /builds/<id>/   the later of the build's `updated` and the newest post
+ *                   tagged to it — the page renders both, so either can age it
+ *   /writing/<id>/  that post's own date
+ *   /builds/, /writing/, /   generated FROM the collections, so each is stale
+ *                   the moment its newest member is
+ *
+ * A page with no date gets no <lastmod> at all. That is deliberate: a missing
+ * date costs nothing, a wrong one costs the file's credibility.
+ *
+ * Frontmatter is read here with fs rather than through astro:content because
+ * this runs at config load, before the content layer exists.
+ */
+const frontmatter = (text) => (text.match(/^---\r?\n([\s\S]*?)\r?\n---/) || ['', ''])[1];
+
+// Top-level scalars only. The pattern is anchored and rejects leading spaces,
+// so the indented keys inside the `prompts` array can never match by accident.
+const field = (fm, key) => {
+  const m = fm.match(new RegExp(`^${key}:[ \\t]*['"]?([^'"\\n#]+)`, 'm'));
+  return m ? m[1].trim() : null;
+};
+
+const collection = (dir) => {
+  const base = new URL(`./src/content/${dir}/`, import.meta.url);
+  return readdirSync(base)
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => ({
+      id: f.replace(/\.md$/, ''),
+      fm: frontmatter(readFileSync(new URL(f, base), 'utf8')),
+    }));
+};
+
+// ISO dates sort lexically, which is the whole reason the schema authors them
+// as ISO in the first place.
+const day = (d) => (d ? d.slice(0, 10) : null);
+const newest = (...dates) => dates.filter(Boolean).sort().pop() ?? null;
+
+const posts = collection('writing')
+  .map((e) => ({
+    id: e.id,
+    date: day(field(e.fm, 'date')),
+    build: field(e.fm, 'build'),
+    draft: field(e.fm, 'draft') === 'true',
+  }))
+  .filter((p) => p.date && !p.draft);
+
+const builds = collection('builds').map((e) => ({
+  id: e.id,
+  updated: day(field(e.fm, 'updated')),
+}));
+
+const LASTMOD = {};
+
+for (const b of builds) {
+  const d = newest(b.updated, ...posts.filter((p) => p.build === b.id).map((p) => p.date));
+  if (d) LASTMOD[`${SITE}/builds/${b.id}/`] = d;
+}
+
+// Only an UNtagged post gets its own URL. A tagged one renders in full on its
+// build page and is merely listed in the writing index — one copy of any text.
+for (const p of posts.filter((p) => !p.build)) {
+  LASTMOD[`${SITE}/writing/${p.id}/`] = p.date;
+}
+
+const buildsIndex = newest(...builds.map((b) => LASTMOD[`${SITE}/builds/${b.id}/`]));
+// Every post is listed in the writing index, tagged or not.
+const writingIndex = newest(...posts.map((p) => p.date));
+if (buildsIndex) LASTMOD[`${SITE}/builds/`] = buildsIndex;
+if (writingIndex) LASTMOD[`${SITE}/writing/`] = writingIndex;
+
+// The home page renders summaries of both collections, so it genuinely ages
+// when either does.
+const home = newest(buildsIndex, writingIndex);
+if (home) LASTMOD[`${SITE}/`] = home;
 
 export default defineConfig({
   site: 'https://kylecovan.com',
@@ -34,13 +122,20 @@ export default defineConfig({
 
   integrations: [
     sitemap({
-      // og.png and rss.xml are assets, not pages. Left in, they tell crawlers
-      // to index a picture and a feed as if they were content.
+      // og.png is an asset, not a page. Left in, it tells crawlers to index a
+      // picture as if it were content. (The old comment here also claimed to
+      // filter rss.xml — it never did, and never needed to: the feed is an
+      // endpoint and has never appeared in the built sitemap. Checked against
+      // dist/sitemap-0.xml, not assumed.)
       filter: (page) => !page.includes('/og.png'),
-      serialize: (item) => ({
-        ...item,
-        priority: item.url === 'https://kylecovan.com/' ? 1.0 : 0.8,
-      }),
+      // <lastmod> only. The <priority> values that used to live here were a
+      // no-op — Google's own sitemap documentation says it ignores the element
+      // — and a knob that looks like it steers ranking but doesn't is worse
+      // than no knob, because it invites tuning. See the LASTMOD note above.
+      serialize: (item) => {
+        const lastmod = LASTMOD[item.url];
+        return lastmod ? { ...item, lastmod } : item;
+      },
     }),
   ],
 });

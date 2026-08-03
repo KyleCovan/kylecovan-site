@@ -231,12 +231,77 @@ for p in PAGES:
                 note(f'id="{frag}"' in target.read_text(),
                      f'{p}: ItemList url fragment exists on that page', f'#{frag}')
 
-# --- 5. sitemap lists every page --------------------------------------------
+# --- 5. sitemap: every page listed, every URL honestly dated -----------------
+# <lastmod> is the only element in this file Google documents itself as using,
+# and it is only worth anything if it is true. The checks below assert it is
+# DERIVED — each date has to match the content file it claims to describe. A
+# sitemap that stamps deploy time on all seven URLs would pass "every URL has a
+# lastmod" and still be worthless, so that is deliberately not the only check.
 sm = (ROOT / 'sitemap-0.xml').read_text()
 listed = re.findall(r'<loc>(.*?)</loc>', sm)
 note(len(listed) == len(PAGES), 'sitemap lists every page',
      f'{len(listed)} urls vs {len(PAGES)} pages')
-for u in listed: print('        ', u)
+
+entries = {}
+for block in re.findall(r'<url>(.*?)</url>', sm, re.S):
+    loc = re.search(r'<loc>(.*?)</loc>', block).group(1)
+    lm  = re.search(r'<lastmod>(\d{4}-\d{2}-\d{2})', block)
+    entries[loc] = lm.group(1) if lm else None
+    print('        ', loc, entries[loc] or '— NO LASTMOD')
+
+note(all(entries.values()), 'every sitemap URL carries a <lastmod>',
+     f"{sum(1 for v in entries.values() if v)}/{len(entries)}")
+
+today  = datetime.date.today().isoformat()
+future = [u for u, d in entries.items() if d and d > today]
+note(not future, 'no <lastmod> is in the future', ', '.join(future) or f'today is {today}')
+
+# Removed on purpose, not forgotten: Google's sitemap documentation states it
+# ignores both. A knob that looks like it steers ranking but doesn't is worse
+# than no knob, because it invites tuning. This assertion is that decision's
+# record — if either element ever comes back, it should be a deliberate act.
+note('<priority>' not in sm and '<changefreq>' not in sm,
+     'no <priority>/<changefreq> — Google ignores them, so they are not emitted')
+
+# --- 5b. every date traces to the file it describes --------------------------
+SRC = pathlib.Path(__file__).parent.parent / 'src' / 'content'
+
+def frontmatter(path):
+    m = re.match(r'---\r?\n(.*?)\r?\n---', path.read_text(), re.S)
+    return m.group(1) if m else ''
+
+def fm_field(block, key):
+    """Top-level scalar only — mirrors the reader in astro.config.mjs."""
+    m = re.search(rf'^{key}:[ \t]*[\'"]?([^\'"\n#]+)', block, re.M)
+    return m.group(1).strip() if m else None
+
+posts = []
+for f in sorted((SRC / 'writing').glob('*.md')):
+    b = frontmatter(f)
+    posts.append({'id': f.stem, 'date': (fm_field(b, 'date') or '')[:10],
+                  'build': fm_field(b, 'build'),
+                  'draft': fm_field(b, 'draft') == 'true'})
+posts = [p for p in posts if p['date'] and not p['draft']]
+
+# An untagged post owns its URL, so its lastmod is simply its own date.
+for p in posts:
+    url = f"https://kylecovan.com/writing/{p['id']}/"
+    if p['build'] or url not in entries: continue
+    note(entries[url] == p['date'], f"/writing/{p['id']}/ lastmod is the authored date",
+         f"sitemap {entries[url]} vs frontmatter {p['date']}")
+
+# A build page renders its own prose AND every post tagged to it, so either can
+# age it. This is the check that catches a post landing on a build page while
+# the page keeps advertising the older date.
+for f in sorted((SRC / 'builds').glob('*.md')):
+    url = f'https://kylecovan.com/builds/{f.stem}/'
+    if url not in entries: continue
+    dates = [d for d in [(fm_field(frontmatter(f), 'updated') or '')[:10]] if d]
+    dates += [p['date'] for p in posts if p['build'] == f.stem]
+    if not dates: continue
+    note(entries[url] == max(dates),
+         f'/builds/{f.stem}/ lastmod is the newest of its prose and its posts',
+         f'sitemap {entries[url]} vs expected {max(dates)}')
 
 # --- 6. Redirects for URLs that used to be live ------------------------------
 # /building/ was indexed. A redirect file that stops being copied, or that

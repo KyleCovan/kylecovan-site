@@ -2,6 +2,8 @@
 name: Personal AI OS
 order: 1
 oneLiner: An AI operating system that runs quietly in the background like a digital assistant, flagging opportunities and spotting bottlenecks before they become real problems.
+# Sitemap <lastmod>. Seeded from this file's last commit date, not invented.
+updated: 2026-07-30
 # Held, not displayed. Kyle added "Nate Herk style" as a subtitle to credit where
 # the inspiration came from. As a qualifier under the name it read as a borrowed
 # credential, so it was removed from the heading on July 30 — but the nod itself

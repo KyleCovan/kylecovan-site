@@ -33,6 +33,16 @@ const builds = defineCollection({
     // than stored — storing it meant renumbering by hand on every insert.
     order: z.number().int().positive(),
     oneLiner: z.string(),
+    // Not rendered. Feeds <lastmod> in the sitemap, which is the one hint in
+    // that file Google actually reads — it ignores <priority> and <changefreq>
+    // outright. A build page's real lastmod is the LATER of this date and the
+    // newest post tagged to the build, because the page renders both; see the
+    // note in astro.config.mjs. Bump it when the prose here changes and no new
+    // post lands, otherwise an edited page keeps advertising a stale date.
+    // Optional on purpose: a build with no date simply gets no <lastmod>, which
+    // is honest. A wrong date is worse than a missing one — Google learns to
+    // distrust the whole file when lastmod stops matching what actually changed.
+    updated: z.coerce.date().optional(),
     // Where the idea came from. Not rendered — see the note in the build files.
     inspiration: z.string().optional(),
     // NOT RENDERED. These were the old "What the log will cover" outline, which
