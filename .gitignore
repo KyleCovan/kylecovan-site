@@ -5,3 +5,7 @@ dist/
 *.log
 .venv/
 shot-*.png
+
+# Session-granted permissions and local machine paths. Never publish these:
+# the repo is public and these entries map private directories.
+.claude/settings.local.json
