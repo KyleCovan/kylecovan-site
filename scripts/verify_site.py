@@ -303,6 +303,24 @@ for f in sorted((SRC / 'builds').glob('*.md')):
          f'/builds/{f.stem}/ lastmod is the newest of its prose and its posts',
          f'sitemap {entries[url]} vs expected {max(dates)}')
 
+# --- 5c. the share card the meta tags promise actually ships -----------------
+# New August 3. The card's filename is versioned on purpose: iMessage, Slack, X
+# and LinkedIn cache share images keyed on the image URL, in caches this site
+# cannot reach, so shipping a new photo at the old URL leaves everyone texting
+# the link looking at the old card. Renaming guarantees a miss.
+#
+# The cost of that scheme is a rename with a missed reference, which 404s inside
+# someone else's text message where nobody would ever see it. Hence this check:
+# whatever og:image claims, that file must exist in dist/.
+og_refs = set()
+for p in PAGES:
+    og_refs.update(re.findall(r'<meta property="og:image" content="([^"]+)"', (ROOT / p).read_text()))
+    og_refs.update(re.findall(r'<meta name="twitter:image" content="([^"]+)"', (ROOT / p).read_text()))
+note(bool(og_refs), 'pages declare a share image', f'{len(og_refs)} distinct url(s)')
+for u in sorted(og_refs):
+    f = ROOT / u.replace('https://kylecovan.com/', '')
+    note(f.exists(), 'share image resolves to a file that ships', u)
+
 # --- 6. Redirects for URLs that used to be live ------------------------------
 # /building/ was indexed. A redirect file that stops being copied, or that
 # points at a path which no longer exists, fails silently — the visitor gets a

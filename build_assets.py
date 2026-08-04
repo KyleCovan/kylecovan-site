@@ -16,7 +16,7 @@ THREE OUTPUTS, ONE SOURCE:
 
   src/data/portrait.txt   340px WebP, quality 80, as a data URI
   src/data/favicon.txt     64px PNG, as a data URI
-  public/og.png           1200x630 share card, photo replaced in place
+  public/og-2.png           1200x630 share card, photo replaced in place
 
 The portrait is NOT pre-masked. handoff §3: the square and its 3px radius live
 entirely in CSS, so the source stays a plain square and the shape stays
@@ -44,6 +44,18 @@ gives the same file as running it once.
 
 If the card's WORDS ever need to change, this script cannot do it. That needs
 the original design source, and this comment is the warning that it is missing.
+
+WHY THE FILE IS CALLED og-2.png. It was `og.png` until August 3. Renaming it is
+the whole point: iMessage, Slack, X and LinkedIn cache share cards keyed on the
+IMAGE URL, in their own caches, which Cloudflare's headers do not control. Ship
+a new photo at the old URL and everyone who texts the link keeps seeing the old
+card, possibly for weeks. A new filename is a guaranteed cache miss everywhere
+at once.
+
+So: CHANGE THIS FILENAME EVERY TIME THE CARD IMAGE CHANGES, and update the four
+references in src/layouts/Base.astro and src/pages/index.astro. verify_site.py
+asserts the og:image URL resolves to a file that actually ships, so a missed
+reference fails the build rather than 404ing in someone's text message.
 """
 import base64
 import pathlib
@@ -113,15 +125,15 @@ def main():
     (ROOT / 'src/data/favicon.txt').write_text(uri)
     print(f'  favicon.txt   {FAVICON_PX}px png            {len(uri):,} chars')
 
-    card = Image.open(ROOT / 'public/og.png').convert('RGB')
+    card = Image.open(ROOT / 'public/og-2.png').convert('RGB')
     l, t, r, b = OG_BOX
     side = r - l + 1
     # Paint the box out first so this never depends on what is already there.
     ImageDraw.Draw(card).rectangle([(l, t), (r, b)], fill=BG)
     photo = src.resize((side, side), Image.LANCZOS)
     card.paste(photo, (l, t), rounded_mask((side, side), OG_RADIUS))
-    card.save(ROOT / 'public/og.png', 'PNG', optimize=True)
-    print(f'  og.png        photo replaced at {side}x{side}, text untouched')
+    card.save(ROOT / 'public/og-2.png', 'PNG', optimize=True)
+    print(f'  og-2.png      photo replaced at {side}x{side}, text untouched')
 
 
 if __name__ == '__main__':
