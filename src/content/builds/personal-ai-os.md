@@ -60,8 +60,10 @@ better at helping me organize what I already do, and at surfacing things I don't
 do yet. It takes a rough idea and turns it into a working project, and it helps
 me get projects out the door instead of piling ideas up.
 
-I got the idea of building it this way from Nate Herk. What I've made is my own,
-but the shape of it is his.
+The structure of it came from Nate Herk. He'd put a repo out publicly, so I
+started from that instead of from a blank page. It gave me the scaffolding, and
+more than that, a direction to build in. What I've made is my own now, but the
+shape of it is his.
 
 ## How it's built
 
