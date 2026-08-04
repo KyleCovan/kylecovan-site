@@ -14,7 +14,15 @@ fails = []
 # Astro emits the array via JSON.stringify, so the shape is {"title":"…","url":"…"}
 # rather than the hand-written { title: "…", url: "…" }.
 TITLES = re.findall(r'\{"title":"((?:[^"\\]|\\.)*)","url":"([^"]+)"\}', HTML)
-assert len(TITLES) == 32, f"expected 32 videos, found {len(TITLES)}"
+# Counted, not hardcoded. This asserted `== 32` until August 3, when removing a
+# single video failed the suite for no design reason. That is the same trap
+# verify_site.py had its contrast counts pulled out of on July 30: a number that
+# changes for entirely legitimate reasons forces you to edit the test to add a
+# video, which trains you to edit the test. What matters is that the list made
+# it into the HTML at all and that every entry is exercised below, and that is
+# what is asserted now.
+assert len(TITLES) >= 2, f"expected the video list in the HTML, found {len(TITLES)}"
+N_VIDEOS = len(TITLES)
 DECODED = [t.replace('\\"', '"') for t, _ in TITLES]
 LONGEST = max(DECODED, key=len)
 
@@ -125,7 +133,7 @@ with sync_playwright() as pw:
             elif r['ownRow'] and abs(min(r['lefts']) - r['colL']) > 0.5:
                 bad.append(('own row not flush left', w, t[:28], min(r['lefts']), r['colL']))
         wraps[w] = n_wrapped
-        print(f"[topbar]    {w}px -> {n_wrapped}/32 titles wrap internally | "
+        print(f"[topbar]    {w}px -> {n_wrapped}/{N_VIDEOS} titles wrap internally | "
               f"{'OK' if not bad else 'FAIL'}")
         for e in bad[:3]: print("   ", e); fails.append(('topbar', e))
         pg.close()
@@ -167,8 +175,8 @@ with sync_playwright() as pw:
             const a = document.getElementById('watching-link');
             return [a.textContent, a.getAttribute('href')];
         }""")))
-    ok = len(seen) == 32
-    print(f"[random]    400 reloads -> {len(seen)}/32 distinct title+url pairs {'OK' if ok else 'FAIL'}")
+    ok = len(seen) == N_VIDEOS
+    print(f"[random]    400 reloads -> {len(seen)}/{N_VIDEOS} distinct title+url pairs {'OK' if ok else 'FAIL'}")
     if not ok: fails.append(('random', len(seen)))
     urls = {u for _, u in seen}
     bad_url = [u for u in urls if not re.fullmatch(r'https://youtu\.be/[A-Za-z0-9_-]{11}', u)]

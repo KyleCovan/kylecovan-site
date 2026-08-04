@@ -1,6 +1,6 @@
 """Site-level checks. Run alongside verify.py.
 
-verify.py exercises the home page in depth (contrast, the 32 video titles, the
+verify.py exercises the home page in depth (contrast, the video titles, the
 top-bar flex behaviour, randomness, no-JS). This covers what only exists once
 there is more than one page: CSS drift between the inlined <style> blocks, link
 integrity in both directions, per-page metadata uniqueness, and structured data.

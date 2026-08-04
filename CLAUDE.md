@@ -39,7 +39,7 @@ src/
   pages/writing/[post].astro  one page per UNTAGGED post
   pages/rss.xml.js            RSS feed
   styles/site.css             ALL the CSS, once
-  data/videos.json            the 32 video titles + urls
+  data/videos.json            the video titles + urls
   data/portrait.txt           WebP data URI, 340px
   data/favicon.txt            PNG data URI, 64px
   content/builds/*.md         one file per build — frontmatter + prose

@@ -409,7 +409,7 @@ Story and Approach both had somewhere better to be.
 
 ### The rotating video link
 
-32 `{title, url}` objects in `src/data/videos.json`, serialised into an inline
+31 `{title, url}` objects in `src/data/videos.json`, serialised into an inline
 `<script>` placed immediately after the `.topbar` markup. **Placement is
 deliberate: the script runs during parse, before first paint**, so the random
 pick is swapped in with no flash of the default. Moving it to the end of
@@ -806,11 +806,11 @@ Nothing enforces them on the server — that discipline is Kyle's.
    **46 nodes, 0 failures.**
 2. **Overflow** — `scrollWidth === 320` at 320px **with the longest video title
    forced in**. A short random pick hides a real overflow.
-3. **Top bar** — all 32 titles at 5 viewports: never escapes the column, never
+3. **Top bar** — every title at 5 viewports: never escapes the column, never
    collides with the nav, lands flush left when on its own row (desktop), and
    sits **above the nav and flush left** below 544px.
 4. **Nav** — every `href="#…"` resolves; nav's left edge equals the column's.
-5. **Randomness** — ~400 reloads, asserts all 32 distinct pairs appear; every
+5. **Randomness** — ~400 reloads, asserts every distinct pair appears; every
    URL regex-validated as `https://youtu.be/<11 chars>`.
 6. **No-JS** — loads with JS disabled, asserts the fallback link still works.
 7. **Closing line** — forces a wide serif, fails above 90% of the measure.
