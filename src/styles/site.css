@@ -373,6 +373,39 @@
 
   h2 + p, h2 + .lede { margin-top: 1.5rem; }
 
+  /* Space ABOVE a section heading, added August 4 because there was none.
+     `h1, h2, h3 { margin: 0 }` zeroes every heading margin, and the only rule
+     that put space back was `h2 + p`, which is the gap BELOW. On the home page
+     nobody noticed: each h2 is the first child of its own `<section>`, and
+     `section { margin-top: var(--gap-section) }` was doing the work.
+
+     Prose rendered from Markdown has no section wrapper. Its headings are
+     plain siblings of the paragraphs around them, so every "What it is",
+     "What broke" and the rest sat directly on the last line of the paragraph
+     above it, on all three build pages and on every writing post.
+
+     Scoped to the sibling case on purpose. A heading that FOLLOWS content
+     needs separating from it; a heading that opens a section already has
+     --gap-section and must not get both. That is why this is `p + h2` and not
+     a blanket `h2 { margin-top }`.
+
+     The value is larger than the 1.5rem below, which is deliberate and is the
+     whole point of the rule: a heading has to sit closer to the text it
+     introduces than to the text it follows, or the reader cannot tell which
+     block it belongs to.
+
+     `header + h2` is in the list because the FIRST heading of a build page
+     follows the masthead rather than a paragraph, and was flush against the
+     lede for the same reason. Measured, not assumed: it read 0px. */
+     `.eyebrow` is EXCLUDED and that exclusion is load-bearing. An eyebrow is a
+     label FOR the heading under it, the same relationship `.entry-date` has to
+     `.entry-title`, so it has to stay tight. The first version of this rule
+     lacked the `:not()` and pushed all four home-page eyebrows from 28px to
+     52px, quietly breaking a pairing nobody had asked to change. Caught by
+     measuring the live site against the build, not by reading the CSS. */
+  p:not(.eyebrow) + h2, ul + h2, ol + h2, blockquote + h2, header + h2 { margin-top: 3.25rem; }
+  p:not(.eyebrow) + h3, ul + h3, ol + h3, blockquote + h3 { margin-top: 2.5rem; }
+
   /* `.subhead` was removed when "Startup operations, now AI orchestration"
      was promoted from a subheading inside Background to its own Approach
      section with its own nav pillar. It is now a plain h2 like every other
@@ -533,7 +566,14 @@
 
   .email {
     display: inline-block;
-    margin-top: 1.6rem;
+    /* 0.4rem, not 1.6rem, and the reason is a double gap that had been there
+       since the split. The <p> wrapping this link already takes 1.5rem from
+       `h2 + p`; this margin then stacked on top of it, so "Reach out anytime"
+       sat 50px above the address while the eyebrow above it sat at 28px. The
+       heading looked detached from the one thing it introduces. Measured, then
+       cut to land at ~30px. Changing `h2 + p` instead would have moved every
+       heading on the site to fix one address. */
+    margin-top: 0.4rem;
     font-family: var(--serif);
     font-size: clamp(1.3rem, 1.15rem + 0.85vw, 1.7rem);
     letter-spacing: -0.014em;
@@ -541,7 +581,9 @@
   }
 
   .socials {
-    margin-top: 1.9rem;
+    /* 1.5rem, down from 1.9rem on August 4. The address and the social links
+       are one contact block, so they tighten together. */
+    margin-top: 1.5rem;
     font-size: 0.98rem;
     color: var(--ink-faint);
   }
@@ -578,7 +620,13 @@
      backstop. Don't swap it for `pretty` — pretty won't rebalance. */
 
   .closing {
-    margin-top: clamp(4.5rem, 11vh, 6.5rem);
+    /* Cut from clamp(4.5rem, 11vh, 6.5rem) on August 4. That rendered 104px
+       above this line, which was the single biggest hole on the page and the
+       main thing making the contact section read as empty. It still needs real
+       separation, because this sentence is an aside pointing off-site rather
+       than part of the contact block, so it stays the largest gap in the
+       section by some margin. It is just no longer a third of a screen. */
+    margin-top: clamp(2.75rem, 6vh, 4rem);
     font-family: var(--serif);
     font-size: clamp(1.12rem, 1.02rem + 0.5vw, 1.32rem);
     line-height: 1.55;
