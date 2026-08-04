@@ -48,17 +48,20 @@ STILL MISSING, and only Kyle can answer:
 
 An AI operating system has the tools you already use linked into it, so you are
 not clicking around a browser all day. Gmail, Google Calendar, Granola, Slack,
-Instagram — instead of going to each one, you work from a single place.
+Instagram. Instead of going to each one, you work from a single place.
 
 It remembers me. It keeps track of who I am and learns as it goes, so it gets
 better at helping me organize what I already do, and at surfacing things I don't
 do yet. It takes a rough idea and turns it into a working project, and it helps
 me get projects out the door instead of piling ideas up.
 
+I got the idea of building it this way from Nate Herk. What I've made is my own,
+but the shape of it is his.
+
 ## How it's built
 
 It lives on my own computer. Everything in it is Markdown files, which keeps it
-light. An LLM reads it and runs it — in my case, Claude. The files sit in my
+light. An LLM reads it and runs it, in my case Claude. The files sit in my
 Obsidian vault.
 
 It reaches Gmail, Calendar and OBS through MCP servers and APIs, and it doesn't

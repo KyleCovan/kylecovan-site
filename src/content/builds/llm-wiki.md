@@ -112,6 +112,9 @@ Right now the notes only flow one direction. I put ideas in. I want to put
 questions in too, and pull back out the thinking I already did and forgot, so
 the writing starts working for me instead of just accumulating.
 
+I owe the idea to Andrej Karpathy. He's the reason I started thinking about my
+notes as something I could ask questions of, rather than a place things go.
+
 ## The problem
 
 I was losing track of things I wrote.
