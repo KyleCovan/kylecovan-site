@@ -124,7 +124,7 @@ and both verify suites — they check built HTML, so they now run against `dist/
 | **Left-aligned content in an 800px centred container.** | Exceptions are bounded and enumerated in §3/§5. There is currently **nothing centred anywhere on either page** — see the July 29 revert in §5. |
 | **WCAG AA contrast on every text/background pair.** | Verified programmatically on every page. **Zero failures is the assertion; the node count is not.** The old suite hardcoded "46 nodes and 60 nodes", which meant adding a paragraph failed the test for a legitimate reason and trained you to edit the assertion. Rewritten July 30 — see §8. |
 
-### `og.png` — the documented exception
+### `og-2.png` — the documented exception
 
 Fetched by crawlers when the link is pasted into Slack, iMessage, X or LinkedIn.
 **No visitor's browser ever requests it.** The absolute URL in the meta tag is
@@ -199,12 +199,15 @@ their resting underline and the video link keeps it.
   below uses. A circle touches that edge at one tangent point and reads as
   floating inboard. Both were rendered side by side before deciding.
 - Slot is `clamp(104px, 17vw, 156px)`.
-- **The source now ships at 340px, not 360px.** On July 29 Kyle asked for the
-  backdrop gap above his head removed. That was cut from the existing 360px
-  crop — 20px off the top, nothing added below — because the original
-  `headshot.jpg` is not in the repo. **Don't scale the CSS box past ~170px
-  without a fresh export.** A genuine zoom-*out* showing more shirt needs the
-  original; Kyle declined to hunt for it and called crop B final.
+- **The source ships at 340px, rebuilt from `headshot.jpg` by
+  `build_assets.py`.** ~~Crop B, cut down from a 360px crop because the original
+  was lost.~~ **Superseded August 3, 2026:** Kyle supplied a new photograph, a
+  381px square, and it is in the repo. The old warning not to scale the CSS box
+  past ~170px without a fresh export no longer binds the same way — a genuine
+  re-export is possible again, and a bigger slot only needs `PORTRAIT_PX` raised
+  in the script.
+- **The July 29 photo was a grey studio headshot; this one is outdoors.** That
+  is why the favicon now has its own source; see below.
 - Format is WebP, quality 80, no JPEG fallback. The source is **not** pre-masked;
   the shape lives entirely in CSS.
 - Below `34rem` the hero stacks to a single flush-left column.
@@ -215,7 +218,16 @@ their resting underline and the video link keeps it.
 with cream corners — a leftover from before the portrait was squared — which on
 iOS read as a circle sitting inside a white-cornered box. Rendered old-vs-new at
 16/32/64px before changing it. Keeping it cut from the *same* crop as the
-portrait is deliberate: two separately-tuned crops of one face drift.
+portrait was deliberate: two separately-tuned crops of one face drift.
+
+**Amended August 3, 2026 — the favicon now has its own source file.** The new
+portrait is outdoors, and at 16px the fence and foliage swallowed the face
+entirely; rendered at 16/32/64 again before deciding, exactly as on July 29.
+`headshot-favicon.jpg` is a **tighter crop of the same photograph**, which is
+what keeps the original rule's intent: one photograph framed twice on purpose,
+not two photographs drifting apart unattended. **Replace both together or not at
+all.** `build_assets.py` falls back to the portrait crop if the favicon source
+is missing, and says so on stdout rather than silently.
 
 Honest limitation, unchanged: legible at 32px, mush at 16px. The "K" monogram
 alternative is preserved commented-out.
@@ -902,6 +914,8 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **50** | **The writing section.** One `writing` collection replaces `log`, with an optional `build:` tag deciding whether a post renders on a build page or gets its own URL — so there is never a "log entry or blog post?" decision, and never two copies of one text. `/writing/` added, nav rebuilt to **Kyle Covan · Builds · Unless the L**ORD** · Contact** (Story and Approach both left, Approach's words moved verbatim to a post). Epigraphs added above the h1 on both section pages, with small-caps LORD. `second-brain` → `llm-wiki`. The `outline` array stopped rendering and became writing `prompts` — it was publishing five bullets of promises on a page with nothing behind them. Both suites green, **not pushed**. |
 | **49** | **`/building/` → `/builds/`, one page per build.** `projects.json` became the `builds` content collection; `log` entries now use `build: reference('builds')` so a typo fails the build. Nav pillar renamed (Kyle caught the tense contradiction). `.qualifier` subtitles removed, the credit kept in `inspiration` frontmatter. `public/_redirects` added — `/building/` was indexed. **RSS item links fixed**: they were relative, so `@astrojs/rss` appended a trailing slash *after* the fragment and every anchor was broken. **`verify_site.py` rewritten** to discover pages instead of enumerating two, to assert zero contrast failures instead of two hardcoded node counts, and to cover redirects and the RSS feed. Both suites green. **Not pushed** — the build pages have no prose yet. |
 | **51** | **Sitemap `<lastmod>`, derived from content.** Every URL now carries a date that traces to a file Kyle actually edited: a build page takes the later of its new `updated` frontmatter and the newest post tagged to it (the page renders both); `/writing/<id>/` takes the post's own date; `/`, `/builds/` and `/writing/` are generated from the collections, so each takes its newest member. **`<priority>` removed** — Google's sitemap documentation says it ignores both `priority` and `changefreq`, so the 1.0/0.8 split was steering nothing while looking like a ranking knob, which invites tuning. The stamp-deploy-time shortcut was rejected: a sitemap claiming all seven pages changed on every push is one Google learns to ignore, and then the page that really did change gets no signal either. `verify_site.py` gained five assertions, including two that cross-check each date against the frontmatter it claims to describe — both were confirmed to FAIL when deliberately broken before being trusted. A build with no `updated` simply gets no `<lastmod>`; a missing date costs nothing, a wrong one costs the file's credibility. Also corrected a comment in `astro.config.mjs` that claimed the sitemap filter excluded `rss.xml` — it never did, and never needed to. Both suites green. **Pushed to `restructure-builds`; 49, 50 and 51 are all on that branch and none of them are merged or deployed** — kylecovan.com still serves the old two-URL structure until `main` moves. |
+| **52** | **All three build pages written, and the first LLM Wiki entry.** Dictated by Kyle over a long session and shaped; his edits win over every draft, including the cuts. **LLM Wiki** went 47 words to ~970 across six drafts, leading with "What I want it to do" at his call because a visitor arrived not knowing what an LLM Wiki was and had to read 250 words of history to find out. **It is written in past tense and as intent on purpose: he confirmed the retrieval layer does not exist yet.** Present tense there would put promises on a page with nothing behind them, which is the exact trap the `prompts` array was pulled out of the template to avoid (§49). **Personal AI OS** gained "What broke", "What I actually use" and "Where I'm trying to get to", 526 words to ~1140. He answered "what broke" with his own understanding and his own working habits rather than software failures, and the section is ordered to keep it that way; the one technical failure (scheduled tasks need the laptop open, so the AI coach got deleted) sits in the middle deliberately. **kylecovan.com** gained "Where it goes next", written from §7's open TODOs rather than invented — dark mode leads because it was already decided there in full. **First LLM Wiki log entry**, "Four AI operating systems in one vault, and I only knew about one": he asked whether keeping his AI OS inside the vault was sound *and gave permission to say no*, which is what surfaced four roots where he thought he had one. That is §"check the premise" arriving from his side of the desk. **Both `inspiration` credits finally landed in prose** (Karpathy, Nate Herk with his video linked), where the July 30 note said they belonged. **New copy rule: no em dashes in anything published in Kyle's voice.** §6 had banned them in the home-page paragraphs and recorded that he had not asked for a sweep; on August 3 he asked. Structural em dashes are untouched. `docs/post-ideas.md` added — five posts worth writing, chief among them the Onesimus name story, which was too good to bury in a maintenance log. |
+| **53** | **New photograph everywhere, and the image pipeline recovered.** Closes §7 item 7, open since July 30. `build_assets.py` and `headshot.jpg` are both in the repo now; one command rebuilds the portrait, the favicon and the share card from source, and Pillow was added to the venv for it. **The favicon has its own tighter crop** of the same photograph, a documented exception to §3 — the new outdoor background swallowed the face at 16px. **`og.png` renamed to `og-2.png`, and this is the important part:** the new card was going out at the old URL, and iMessage, Slack, X and LinkedIn all cache share images keyed on that URL in caches this site cannot reach. The deploy would have shipped a card nobody ever saw. **The filename must now change every time the image does.** `verify_site.py` gained an assertion that the `og:image` URL resolves to a file that ships, confirmed to fail before being trusted. **Video list:** title 01 became "Psalms 1 & 2" (plural: two psalms), "Religious But Not Saved" removed at Kyle's request, and the top bar now reads "*Title*, from my liked videos on YouTube" — the bare title let any entry read as Kyle's own words rather than a video he saved. **The label had to follow the link, not precede it**: written as a prefix first, `verify.py` rejected it at all five widths because it pushed the anchor 145px off the column edge. The test was right. Removing a video also broke `verify.py`'s `len(TITLES) == 32`, so **the video count is now derived** — the same trap the contrast counts were pulled out of on July 30. No assertion was weakened. |
 
 ---
 

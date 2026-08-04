@@ -45,7 +45,7 @@ src/
   content/builds/*.md         one file per build — frontmatter + prose
   content/writing/*.md        everything dated — posts and build-log entries
   content.config.ts           both collection schemas
-public/                       og.png, robots.txt, _redirects
+public/                       og-2.png, robots.txt, _redirects
 scripts/verify.py             home-page suite
 scripts/verify_site.py        site-level suite
 ```
@@ -71,8 +71,20 @@ scripts/verify_site.py        site-level suite
 - **Never hand-edit `dist/`.** It is build output.
 - Nothing is generated into the source tree. Both files under
   `src/pages/builds/` **are** edited by hand.
-- `build_assets.py` (portrait/favicon/OG pipeline) and the source `headshot.jpg`
-  are **not in the repo**. Recover them before any image work.
+- **Images are rebuilt, never hand-edited.** `build_assets.py` regenerates the
+  portrait, the favicon and the share card from `headshot.jpg` and
+  `headshot-favicon.jpg`:
+  `source .venv/bin/activate && python3 build_assets.py`.
+  The favicon has its own tighter crop of the same photo on purpose; read the
+  note in that script before merging the two sources.
+- **The share card's filename is versioned (`og-2.png`) and must change every
+  time the image does.** iMessage, Slack, X and LinkedIn cache share cards by
+  image URL, so reusing a filename means nobody ever sees the new card. Update
+  all four references in `Base.astro` and `index.astro`; `verify_site.py`
+  asserts the `og:image` URL resolves to a file that ships.
+- **The card's typography cannot be regenerated.** `build_assets.py` only
+  replaces the photo inside it. Changing its *words* needs a design source that
+  is still missing from this repo.
 
 ## After any change
 
@@ -106,7 +118,7 @@ grays, terracotta accents. Serif headings, sans body, **system fonts only**.
 
 Each deployed page is one self-contained file with **zero external requests**.
 **One executing script only** — the rotating video link. The JSON-LD blocks are
-inert data, not a second script. (`og.png` is the documented exception: crawlers
+inert data, not a second script. (`og-2.png` is the documented exception: crawlers
 fetch it, no visitor's browser ever does.)
 
 WCAG AA contrast on every text/background pair, verified programmatically.
