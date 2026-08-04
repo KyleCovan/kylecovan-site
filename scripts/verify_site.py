@@ -132,6 +132,32 @@ with sync_playwright() as pw:
         jumps = [(hs[i-1]['tag'], hs[i]['tag']) for i in range(1, len(levels))
                  if levels[i] - levels[i-1] > 1]
         note(not jumps, f'{p}: no skipped heading levels', str(jumps) if jumps else '')
+
+        # A heading that follows body text must be visibly separated from it.
+        # Added August 4 after the rule that provides that space was broken
+        # TWICE in one session, both times by a stray `*/` that left comment
+        # prose sitting in the stylesheet as live CSS. The browser's error
+        # recovery swallowed the rule and resumed at the next one, so the page
+        # still rendered, every other suite still passed, and the only symptom
+        # was headings sitting flat on the paragraph above them. It shipped
+        # once before anyone noticed.
+        #
+        # Measured, not grepped: asserting the selector exists in the CSS would
+        # have passed on both broken builds. What matters is the rendered gap.
+        # .eyebrow and .entry-date are excluded because they are LABELS for the
+        # heading beneath them and are supposed to be tight; see the note on
+        # the rule in site.css.
+        flush = pg.evaluate("""() => [...document.querySelectorAll('main h2, main h3')]
+            .map(h => {
+                const prev = h.previousElementSibling;
+                if (!prev) return null;
+                if (prev.classList.contains('eyebrow') ||
+                    prev.classList.contains('entry-date')) return null;
+                const gap = h.getBoundingClientRect().top - prev.getBoundingClientRect().bottom;
+                return gap < 20 ? [h.textContent.trim().slice(0, 34), Math.round(gap)] : null;
+            }).filter(Boolean)""")
+        note(not flush, f'{p}: headings have space above them',
+             str(flush) if flush else '')
         pg.close()
 
         # --- no horizontal overflow at 320px, on EVERY page ------------------

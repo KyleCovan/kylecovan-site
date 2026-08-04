@@ -1,6 +1,7 @@
 # Deploy and DNS — where things stand
 
-**As of July 29, 2026: Steps 1–4 are DONE. Only Step 5 remains.**
+**As of August 3, 2026: Steps 1–5 are DONE. The DMARC record is the one thing
+still open.**
 
 **kylecovan.com is live.** DNS is served by Cloudflare, the site is served by
 Cloudflare Pages, and Google Workspace email survived the move intact.

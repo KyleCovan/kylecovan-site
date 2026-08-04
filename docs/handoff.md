@@ -686,8 +686,16 @@ to put in a build log.
 
 ## 7. Open TODOs
 
-1. **Google Search Console + sitemap submission** — `docs/deploy-status.md`
-   Step 5. Not started. The one remaining launch task.
+1. ~~**Google Search Console + sitemap submission.**~~ **Done August 3, 2026.**
+   `https://kylecovan.com/sitemap-index.xml` is submitted and accepted; seven
+   URLs, every one verified 200 beforehand. **The field wants the full URL, not
+   a path** — this is a **Domain** property, so entering `sitemap-index.xml`
+   alone returns *"Invalid sitemap address"*. That error is client-side
+   validation firing **before** Google fetches anything, so it says nothing
+   about the sitemap itself; it reads like a broken file and isn't one.
+   `public/robots.txt` also declares the sitemap, so discovery never depended
+   on this submission — what it buys is the coverage reporting.
+   See `docs/deploy-status.md` Step 5.
 2. **A DMARC record.** There is currently none. See `docs/deploy-status.md`.
 3. ~~**"What broke" for Project 01.**~~ **Done August 3, 2026.** Dictated by
    Kyle. He answered it with his own understanding breaking down and his working

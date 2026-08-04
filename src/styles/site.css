@@ -396,7 +396,8 @@
 
      `header + h2` is in the list because the FIRST heading of a build page
      follows the masthead rather than a paragraph, and was flush against the
-     lede for the same reason. Measured, not assumed: it read 0px. */
+     lede for the same reason. Measured, not assumed: it read 0px.
+
      `.eyebrow` is EXCLUDED and that exclusion is load-bearing. An eyebrow is a
      label FOR the heading under it, the same relationship `.entry-date` has to
      `.entry-title`, so it has to stay tight. The first version of this rule
