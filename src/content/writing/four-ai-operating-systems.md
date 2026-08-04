@@ -29,13 +29,24 @@ WHAT WAS LEFT OUT, deliberately:
 
 NUMBERS ARE HIS AND SHOULD NOT BE ROUNDED for rhythm: 15+ commits, 6 near
 identical skills, 255 deduped, 1 triplicated, 19 sync conflicts, 1150 notes,
-54 loose files to 9 hubs, more than 5 files as the blast radius trigger.
+54 loose files to 9 hub notes, more than 5 files as the blast radius trigger.
+
+THE LESSON IS STATED, second to last, on purpose. Kyle asked whether it should
+be spelled out at the end. It should: it is the one line a person or a model
+can lift out of the post whole, which is what makes it worth quoting. But it
+sits BEFORE the closing paragraph, not after, so the entry still ends on him
+rather than on a moral. Don't move it to last.
+
+"Hub notes" is his source's phrase and he said he didn't know what it meant, so
+the post now explains it in the same sentence rather than assuming. If a term
+in here needs a footnote, it needs a clause instead.
 -->
 
 I've been building an AI operating system inside my Obsidian vault, which is
-also where everything I've ever written lives. Before I asked for a single thing
-to be changed, I asked a different question: is keeping them in the same place
-actually a good idea, and if it isn't, tell me why not.
+also where a good portion of what I've written lives. I'd already had a first go
+at building it. But before I changed anything else in there, I stopped and asked
+a different question: is keeping them in the same place actually a good idea,
+and if it isn't, tell me why not.
 
 The answer was yes, and the reasoning stuck with me. The whole point of a second
 brain is that the context sits next to the thing it's about. My operating system
@@ -90,7 +101,14 @@ Obsidian ignores completely, where agents can write at no cost to my search.
 
 And the cleanup underneath all that: two hundred and fifty-five duplicate files,
 one of them triplicated, nineteen sync conflicts buried in scripture notes and a
-journal from 2023. My root went from fifty-four loose files down to nine.
+journal from 2023. My root went from fifty-four loose files down to nine hub
+notes, which are just entry points: notes whose whole job is to point at other
+notes rather than hold anything themselves.
+
+If there's one thing worth taking from this, it isn't the cleanup. It's that I
+asked whether the idea was any good before I asked for more of it to be built,
+and I left room for the answer to be no. That question is what found the other
+three.
 
 I don't understand all of it yet. I know what the vault map is doing and I'm
 still catching up on the rest. I'm not going to let that slow me down. I'd

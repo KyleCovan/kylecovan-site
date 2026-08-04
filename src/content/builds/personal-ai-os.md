@@ -130,8 +130,8 @@ touched, and a few I'd have to go and look up to tell you what they even do.
 The first thing that broke was my understanding of what I was doing.
 
 Some of it I'm still wrapping my head around. Sometimes it was the terminology.
-Sometimes it was just slow going and I took it in baby steps, leaning on the
-video to hold the road map while I caught up. I got it built. I couldn't always
+Sometimes it was just slow going and I took it in baby steps, leaning on Nate
+Herk's video to hold the road map while I caught up. I got it built. I couldn't always
 have told you why it worked.
 
 Then there are the scheduled tasks, and the reason those break is boring: they
