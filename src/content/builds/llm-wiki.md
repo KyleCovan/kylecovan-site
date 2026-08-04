@@ -14,7 +14,7 @@ inspiration: Andrej Karpathy
 # NOT RENDERED. Writing prompts for the prose below — see content.config.ts.
 prompts:
   - lead: The problem
-    rest: ANSWERED Aug 3, dictated, then edited by Kyle four times.
+    rest: ANSWERED Aug 3, dictated, then edited by Kyle five times.
   - lead: How it's structured
     rest: ANSWERED Aug 3 as the MANUAL workflow. There is no built system yet.
   - lead: Retrieval in practice
@@ -22,63 +22,68 @@ prompts:
   - lead: What I'd do differently
     rest: ANSWERED Aug 3 as what he WANTS. The LEAD section, by his call.
   - lead: Where it goes next
-    rest: ANSWERED Aug 3 — Substack or Medium, a newsletter. Aspirational tense.
+    rest: ANSWERED Aug 3, expanded in draft 6 with social, YouTube and the AI OS.
 ---
 
 <!--
-DRAFT 5, August 3 — dictated by Kyle, shaped, then edited by him four times.
+DRAFT 6, August 3 — dictated by Kyle, shaped, then edited by him five times.
 
 He dictates and the job is to turn what he says into finished prose in his
 voice. That is a standing instruction for this page, not the usual "ask, don't
 draft" rule. It licenses SHAPING what he said, never adding what he didn't.
 
-VOICE. Contractions throughout, at his request in draft 5, without forcing one
-into every clause. This agrees with handoff §6, which already required "don't"
-over "do not" page-wide. Plain words over precise ones: he rejected the draft 4
-paragraph about plain markdown files and lock-in as reading like an instruction
-manual, and rejected the backlinks/tags/graph paragraph as jargon a newcomer
-would bounce off. Both were rewritten in plain language rather than deleted,
-because the next section depends on them: "the things that drew me to Obsidian,
-I wasn't even doing" only lands if the reader knows what those things were.
+THE AI OS CONNECTION IS FACTUAL, not a flourish. Kyle asked for a teaser linking
+this build to the Personal AI OS and asked to be corrected if he had it wrong.
+He has it right, and the link is stronger than he put it: the Personal AI OS
+page states in his own words that the system runs on Markdown files that "sit in
+my Obsidian vault" — the same vault these notes live in. So "they already live
+in the same place" is a checkable claim, not marketing. The remembers/acts
+split follows from both pages as written. If either page's description of where
+its files live ever changes, THIS paragraph is wrong and must change with it.
 
-TWO IMAGES, NOT THREE. Kyle cut "lighting it on fire" in draft 4 and kept the
-wind and the desk. Do not put the fire line back.
+The page now links to /builds/personal-ai-os/. verify_site.py asserts every link
+resolves, so a rename there fails the build here rather than rotting quietly.
+
+VOICE. Contractions throughout, at his request, without forcing one into every
+clause. Agrees with handoff §6, which already required "don't" over "do not"
+page-wide. Plain words over precise ones: he rejected a paragraph about markdown
+files and lock-in for reading like an instruction manual, and a backlinks/tags/
+graph paragraph as jargon a newcomer would bounce off. Both were rewritten
+rather than deleted, because "the things that drew me to Obsidian, I wasn't even
+doing" only lands if the reader knows what those things were.
+
+TWO IMAGES, NOT THREE. Kyle cut "lighting it on fire" and kept the wind and the
+desk. Do not put the fire line back.
 
 WRITTEN FOR HIM TO CHECK, not dictated: the Obsidian passages. He said he knew
-what he was trying to say and couldn't articulate it, and asked for it filled in
-from what is actually true of Obsidian. Everything traces to something he said
-(file management fatigue, it grouped notes without any AI in it, the gardener
-framing, the tools were more advanced than his use of them) plus real Obsidian
-behaviour. NO INVENTED SPECIFICS about how often he used a feature.
+what he meant and couldn't articulate it, and asked for it filled in from what
+is actually true of Obsidian. NO INVENTED SPECIFICS about his own usage.
 
-THE ENDING IS A LOOP, by his design. "How I was working" now closes by naming
-the LLM Wiki as the thing that changes the story, and restates in one sentence
-what the lead section promised. That hands the reader to "Where it goes next"
-instead of stopping dead. Keep the loop if you edit the ending.
+THE ENDING IS A LOOP, by his design. "How I was working" closes by naming the
+LLM Wiki and restating what the lead section promised, handing the reader to
+"Where it goes next" instead of stopping dead. Keep the loop if you edit it.
 
-EM DASHES. None in the prose. Kyle doesn't write with them, so they stay out of
-anything published in his voice. STRUCTURAL em dashes are fine and were left
-alone (the `.log-status` line, the one-liners). handoff §6 banned them in the
-home-page paragraphs and noted he had not asked for a sweep; this is the sweep,
-prose only.
+EM DASHES. None in the prose. Kyle doesn't write with them. STRUCTURAL em dashes
+are fine and were left alone (the `.log-status` line, the one-liners). handoff
+§6 banned them in the home-page paragraphs and noted he had not asked for a
+sweep; this is the sweep, prose only.
 
 NOT BUILT. Asked directly on August 3, Kyle confirmed LLM Wiki does not exist
 yet: he is building it. Everything except the lead section is past tense and the
-model is written as intent. That is not a style choice to be tidied away later.
-Present tense here would put promises on a page with nothing behind them, the
-exact trap the `prompts` array was pulled out of the rendered template to avoid
-on July 30. When retrieval works, this page earns the present tense and a real
-worked example.
+model is written as intent. Present tense here would put promises on a page with
+nothing behind them, the exact trap the `prompts` array was pulled out of the
+rendered template to avoid on July 30. When retrieval works, this page earns the
+present tense and a real worked example.
 
 CUTS, all his, which should not creep back:
-  - the "names" file, names for bands and projects. His call in draft 5: nice
-    personal flair, but out of place.
-  - "But now things have changed" as a standalone line, replaced by the loop.
-  - "cool names starting with C" and the family question, from the bullets.
+  - the "names" file; "But now things have changed" as a standalone line.
+  - three bullets: "cool names starting with C", the family question, and the
+    quotes-from-pastors question (cut in draft 6, the list was too long).
   - the fire image; "there was no file system"; "I wasn't using any of it to
     create new notes"; the to-do list and word-search retrieval examples;
     "Very rudimentary"; "never referenced" softened to "hardly referenced";
-    "everything I wrote" softened to "a lot of things I wrote".
+    "everything I wrote" softened to "a lot of things I wrote"; "a lot of my
+    notes are one long dump" softened to "some of my notes".
   - the password note, dropped before he ever saw it: not worth publishing.
 -->
 
@@ -89,7 +94,7 @@ by category. Link them in ways that actually mean something.
 
 I also want it working on what's already in there.
 
-A lot of my notes are one long dump. I wrote them in a single sitting, so three
+Some of my notes are one long dump. I wrote them in a single sitting, so three
 or four unrelated ideas can end up in the same file just because they showed up
 on the same day. I want it to break those apart, and pull an idea out of the
 middle of a long note into a place of its own where it can be linked to and
@@ -98,7 +103,6 @@ found instead of buried.
 Then I want to ask the collection questions.
 
 - What Bible study notes do I have on the book of Matthew?
-- Show me a collection of quotes I've saved from pastors I respect.
 - What have I written on the topic of X that would make a good newsletter or
   post?
 - What are the ideas I've had for apps?
@@ -144,12 +148,12 @@ Knowing it was all there was comforting enough.
 
 ## How I was working
 
-Create a new note, title it, get the idea out in simple markdown. Headers,
-subheaders, bullets. That was the whole system.
-
 The things that drew me to Obsidian in the first place, I wasn't even doing. I
 wasn't linking notes together. My tags were loose, and not something I could
 count on later.
+
+I would just create a new note, title it, get the idea out in simple markdown.
+Headers, subheaders, bullets. That was the whole system.
 
 The gardener style of making notes appealed to me, but I just went back to
 creating fresh notes every time instead of tending to the ones I already had.
@@ -172,5 +176,19 @@ Next, I'm hoping to add a way to push out to Substack or Medium, or both, and to
 start a newsletter built around the things that interest me and the places they
 converge.
 
-If the way I think is interesting to anyone else, I'd like to give them a place
-to follow along.
+After that, I'd like it to shape what's already written for wherever it's going.
+A post for X doesn't read like a post for LinkedIn, and neither one reads like a
+script for YouTube. I'd rather write the thinking once and have it adapted than
+write it four separate times.
+
+The part I'm most curious about is how much of this overlaps with the [AI
+operating system](/builds/personal-ai-os/) I'm building. They already live in
+the same place. That system runs on markdown files sitting in the same Obsidian
+vault these notes are in.
+
+So they aren't really two separate things. One is the part that remembers, the
+other is the part that acts. The more the wiki can answer, the more the
+operating system has to work with, and whatever the operating system does ends
+up written back into the notes.
+
+I'm still learning how far that goes.
