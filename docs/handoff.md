@@ -697,8 +697,18 @@ to put in a build log.
    every token needs a dark counterpart, terracotta most of all since it was
    darkened specifically to pass AA on cream, and the portrait backdrop and
    `og.png` are both light.
-7. **`build_assets.py` and `headshot.jpg` are not in the repo.** Recover them
-   before any future image work.
+7. ~~**`build_assets.py` and `headshot.jpg` are not in the repo.**~~
+   **Resolved August 3, 2026.** Both are in the repo now. One command rebuilds
+   every image on the site from one source file:
+   `source .venv/bin/activate && python3 build_assets.py`. Pillow was added to
+   the venv for it. The script deliberately does **not** redraw `og.png`: it
+   paints out the photo box and composites the new portrait in, leaving every
+   text pixel alone, because the card's typography was set in a design tool
+   that is still not in this repo. **If the card's WORDS ever need to change,
+   that source is still missing.** Note also that the July 29 warning about not
+   scaling the CSS box past ~170px no longer applies the same way: the portrait
+   now comes from a fresh 381px square export rather than crop B of a lost
+   original, so a genuine re-export is possible again.
 8. ~~**Cloudflare rewrites `robots.txt`.**~~ **Resolved July 30, 2026** — Kyle
    disabled Managed robots.txt in Cloudflare's AI Crawl Control and set AI-bot
    blocking to "Do not block." Training crawlers are now allowed by choice.
