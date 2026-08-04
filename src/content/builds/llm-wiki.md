@@ -14,47 +14,49 @@ inspiration: Andrej Karpathy
 # NOT RENDERED. Writing prompts for the prose below — see content.config.ts.
 prompts:
   - lead: The problem
-    rest: ANSWERED Aug 3, dictated. The strongest material on the page.
+    rest: ANSWERED Aug 3, dictated, then edited by Kyle line by line.
   - lead: How it's structured
-    rest: ANSWERED Aug 3 — but he described the MANUAL workflow, not a built system.
+    rest: ANSWERED Aug 3 as the MANUAL workflow. There is no built system yet.
   - lead: Retrieval in practice
-    rest: ANSWERED Aug 3 as manual retrieval. No LLM question-and-answer exists yet.
+    rest: ANSWERED Aug 3 as manual retrieval. No LLM question-and-answer exists.
   - lead: What I'd do differently
-    rest: ANSWERED Aug 3 as what he WANTS, not lessons from a shipped architecture.
+    rest: ANSWERED Aug 3 as what he WANTS. Folded into "What I want it to do".
   - lead: Where it goes next
-    rest: ANSWERED Aug 3 — Substack and Medium, a newsletter.
+    rest: ANSWERED Aug 3 — Substack or Medium, a newsletter. Folded in by Kyle.
 ---
 
 <!--
-DRAFT, August 3 — shaped from Kyle's dictated answers to the five prompts.
+DRAFT, August 3 — shaped from Kyle's dictated answers, then edited by Kyle,
+then cut down at his request.
 
 He asked for this explicitly: he dictates, and the job is to turn what he says
 into finished, readable prose in his voice. That is a standing instruction for
-this page, not the usual "ask, don't draft" rule — but it licenses SHAPING what
-he said, never adding what he didn't. Every claim below traces to the dictation.
+this page, not the usual "ask, don't draft" rule. It licenses SHAPING what he
+said, never adding what he didn't.
 
-The analogies (lighting it on fire, paper thrown into the wind, the desk of
-stacked Post-its) are verbatim his and should survive any edit — they are the
+NO EM DASHES IN THIS PROSE. Kyle asked for them out on August 3. handoff §6
+already banned them in the home-page paragraphs and recorded that he had been
+told and had not asked for a sweep; this is him asking, at least here. Do not
+reintroduce them, and do not "fix" a comma splice by reaching for one.
+
+NOT BUILT. Asked directly on August 3 whether LLM Wiki exists, Kyle said no: he
+is building it now. That is why the problem and the workflow are past tense and
+the model is written as intent, and it is not a style choice to be tidied away
+later. Writing this page in the present tense would put promises on a page with
+nothing behind them, the exact trap the `prompts` array was pulled out of the
+rendered template to avoid on July 30. When the retrieval layer works, this page
+gets rewritten in the present tense and earns a real worked example.
+
+His analogies (lighting it on fire, paper thrown into the wind, the desk of
+stacked Post-its) are verbatim and should survive any future edit. They are the
 best writing on the page.
 
-TENSE IS DELIBERATE AND LOAD-BEARING. Kyle answered prompts 2 and 3 by
-describing how he works in Obsidian by hand, and prompt 4 by describing what he
-WANTS a model to do. Nothing he said describes a working LLM layer: there is no
-real question-and-answer example because none exists yet. So the problem and the
-workflow are past tense, and the model is written as intent, not capability.
-
-That is the same trap the `prompts` array was pulled out of the template for —
-publishing a list of promises on a page with nothing behind it. This page must
-not become that in prose form. If the retrieval layer gets built, this page gets
-rewritten in the present tense and gains a real worked example.
-
-OPEN, and only Kyle can settle them:
-  - The Andrej Karpathy credit in the frontmatter still has no sentence. The
-    dictation garbled where it belonged.
-  - "The book of Ezekiel" appeared in the same garbled clause and looked like a
-    sixth example question. Left out rather than guessed at.
-  - The password note he mentioned is deliberately omitted; see the note in the
-    session, not worth publishing either way.
+Kyle cut these, and they should not creep back:
+  - "there was no file system, just a pile of notes loosely connected by tags"
+  - "I wasn't using any of it to create new notes or to build knowledge out of"
+  - the to-do list and word-search examples of manual retrieval
+  - "everything I wrote" became "a lot of things I wrote", a smaller, truer claim
+  - the password note, dropped before he ever saw it: not worth publishing
 -->
 
 ## The problem
@@ -63,49 +65,40 @@ I was losing track of everything I wrote.
 
 I'd write a note and it would get filed away into oblivion. The next day I'd
 write something else, and the circle would continue. I wrote and wrote and never
-referenced any of it.
+referenced any of it. It was the equivalent of writing something, lighting it on
+fire, and never seeing it again. Or writing on a piece of paper and throwing it
+into the wind. If I ever saw it again, that would be pretty amazing.
 
-It was the equivalent of writing something and then lighting it on fire and
-never seeing it again. Like writing on a piece of paper and throwing it into the
-wind — if I ever saw it again, that would be pretty amazing. That was my habit
-with everything I wrote.
+That was my habit with a lot of things I wrote. I didn't post it anywhere. I
+didn't refine it. Just notes, journal entries, thoughts, ideas, Bible verses,
+and other things I thought were noteworthy. If it were on a desk it would have
+been a desk full of random papers and Post-its of different sizes, stacked on
+top of each other in no particular order.
 
-I didn't post it anywhere. I didn't refine it. Just notes, journal entries,
-thoughts, ideas, and all the Bible verses that stood out to me. If it were on a
-desk it would be a desk full of random papers and Post-its of different sizes,
-stacked on top of each other in no particular order.
-
-I moved to Obsidian in the first place because I had file management fatigue.
-Knowing it was all in there was comforting enough. But there was no file system
-— just a pile of notes loosely connected by a few tags, with no semblance of
-order to them at all.
-
-I wasn't using any of it to create new notes or to build knowledge out of. I was
-literally just writing.
+I moved to Obsidian because I had file management fatigue. Knowing it was all
+there was comforting.
 
 ## How I was working
 
-Click new note, title it, and get the idea out in simple markdown — headers,
-subheaders, bullets or numbered lists. That was the whole system.
+Click new note, title it, get the idea out in simple markdown. Headers,
+subheaders, bullets. That was the whole system.
 
 Getting anything back out relied on my memory. I'd search a hashtag, or search
 for a note by name if I remembered the name. So the only notes I ever recalled
-were the ones I already knew I had, and those were usually the most recent ones,
-still fresh in my mind. Eventually those got lost too. There was plenty in there
-I never kept at the forefront of my mind.
+were the ones I already knew I had, usually the most recent ones. Eventually a
+lot of those got lost too.
 
-Otherwise I'd pull up a to-do list, search for a word I knew was in there
-somewhere, or just leave tabs open on what I was working on and click back to
-them. Very rudimentary, very basic. I knew the tools were far more advanced than
-the way I was using them.
+Mostly I just left tabs open on what I was working on and clicked back to them.
+Very rudimentary. I knew the tools were far more advanced than the way I was
+using them.
 
-One file that kept growing was called "names" — names for bands, names for
+One file kept growing. It was called "names": names for bands, names for
 projects, just names. I like words, so I'd keep adding to it.
 
 ## What I want it to do
 
-I want a large language model to connect my notes in a strategic way: file them
-by category and link them in ways that actually mean something.
+I want a large language model to connect my notes in a strategic way. File them
+by category. Link them in ways that actually mean something.
 
 Then I want to ask the collection questions.
 
@@ -115,14 +108,10 @@ Then I want to ask the collection questions.
 - What have I written on the topic of X that would make a good newsletter or
   post?
 
-Right now the notes only flow one direction. I put ideas in. What I want is to
-put questions in too, and pull back out the thinking I already did and forgot —
-so the writing I've already done starts working for me instead of just
-accumulating.
+Right now the notes only flow one direction. I put ideas in. I want to put
+questions in too, and pull back out the thinking I already did and forgot, so
+the writing starts working for me instead of just accumulating.
 
-## Where it goes next
-
-The next thing to wire in is a way to push out to Substack and Medium, and to
-start a newsletter built around the things that interest me and the places they
-converge — for anybody who wants to follow along with the way I think about
-things.
+Next is a way to push out to Substack or Medium, and a newsletter built around
+the things that interest me and the places they converge. If the way I think is
+interesting to anyone else, that gives them a place to follow along.
