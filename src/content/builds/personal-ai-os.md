@@ -35,13 +35,18 @@ He asked for a draft to edit rather than a blank page, which is a deliberate
 waiver of the usual "ask, don't draft" rule and applies to THIS page only. It
 does not license inventing anything he hasn't said.
 
+ANSWERED since, and now in the prose: what triggers it (only when he asks), how
+it reaches Gmail, Calendar and OBS (MCP servers and APIs), where the Markdown
+lives (his Obsidian vault), and that it writes back rather than only reading.
+
 STILL MISSING, and only Kyle can answer:
-  - what triggers it: a schedule, or only when he asks?
-  - how it reaches Gmail / Calendar / OBS: MCP servers, n8n, scripts?
-  - where the Markdown lives: inside the Obsidian vault, or separate?
-  - whether it writes back, or only reads and surfaces.
-  - what broke. Nothing in any repo record answers this — the failures
-    documented in docs/handoff.md are the WEBSITE's, not this system's.
+  - what broke. Nothing in any repo record answers this. The failures written up
+    in docs/handoff.md are the WEBSITE's, not this system's, and must never be
+    borrowed to fill this section.
+
+August 3: the Nate Herk credit landed in the prose, where the July 30 note said
+it belonged. Em dashes struck from this page's prose under the rule Kyle set
+that day for anything published in his voice.
 -->
 
 ## What it is
