@@ -132,9 +132,15 @@ WCAG AA contrast on every text/background pair, verified programmatically.
 
 ## Scope
 
-This site is **personal**. Services, pricing and client work live on
-**tapocanyon.com** and never appear here. The only connection is a single closing
-line at the bottom of the home page.
+This site is **personal**. **Services and pricing live on tapocanyon.com and
+never appear here** — nothing on this site sells anything. The only connection is
+a single closing line at the bottom of the home page.
+
+**The work itself is a different question, and Kyle narrowed this rule on
+August 4.** `/builds/` is his portfolio of things made, and it may include client
+projects and projects outside Tapo Canyon's scope. Showing the work is allowed;
+offering the service is not. If a build page starts reading like a pitch — rates,
+packages, "hire me", a call to action — it has crossed back over the line.
 
 ## Working habits that have paid off here
 

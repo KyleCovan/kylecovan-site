@@ -50,6 +50,15 @@ in the open.
 live on **tapocanyon.com**. kylecovan.com is personal. The only connection is a
 single closing line at the bottom of the home page.
 
+**Narrowed August 4, 2026: the boundary is selling, not subject matter.** Kyle
+said `/builds/` is his portfolio of work and will include client projects and
+projects outside Tapo Canyon's scope. So **showing the work is in scope; offering
+the service is not.** A build page describing a site he built for a client is
+fine. Rates, packages, "hire me" or any call to action on this site is not, and
+that is the test to apply when a new build looks borderline. The closing line and
+its dry note (§6) still carry the whole two-site explanation and are untouched by
+this change.
+
 **The design reference is [andrewng.org](https://www.andrewng.org/).** What was
 taken: a horizontal nav of short section labels, and a hero with the photo left
 of the name. What was *not*: its multi-company structure, its density, or its
@@ -682,6 +691,92 @@ the five outline beats. **"What broke" is deliberately uncovered** — Kyle didn
 answer that one, and an invented failure story would be the worst possible thing
 to put in a build log.
 
+### The builds section — the eyebrow and the heading are ONE SENTENCE
+
+> **Building in public**
+> **Because explaining it shows me what I understand**
+
+**Kyle's line and Kyle's structure, August 4, 2026.** It replaces "Two systems,
+built for myself first", which was wrong twice over: three builds render, not
+two, and "systems" does not describe kylecovan.com. This closes §7's first
+blocked item, open since July 30.
+
+**The structure is the decision, not just the words.** Every earlier attempt kept
+the eyebrow as a label and the h2 as a second label, and Kyle's verdict on all of
+them was "a little dry". His idea was to let the eyebrow set up a question and
+the heading answer it, so the h2 begins with "Because" and only completes a
+thought when read with the line above it. That is why this section reads like a
+person and the other three read like a table of contents. **Don't turn the h2
+back into a noun phrase.**
+
+**Four traps the final line is built to survive.** All four killed a draft.
+
+1. **No count.** A number rots the next time Kyle adds a build, and nothing tests
+   it. Same trap as the hardcoded video and contrast counts (§49, §53), except a
+   heading fails silently and in public rather than failing a suite.
+2. **No owner.** Client projects are coming to this section (Kyle, August 4), so
+   "built for myself first" had an expiry date. Lines that named the mix ("some
+   for me, some for clients") were rejected for the same reason in reverse.
+3. **No expiring tense.** An interim pick, "What I'm building, and what it's
+   for", **never shipped**: Kyle caught that the progressive claims everything
+   below is in flight, which stops being true the day a build is finished.
+4. **No absolute.** "Because I don't understand it until I've explained it" was
+   cut by Kyle: sometimes he explains from understanding he already had, so
+   "until" states a rule that isn't always true. "Shows me what I understand" is
+   true either way, because on those days it shows him that.
+
+**Words Kyle rejected, and why. Do not reintroduce any of them.**
+
+- **"fool"** ("harder to fool myself with people watching") — it made the line
+  about his self-image rather than about the work.
+- **"hide"** ("harder to hide what I don't understand") — it implies he would
+  otherwise be concealing something. His words: "I'm not trying to hide anything.
+  That sounds a little deceptive."
+- **"confirm"** ("how I confirm I understand it") — presumes the answer comes
+  back yes, which drains the tension and edges toward sounding pleased with
+  himself.
+
+**The HELP angle was deliberately set aside, and it is not dead.** A whole family
+of candidates said that publishing invites correction, finds blind spots, and
+turns a solo build into a shared one ("Because it invites help I didn't know to
+ask for"). Kyle liked the sentiment and then asked the right question: strangers
+arrive here from his social accounts, and **he directs potential clients here**.
+A heading cannot carry nuance, so a prospect skimming that line reads *need*
+rather than *standard*. **The idea belongs in prose on a build page, where
+evidence can be attached** — someone saw the work, named what was missed, the
+build got better. With a result attached it reads as collaboration. In a heading,
+with nothing behind it, it reads as fishing. Write it there when it actually
+happens.
+
+**The eyebrow stays "Building in public", and the objection to it was answered,
+not ignored.** Kyle asked whether it expires once builds are finished. It does
+not: it names a *practice*, not the status of the items beneath it, the same way
+the writing eyebrow below is a gerund that nobody reads as "these posts are
+unfinished." The finished-or-not question is already answered one click away by
+`/builds/`, whose h1 is "The things I build, finished or not." That page is the
+inventory; this section is the practice and the reason for it.
+
+**`aria-labelledby` names BOTH ids, and that is load-bearing.** Because the h2 is
+a fragment on its own, `#building` points at the eyebrow's id *and* the heading's
+id, so the section's accessible name is the whole sentence. This is the only
+eyebrow on the site with an id; the other three are labels. **`verify_site.py`
+asserts both halves** — that every `aria-labelledby` target resolves, and
+specifically that `#building` is still named by an `.eyebrow` first and an `h2`
+last. Both were **confirmed to FAIL before being trusted**: the first against a
+typo'd id, the second against a "tidy-up" back to a single id, which the generic
+check passes. The targeted assertion tests *structure*, not words, so either line
+can be rewritten without touching the test.
+
+**It wraps to two lines, and that is correct.** Measured at 1440/900/600/390/320:
+two lines on desktop, three below 400px, **identical to "Writing on faith,
+technology, and the daily striving" at every width.** The two section headings
+now carry the same visual weight, which was the point.
+
+**The word "portfolio" is still forbidden on the site** even though that is
+exactly what Kyle called this section in conversation. See the vocabulary note in
+§7: portfolio, blog and build log are the three internal words, for talking about
+the site rather than labelling it.
+
 ---
 
 ## 7. Open TODOs
@@ -734,6 +829,17 @@ to put in a build log.
    blocking to "Do not block." Training crawlers are now allowed by choice.
    History and the settings map: `docs/dns-records.md`.
 
+9. **When the first CLIENT build lands, decide whether it goes in this section
+   at all.** Raised August 4 with the scope change in §1. The eyebrow promises
+   "Building in public" and the heading promises that explaining the work is how
+   Kyle understands it. A client project often *cannot* be documented at that
+   depth, and a thin page under that heading is the section writing a check the
+   page can't cash. **This is not a reason to change the words.** It is a
+   decision to make once, in front of a real example: either the client build
+   gets a page honest enough to sit under that promise, or it lives on `/builds/`
+   without appearing in the home page's summary. Do not settle it in the
+   abstract.
+
 **Optional, not requested:** a current-section highlight *within* the home
 page's nav (needs JS and an IntersectionObserver, so a deliberate decision
 against the scoped-JS rule, not a drive-by addition).
@@ -775,8 +881,14 @@ on the site.** They are for talking about it, not labels for visitors.
 
 **Only Kyle can supply, and it blocks C:**
 
-1. A heading and lede for the builds section — "Two systems, built for myself
-   first" is wrong on both count and framing once client websites are included.
+1. ~~A heading and lede for the builds section.~~ **Done August 4, 2026.** The
+   eyebrow and heading are now one sentence: **"Building in public / Because
+   explaining it shows me what I understand."** No lede goes under it; the
+   heading is the lede. Kyle also settled the framing question this item was
+   really about: client projects are coming to this section, which is why the
+   heading names no owner. See §6 for the full note, including the four traps
+   the line survives and the words he rejected, and §1 for the narrowed scope
+   boundary that came with it.
 2. The prose body for each build. §6 forbids drafting it on his behalf, and
    two drafts of the concrete Approach examples already died this way.
 3. Whether the Second Brain / LLM wiki entry links to the live thing, and if so
@@ -924,6 +1036,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **51** | **Sitemap `<lastmod>`, derived from content.** Every URL now carries a date that traces to a file Kyle actually edited: a build page takes the later of its new `updated` frontmatter and the newest post tagged to it (the page renders both); `/writing/<id>/` takes the post's own date; `/`, `/builds/` and `/writing/` are generated from the collections, so each takes its newest member. **`<priority>` removed** — Google's sitemap documentation says it ignores both `priority` and `changefreq`, so the 1.0/0.8 split was steering nothing while looking like a ranking knob, which invites tuning. The stamp-deploy-time shortcut was rejected: a sitemap claiming all seven pages changed on every push is one Google learns to ignore, and then the page that really did change gets no signal either. `verify_site.py` gained five assertions, including two that cross-check each date against the frontmatter it claims to describe — both were confirmed to FAIL when deliberately broken before being trusted. A build with no `updated` simply gets no `<lastmod>`; a missing date costs nothing, a wrong one costs the file's credibility. Also corrected a comment in `astro.config.mjs` that claimed the sitemap filter excluded `rss.xml` — it never did, and never needed to. Both suites green. **Pushed to `restructure-builds`; 49, 50 and 51 are all on that branch and none of them are merged or deployed** — kylecovan.com still serves the old two-URL structure until `main` moves. |
 | **52** | **All three build pages written, and the first LLM Wiki entry.** Dictated by Kyle over a long session and shaped; his edits win over every draft, including the cuts. **LLM Wiki** went 47 words to ~970 across six drafts, leading with "What I want it to do" at his call because a visitor arrived not knowing what an LLM Wiki was and had to read 250 words of history to find out. **It is written in past tense and as intent on purpose: he confirmed the retrieval layer does not exist yet.** Present tense there would put promises on a page with nothing behind them, which is the exact trap the `prompts` array was pulled out of the template to avoid (§49). **Personal AI OS** gained "What broke", "What I actually use" and "Where I'm trying to get to", 526 words to ~1140. He answered "what broke" with his own understanding and his own working habits rather than software failures, and the section is ordered to keep it that way; the one technical failure (scheduled tasks need the laptop open, so the AI coach got deleted) sits in the middle deliberately. **kylecovan.com** gained "Where it goes next", written from §7's open TODOs rather than invented — dark mode leads because it was already decided there in full. **First LLM Wiki log entry**, "Four AI operating systems in one vault, and I only knew about one": he asked whether keeping his AI OS inside the vault was sound *and gave permission to say no*, which is what surfaced four roots where he thought he had one. That is §"check the premise" arriving from his side of the desk. **Both `inspiration` credits finally landed in prose** (Karpathy, Nate Herk with his video linked), where the July 30 note said they belonged. **New copy rule: no em dashes in anything published in Kyle's voice.** §6 had banned them in the home-page paragraphs and recorded that he had not asked for a sweep; on August 3 he asked. Structural em dashes are untouched. `docs/post-ideas.md` added — five posts worth writing, chief among them the Onesimus name story, which was too good to bury in a maintenance log. |
 | **53** | **New photograph everywhere, and the image pipeline recovered.** Closes §7 item 7, open since July 30. `build_assets.py` and `headshot.jpg` are both in the repo now; one command rebuilds the portrait, the favicon and the share card from source, and Pillow was added to the venv for it. **The favicon has its own tighter crop** of the same photograph, a documented exception to §3 — the new outdoor background swallowed the face at 16px. **`og.png` renamed to `og-2.png`, and this is the important part:** the new card was going out at the old URL, and iMessage, Slack, X and LinkedIn all cache share images keyed on that URL in caches this site cannot reach. The deploy would have shipped a card nobody ever saw. **The filename must now change every time the image does.** `verify_site.py` gained an assertion that the `og:image` URL resolves to a file that ships, confirmed to fail before being trusted. **Video list:** title 01 became "Psalms 1 & 2" (plural: two psalms), "Religious But Not Saved" removed at Kyle's request, and the top bar now reads "*Title*, from my liked videos on YouTube" — the bare title let any entry read as Kyle's own words rather than a video he saved. **The label had to follow the link, not precede it**: written as a prefix first, `verify.py` rejected it at all five widths because it pushed the anchor 145px off the column edge. The test was right. Removing a video also broke `verify.py`'s `len(TITLES) == 32`, so **the video count is now derived** — the same trap the contrast counts were pulled out of on July 30. No assertion was weakened. |
+| **54** | **The builds section says something now, and the scope boundary moved to let it.** "Two systems, built for myself first" became **"Building in public / Because explaining it shows me what I understand"**, where **the eyebrow and the h2 are one sentence** — Kyle's structure, after he called a dozen conventional headings "a little dry". The old line was wrong twice: three builds render, not two, and "systems" does not describe kylecovan.com. Closes §7 item 1, blocked on Kyle since July 30. **An interim heading, "What I'm building, and what it's for", was written into these docs and never shipped** — he caught that the progressive tense claims everything below is still in flight. Four traps the final line survives, each of which killed a draft: **no count** (rots on the next build; the §49/§53 trap, except a heading fails silently and in public), **no owner** (client projects are coming here), **no expiring tense**, **no absolute** (an "until I've explained it" draft was cut because he sometimes explains from understanding he already had). **Words he rejected are recorded in §6 with his reasons** — "fool", "hide" ("that sounds a little deceptive"), "confirm" — as is **the whole HELP angle**, which he liked and then set aside himself after asking who actually reads this page: strangers from social, and **prospects he directs here**. A heading can't carry nuance, so "invites help" reads as need; the idea is a paragraph for a build page where evidence can be attached, not a heading. **Scope narrowed to match, in §1 and `CLAUDE.md`: the boundary is selling, not subject matter.** Showing client work here is in scope; rates, packages and any call to action are not. **New in `verify_site.py`, both confirmed to FAIL first:** every `aria-labelledby` target must resolve, and `#building` must still be named by its eyebrow *and* its heading — because the h2 is a fragment alone, the section names both ids, and a "tidy-up" back to one id would break the accessible name while the page still looked perfect. The targeted check asserts structure, not words, so either line can be rewritten without touching the test. Heading wrap measured at five widths: two lines desktop, three below 400px, **identical to the writing heading**. §7 gained item 9: decide whether the first client build belongs in this section at all, in front of a real example rather than in the abstract. |
 
 ---
 

@@ -158,6 +158,55 @@ with sync_playwright() as pw:
             }).filter(Boolean)""")
         note(not flush, f'{p}: headings have space above them',
              str(flush) if flush else '')
+
+        # Every aria-labelledby target must exist. Added August 4 with the new
+        # builds heading, which is the first place on this site where the
+        # eyebrow and the h2 are ONE SENTENCE: "Building in public." /
+        # "Because explaining it shows me what I understand." The section names
+        # both ids so a screen reader announces the whole thought instead of a
+        # heading that starts mid-sentence.
+        #
+        # The failure this catches is silent. Rename or drop an id and the page
+        # still renders perfectly; only the accessible name breaks, and no
+        # other assertion here looks at it.
+        aria = pg.evaluate(r"""() => [...document.querySelectorAll('[aria-labelledby]')]
+            .map(el => {
+                const ids = el.getAttribute('aria-labelledby').split(/\s+/).filter(Boolean);
+                return {
+                    el: el.tagName.toLowerCase() + (el.id ? '#' + el.id : ''),
+                    missing: ids.filter(id => !document.getElementById(id)),
+                    name: ids.map(id => (document.getElementById(id) || {}).textContent || '')
+                             .join(' ').replace(/\s+/g, ' ').trim(),
+                };
+            })""")
+        broken = [a for a in aria if a['missing']]
+        note(not broken, f'{p}: aria-labelledby targets all exist',
+             f'{len(aria)} labelled region(s)')
+        for a in broken: print('        ', a['el'], 'missing:', a['missing'])
+
+        # And specifically: the builds section must still be named by BOTH.
+        # The check above passes if someone "tidies" this back to naming only
+        # the heading, which would leave the section announcing itself as
+        # "Because explaining it shows me what I understand" — a fragment. This
+        # asserts the structure (eyebrow first, heading last) rather than the
+        # words, so Kyle can rewrite either line without touching the test.
+        if p == 'index.html':
+            bs = pg.evaluate(r"""() => {
+                const s = document.getElementById('building');
+                if (!s) return null;
+                const ids = (s.getAttribute('aria-labelledby') || '').split(/\s+/).filter(Boolean);
+                const els = ids.map(id => document.getElementById(id));
+                return {
+                    n: ids.length,
+                    first_is_eyebrow: !!(els[0] && els[0].classList.contains('eyebrow')),
+                    last_is_h2: !!(els[els.length - 1] && els[els.length - 1].tagName === 'H2'),
+                    name: els.map(e => e ? e.textContent : '').join(' ').replace(/\s+/g, ' ').trim(),
+                };
+            }""")
+            note(bool(bs) and bs['n'] == 2 and bs['first_is_eyebrow'] and bs['last_is_h2'],
+                 'builds section is named by its eyebrow AND its heading',
+                 bs['name'] if bs else 'no #building section')
+
         pg.close()
 
         # --- no horizontal overflow at 320px, on EVERY page ------------------
