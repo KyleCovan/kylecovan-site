@@ -14,41 +14,47 @@ inspiration: Andrej Karpathy
 # NOT RENDERED. Writing prompts for the prose below — see content.config.ts.
 prompts:
   - lead: The problem
-    rest: ANSWERED Aug 3, dictated, then edited by Kyle three times.
+    rest: ANSWERED Aug 3, dictated, then edited by Kyle four times.
   - lead: How it's structured
     rest: ANSWERED Aug 3 as the MANUAL workflow. There is no built system yet.
   - lead: Retrieval in practice
     rest: ANSWERED Aug 3 as manual retrieval. No LLM question-and-answer exists.
   - lead: What I'd do differently
-    rest: ANSWERED Aug 3 as what he WANTS. Now the LEAD section, by his call.
+    rest: ANSWERED Aug 3 as what he WANTS. The LEAD section, by his call.
   - lead: Where it goes next
     rest: ANSWERED Aug 3 — Substack or Medium, a newsletter. Aspirational tense.
 ---
 
 <!--
-DRAFT 4, August 3 — dictated by Kyle, shaped, then edited by him three times.
+DRAFT 5, August 3 — dictated by Kyle, shaped, then edited by him four times.
 
 He dictates and the job is to turn what he says into finished prose in his
 voice. That is a standing instruction for this page, not the usual "ask, don't
 draft" rule. It licenses SHAPING what he said, never adding what he didn't.
 
-TWO IMAGES, NOT THREE. Kyle cut the "lighting it on fire" line in draft 4 and
-restored the desk of Post-its, on the grounds that three images in one post was
-too many. Wind and desk survive. Do not put the fire line back.
+VOICE. Contractions throughout, at his request in draft 5, without forcing one
+into every clause. This agrees with handoff §6, which already required "don't"
+over "do not" page-wide. Plain words over precise ones: he rejected the draft 4
+paragraph about plain markdown files and lock-in as reading like an instruction
+manual, and rejected the backlinks/tags/graph paragraph as jargon a newcomer
+would bounce off. Both were rewritten in plain language rather than deleted,
+because the next section depends on them: "the things that drew me to Obsidian,
+I wasn't even doing" only lands if the reader knows what those things were.
 
-WRITTEN FOR HIM TO CHECK, not dictated: the Obsidian passages in "The problem"
-and the second paragraph of "How I was working". He said he knew what he was
-trying to say and could not articulate it, and asked for it filled in from what
-is actually true of Obsidian. Everything there traces to something he said (file
-management fatigue, it grouped notes without any AI in it, the gardener framing,
-the tools were more advanced than his use of them) plus factual Obsidian
-behaviour: plain local markdown, links that both ends know about, tags, a graph
-view. NO INVENTED SPECIFICS about how often he used a feature. If any of it
-misstates him, it is the first thing to cut.
+TWO IMAGES, NOT THREE. Kyle cut "lighting it on fire" in draft 4 and kept the
+wind and the desk. Do not put the fire line back.
 
-ORDER IS DELIBERATE. "What I want it to do" leads because Kyle asked for it: a
-visitor arrives not knowing what an LLM Wiki is, and that section answers it
-better than the backstory does.
+WRITTEN FOR HIM TO CHECK, not dictated: the Obsidian passages. He said he knew
+what he was trying to say and couldn't articulate it, and asked for it filled in
+from what is actually true of Obsidian. Everything traces to something he said
+(file management fatigue, it grouped notes without any AI in it, the gardener
+framing, the tools were more advanced than his use of them) plus real Obsidian
+behaviour. NO INVENTED SPECIFICS about how often he used a feature.
+
+THE ENDING IS A LOOP, by his design. "How I was working" now closes by naming
+the LLM Wiki as the thing that changes the story, and restates in one sentence
+what the lead section promised. That hands the reader to "Where it goes next"
+instead of stopping dead. Keep the loop if you edit the ending.
 
 EM DASHES. None in the prose. Kyle doesn't write with them, so they stay out of
 anything published in his voice. STRUCTURAL em dashes are fine and were left
@@ -64,21 +70,16 @@ exact trap the `prompts` array was pulled out of the rendered template to avoid
 on July 30. When retrieval works, this page earns the present tense and a real
 worked example.
 
-BULLETS, settled in draft 4. Kyle named the three he wanted kept and their
-order, then asked for a fourth about cleanup. Dropped: "cool names starting with
-C" (his call) and "what have I written about my family that I've had issues
-with" (dropped by omission when he re-listed the set, and worth leaving out of a
-public page anyway). The Ezekiel question comes from his very first dictation,
-where it was garbled and was left out of drafts 1 to 3 rather than guessed at.
-
-Earlier cuts, all his, which should not creep back:
-  - "there was no file system, just a pile of notes loosely connected by tags"
-  - "I wasn't using any of it to create new notes or to build knowledge out of"
-  - the to-do list and word-search examples of manual retrieval
-  - "Very rudimentary"
-  - "never referenced any of it" became "hardly referenced any of it"
-  - "everything I wrote" became "a lot of things I wrote", a smaller, truer claim
-  - the password note, dropped before he ever saw it: not worth publishing
+CUTS, all his, which should not creep back:
+  - the "names" file, names for bands and projects. His call in draft 5: nice
+    personal flair, but out of place.
+  - "But now things have changed" as a standalone line, replaced by the loop.
+  - "cool names starting with C" and the family question, from the bullets.
+  - the fire image; "there was no file system"; "I wasn't using any of it to
+    create new notes"; the to-do list and word-search retrieval examples;
+    "Very rudimentary"; "never referenced" softened to "hardly referenced";
+    "everything I wrote" softened to "a lot of things I wrote".
+  - the password note, dropped before he ever saw it: not worth publishing.
 -->
 
 ## What I want it to do
@@ -86,15 +87,18 @@ Earlier cuts, all his, which should not creep back:
 I want a large language model to connect my notes in a strategic way. File them
 by category. Link them in ways that actually mean something.
 
-I also want it working on what is already in there. Most of my notes came out in
-one piece because that is how the thought arrived, not because everything in
-them belonged together. So I want it to take a long note and break it into
-smaller ones, and pull an idea sitting three paragraphs down out into a note of
-its own, where it can be linked to and found instead of buried.
+I also want it working on what's already in there.
+
+A lot of my notes are one long dump. I wrote them in a single sitting, so three
+or four unrelated ideas can end up in the same file just because they showed up
+on the same day. I want it to break those apart, and pull an idea out of the
+middle of a long note into a place of its own where it can be linked to and
+found instead of buried.
 
 Then I want to ask the collection questions.
 
-- What have I written about the book of Ezekiel?
+- What Bible study notes do I have on the book of Matthew?
+- Show me a collection of quotes I've saved from pastors I respect.
 - What have I written on the topic of X that would make a good newsletter or
   post?
 - What are the ideas I've had for apps?
@@ -106,43 +110,49 @@ the writing starts working for me instead of just accumulating.
 
 ## The problem
 
-I was losing track of everything I wrote.
+I was losing track of things I wrote.
 
 I'd write a note and it would get filed away into oblivion. The next day I'd
 write something else, and the circle would continue. I wrote and wrote and
-hardly referenced any of it. It was the equivalent of writing on a piece of
-paper and throwing it into the wind. If I did ever see it again, that would be
-pretty amazing.
+hardly referenced any of it.
+
+It was the equivalent of writing on a piece of paper and throwing it into the
+wind. If I did ever see it again, that would be pretty amazing.
 
 That was my habit with a lot of things I wrote. I didn't post it anywhere, I
 didn't refine it. Just notes, journal entries, thoughts, ideas, Bible verses,
-and other things I thought were noteworthy. If it were on a desk it would have
-been a desk full of random papers and Post-its of different sizes, stacked on
-top of each other in no particular order.
+and other things I thought were noteworthy.
+
+If it were on a desk it would have been a desk full of random papers and
+Post-its of different sizes, stacked on top of each other in no particular
+order.
 
 I moved to Obsidian because I had file management fatigue. I didn't want to
-think about folders anymore. Everything stays a plain markdown file on my own
-computer, so there is no format to get locked into and nothing to migrate later.
+think about folders anymore, and I liked that everything I write stays on my own
+computer instead of living inside somebody else's app.
 
-What appealed to me past that was that it could connect notes on its own, with
-no AI in it at all. Link one note to another and both ends know about it, so a
-note can show you what points back at it. Tags and the graph give you groupings
-without having to build them by hand.
+What appealed to me past that was that Obsidian can connect notes on its own,
+with no AI in it at all. You link two notes together and both ends know about
+it, so over time those connections build into something you can follow.
 
 The other thing was how it was explained to me. Obsidian is a gardener's way of
-taking notes. You don't finish a note, you start one, and you come back and add
-to it, and it grows. Other apps let you do that too, but that framing is what
-made it click for me. Knowing it was all there was comforting enough.
+taking notes. You don't finish a note. You start one, then you come back and add
+to it, and it grows.
+
+Other apps let you do that too, but that framing is what made it click for me.
+Knowing it was all there was comforting enough.
 
 ## How I was working
 
-Create new note, title it, get the idea out in simple markdown. Headers,
+Create a new note, title it, get the idea out in simple markdown. Headers,
 subheaders, bullets. That was the whole system.
 
-Almost none of what drew me to Obsidian is what I actually did in it. I wasn't
-linking notes together. My tags were loose, and not something I could count on
-later. The gardener idea appealed to me and then I went back to starting a fresh
-note every time instead of tending the ones I already had.
+The things that drew me to Obsidian in the first place, I wasn't even doing. I
+wasn't linking notes together. My tags were loose, and not something I could
+count on later.
+
+The gardener style of making notes appealed to me, but I just went back to
+creating fresh notes every time instead of tending to the ones I already had.
 
 Getting anything back out relied on my memory. I'd search a hashtag, or search
 for a note by name if I remembered the name. So the only notes I ever recalled
@@ -152,14 +162,15 @@ lot of those got lost too.
 Mostly I just left tabs open on what I was working on and clicked back to them.
 I knew the tools were far more advanced than the way I was using them.
 
-One file kept growing. It was called "names": names for bands, names for
-projects, just names. I like words, so I keep adding to it.
-
-But now things have changed.
+But now things are starting to change, thanks to the LLM Wiki I'm beginning to
+implement: something that reads back through what I've already written, breaks
+it up where it should be broken up, connects it, and answers questions about it.
 
 ## Where it goes next
 
 Next, I'm hoping to add a way to push out to Substack or Medium, or both, and to
 start a newsletter built around the things that interest me and the places they
-converge. If the way I think is interesting to anyone else, I'd like to give
-them a place to follow along.
+converge.
+
+If the way I think is interesting to anyone else, I'd like to give them a place
+to follow along.
