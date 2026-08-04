@@ -45,7 +45,7 @@ in here needs a footnote, it needs a clause instead.
 I've been building an AI operating system inside my LLM wiki (my Obsidian
 vault), which is also where a good portion of what I've written lives. I'd
 already had a first go at building it, but before I changed anything else in
-there, I stopped and asked a different question: is keeping my AI OS inside my
+there, I stopped and asked a different question: Is keeping my AI OS inside my
 LLM wiki a good idea? And if it isn't, why not?
 
 The answer was yes, and the reasoning stuck with me. The whole point of a second
