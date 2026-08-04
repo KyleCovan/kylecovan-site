@@ -89,6 +89,9 @@ CUTS, all his, which should not creep back:
 
 ## What I want it to do
 
+For me this is a second brain. The wiki is the part I plan to publish: a
+cleaned-up slice of it that anyone can ask questions of, not just me.
+
 I want a large language model to connect my notes in a strategic way. File them
 by category. Link them in ways that actually mean something.
 
