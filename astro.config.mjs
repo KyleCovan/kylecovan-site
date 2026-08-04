@@ -28,16 +28,16 @@ const SITE = 'https://kylecovan.com';
  * Frontmatter is read here with fs rather than through astro:content because
  * this runs at config load, before the content layer exists.
  */
-const frontmatter = (text) => (text.match(/^---\r?\n([\s\S]*?)\r?\n---/) || ['', ''])[1];
+const frontmatter = (/** @type {string} */ text) => (text.match(/^---\r?\n([\s\S]*?)\r?\n---/) || ['', ''])[1];
 
 // Top-level scalars only. The pattern is anchored and rejects leading spaces,
 // so the indented keys inside the `prompts` array can never match by accident.
-const field = (fm, key) => {
+const field = (/** @type {string} */ fm, /** @type {string} */ key) => {
   const m = fm.match(new RegExp(`^${key}:[ \\t]*['"]?([^'"\\n#]+)`, 'm'));
   return m ? m[1].trim() : null;
 };
 
-const collection = (dir) => {
+const collection = (/** @type {string} */ dir) => {
   const base = new URL(`./src/content/${dir}/`, import.meta.url);
   return readdirSync(base)
     .filter((f) => f.endsWith('.md'))
@@ -49,8 +49,8 @@ const collection = (dir) => {
 
 // ISO dates sort lexically, which is the whole reason the schema authors them
 // as ISO in the first place.
-const day = (d) => (d ? d.slice(0, 10) : null);
-const newest = (...dates) => dates.filter(Boolean).sort().pop() ?? null;
+const day = (/** @type {string | null} */ d) => (d ? d.slice(0, 10) : null);
+const newest = (/** @type {(string | null | undefined)[]} */ ...dates) => dates.filter(Boolean).sort().pop() ?? null;
 
 const posts = collection('writing')
   .map((e) => ({
@@ -66,6 +66,8 @@ const builds = collection('builds').map((e) => ({
   updated: day(field(e.fm, 'updated')),
 }));
 
+/** Keyed by absolute URL, exactly as @astrojs/sitemap emits it. */
+/** @type {Record<string, string>} */
 const LASTMOD = {};
 
 for (const b of builds) {
@@ -76,7 +78,11 @@ for (const b of builds) {
 // Only an UNtagged post gets its own URL. A tagged one renders in full on its
 // build page and is merely listed in the writing index — one copy of any text.
 for (const p of posts.filter((p) => !p.build)) {
-  LASTMOD[`${SITE}/writing/${p.id}/`] = p.date;
+  // `posts` is already filtered to entries that have a date, so this guard
+  // never fires. It is written out because a `.filter()` doesn't narrow the
+  // type, and the alternative is asserting the invariant instead of checking
+  // it — every other write to LASTMOD guards the same way.
+  if (p.date) LASTMOD[`${SITE}/writing/${p.id}/`] = p.date;
 }
 
 const buildsIndex = newest(...builds.map((b) => LASTMOD[`${SITE}/builds/${b.id}/`]));
