@@ -61,6 +61,13 @@ scripts/verify_site.py        site-level suite
   July 30 and rejected — see handoff §7.
 - **`build:` is a `reference('builds')`.** A typo fails the build instead of
   silently orphaning the entry.
+- **Substantively rewriting a post body means bumping its `date` / `updated`
+  frontmatter.** The sitemap's `<lastmod>` is derived from frontmatter, not from
+  build time (handoff §51), so an edited body with an unchanged date tells Google
+  nothing changed and delays the recrawl. Typo and whitespace fixes don't count.
+  **No test catches this** — `verify_site.py` checks each date against the
+  frontmatter it describes, which catches a *wrong* date but never a *stale* one,
+  because "did the body change since this date?" is a git-history question.
 - **Never render a build's `prompts` array.** Those were the old "What the log
   will cover" bullets — a list of promises on a page with nothing behind it.
   They are now writing prompts for the prose body.
