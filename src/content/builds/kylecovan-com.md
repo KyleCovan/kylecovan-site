@@ -47,7 +47,7 @@ video from a list and swap it into the link at the top.
 
 It's an Astro project. The CSS exists once, in one stylesheet, and gets inlined
 into every page when the site is built. Each thing I've built and everything I
-write is a Markdown file — adding one file is the entire publishing workflow,
+write is a Markdown file. Adding one file is the entire publishing workflow,
 because the page, the index, the structured data, the sitemap and the RSS feed
 are all generated from it.
 
@@ -104,3 +104,25 @@ it instead of opinion.
 
 Most of these were found by a test or by looking at a picture of the page, not
 by reading the code and thinking about it.
+
+## Where it goes next
+
+Dark mode is decided and not built yet.
+
+It'll follow whatever the device is already set to, with no toggle on the page.
+A toggle needs a second piece of JavaScript and somewhere to remember the
+choice, and this site runs exactly one script. The honest cost is that a visitor
+doesn't get to override it, and I took that trade knowingly.
+
+It's also a real design pass rather than an inverted palette. Every colour needs
+a dark counterpart, and the terracotta was darkened specifically to pass
+contrast against cream.
+
+Then there's getting it found. The sitemap now carries a real date for every
+page, taken from the file that page is built from rather than stamped on at
+deploy time. Submitting it to Search Console is the last launch task still
+sitting open from when the domain went live.
+
+And the writing itself. That section is only a few entries old. Most of what's
+here is about what I've built rather than what I think, and I'd like that to
+even out.

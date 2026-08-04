@@ -677,11 +677,16 @@ to put in a build log.
 1. **Google Search Console + sitemap submission** — `docs/deploy-status.md`
    Step 5. Not started. The one remaining launch task.
 2. **A DMARC record.** There is currently none. See `docs/deploy-status.md`.
-3. **"What broke" for Project 01.** Usually the most valuable part of a build
-   log and the part everyone skips.
-4. **Project 02's first entry.** Its `<p class="log-status">` is replaced by
-   entries the moment a Markdown file with `build: second-brain` appears in
-   `src/content/log/`. (The field was `project:` before July 30.)
+3. ~~**"What broke" for Project 01.**~~ **Done August 3, 2026.** Dictated by
+   Kyle. He answered it with his own understanding breaking down and his working
+   habits, not with software failures, and the section is ordered to keep it
+   that way. See the note in `src/content/builds/personal-ai-os.md`.
+4. ~~**Project 02's first entry.**~~ **Done August 3, 2026** —
+   "Four AI operating systems in one vault, and I only knew about one". The
+   `log-status` line on `/builds/llm-wiki/` disappeared on its own the moment
+   the file existed. (Note the stale references this entry used to carry: the
+   field is `build:`, the value is `llm-wiki` not `second-brain`, and entries
+   live in `src/content/writing/`, not `src/content/log/`.)
 5. **Restore the Tapo Canyon link** when that site resolves.
 6. **Dark mode — decided, deferred.** **Automatic via `prefers-color-scheme`,
    no toggle.** A toggle needs a second executing script plus persistence,
