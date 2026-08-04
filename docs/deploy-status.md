@@ -211,15 +211,27 @@ time, and the cause was the measuring instrument, not the zone.
 
 ---
 
-## Step 5 — Turn on the feedback loop — NOT DONE
+## Step 5 — Turn on the feedback loop — DONE August 3, 2026
 
 - **Cloudflare Analytics** — already on, dashboard → the Pages project.
   Server-side, so nothing on the page and no break to zero-external-requests.
-- **Google Search Console** — search.google.com/search-console, add
-  `kylecovan.com` as a **Domain** property, verify with the DNS TXT record
-  Cloudflare adds in a couple of clicks (now that Cloudflare runs DNS, Search
-  Console can often do this automatically), then submit
-  `https://kylecovan.com/sitemap-index.xml`.
+- ~~**Google Search Console**~~ — **done.** `kylecovan.com` is verified as a
+  **Domain** property and `https://kylecovan.com/sitemap-index.xml` is
+  submitted.
+
+  **Submit the full URL, not a path.** A Domain property's "Add a new sitemap"
+  field has no greyed-out prefix, so `sitemap-index.xml` on its own is rejected
+  with *"Invalid sitemap address."* That check runs in the browser before
+  Google fetches anything — it is never evidence that the sitemap is broken.
+
+  **And it is `sitemap-index.xml`, never `sitemap.xml`.** Astro's integration
+  emits the former. `/sitemap.xml` still answers **HTTP 200** because Cloudflare
+  Pages falls back to the home page for unknown paths — so it looks alive while
+  serving `text/html`, and Google would fail to parse it. Verified by checking
+  the content-type, not the status code.
+
+  Before submitting, all seven URLs in the sitemap were confirmed to return 200,
+  and the deployed XML was confirmed byte-identical to the local `dist/` build.
 
 **Worth doing at the same time, while the DNS knowledge is fresh:**
 
