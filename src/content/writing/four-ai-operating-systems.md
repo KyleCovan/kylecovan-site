@@ -42,11 +42,11 @@ the post now explains it in the same sentence rather than assuming. If a term
 in here needs a footnote, it needs a clause instead.
 -->
 
-I've been building an AI operating system inside my Obsidian vault, which is
-also where a good portion of what I've written lives. I'd already had a first go
-at building it. But before I changed anything else in there, I stopped and asked
-a different question: is keeping them in the same place actually a good idea,
-and if it isn't, tell me why not.
+I've been building an AI operating system inside my LLM wiki (my Obsidian
+vault), which is also where a good portion of what I've written lives. I'd
+already had a first go at building it, but before I changed anything else in
+there, I stopped and asked a different question: is keeping my AI OS inside my
+LLM wiki a good idea? And if it isn't, why not?
 
 The answer was yes, and the reasoning stuck with me. The whole point of a second
 brain is that the context sits next to the thing it's about. My operating system
@@ -107,8 +107,8 @@ notes rather than hold anything themselves.
 
 If there's one thing worth taking from this, it isn't the cleanup. It's that I
 asked whether the idea was any good before I asked for more of it to be built,
-and I left room for the answer to be no. That question is what found the other
-three.
+and I left room for the answer to be no. That question is what turned up the
+other three roots I didn't know I had.
 
 I don't understand all of it yet. I know what the vault map is doing and I'm
 still catching up on the rest. I'm not going to let that slow me down. I'd
