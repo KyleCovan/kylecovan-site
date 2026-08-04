@@ -22,9 +22,17 @@ The portrait is NOT pre-masked. handoff §3: the square and its 3px radius live
 entirely in CSS, so the source stays a plain square and the shape stays
 editable without a re-export.
 
-The favicon is cut from THE SAME source as the portrait, deliberately. Two
-separately tuned crops of one face drift apart over time, and the July 29
-favicon rebuild exists because that had already happened once.
+THE FAVICON HAS ITS OWN SOURCE, as of August 3, and this is a deliberate
+exception to handoff §3. That rule said to cut the favicon from the same crop as
+the portrait, because two separately tuned crops of one face drift apart, and
+the July 29 rebuild existed because that had already happened.
+
+What changed: the new portrait has an outdoor background, and at 16px the fence
+and foliage swallowed the face entirely. Rendered at 16, 32 and 64 before
+deciding. So `headshot-favicon.jpg` is a tighter crop of THE SAME PHOTOGRAPH,
+supplied by Kyle for this purpose. That is the distinction that keeps §3's
+intent intact: one photograph, framed twice on purpose, rather than two photos
+drifting apart unattended. If the portrait is ever replaced, replace both.
 
 ABOUT og.png. This script does NOT redraw the card. It paints over the photo
 box and composites the new portrait into it, leaving every text pixel of the
@@ -43,6 +51,8 @@ from PIL import Image, ImageDraw
 
 ROOT = pathlib.Path(__file__).parent
 SOURCE = ROOT / 'headshot.jpg'
+# Same photograph, cropped tighter. See the note above before merging the two.
+FAVICON_SOURCE = ROOT / 'headshot-favicon.jpg'
 
 # The cream the whole site is built on. verify.py asserts contrast against this
 # exact triple, so it is not a value to nudge by eye.
@@ -59,9 +69,9 @@ FAVICON_PX = 64     # legible at 32, mush at 16. Known and accepted.
 WEBP_QUALITY = 80
 
 
-def load_square():
+def load_square(path=SOURCE):
     """The source must be square. The shape is CSS's job, the framing is not."""
-    im = Image.open(SOURCE).convert('RGB')
+    im = Image.open(path).convert('RGB')
     w, h = im.size
     if w != h:
         side = min(w, h)
@@ -95,7 +105,10 @@ def main():
     (ROOT / 'src/data/portrait.txt').write_text(uri)
     print(f'  portrait.txt  {PORTRAIT_PX}px webp q{WEBP_QUALITY}  {len(uri):,} chars')
 
-    favicon = src.resize((FAVICON_PX, FAVICON_PX), Image.LANCZOS)
+    fav_src = load_square(FAVICON_SOURCE) if FAVICON_SOURCE.exists() else src
+    if not FAVICON_SOURCE.exists():
+        print('  ! no headshot-favicon.jpg, falling back to the portrait crop')
+    favicon = fav_src.resize((FAVICON_PX, FAVICON_PX), Image.LANCZOS)
     uri = data_uri(favicon, 'PNG', optimize=True)
     (ROOT / 'src/data/favicon.txt').write_text(uri)
     print(f'  favicon.txt   {FAVICON_PX}px png            {len(uri):,} chars')

@@ -115,10 +115,23 @@ const fallback = videos[0];
       </nav>
       {showWatching && (
         <p class="watching">
+          {/* "on YouTube" names the destination, which this row never did: it
+              was a bare sentence in the top bar with nothing to say it was a
+              link at all, let alone one leaving the site.
+
+              THE LABEL MUST FOLLOW THE LINK, NOT PRECEDE IT. Written as a
+              "Watching on YouTube:" prefix first, and verify.py rejected it at
+              all five widths: the assertion measures the ANCHOR's left edge,
+              and a prefix pushed it 145px inboard, off the column edge that
+              every heading below shares. That is §3's left-edge rule, and the
+              test was right. Trailing text leaves the link flush left.
+
+              The inline script below replaces only the anchor's text, so this
+              suffix survives the random swap. */}
           <a id="watching-link"
              href={fallback.url}
              target="_blank"
-             rel="noopener noreferrer">{fallback.title}</a>
+             rel="noopener noreferrer">{fallback.title}</a> on YouTube
         </p>
       )}
     </div>
