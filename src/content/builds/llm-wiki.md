@@ -14,86 +14,60 @@ inspiration: Andrej Karpathy
 # NOT RENDERED. Writing prompts for the prose below — see content.config.ts.
 prompts:
   - lead: The problem
-    rest: ANSWERED Aug 3, dictated, then edited by Kyle line by line.
+    rest: ANSWERED Aug 3, dictated, then edited twice by Kyle.
   - lead: How it's structured
     rest: ANSWERED Aug 3 as the MANUAL workflow. There is no built system yet.
   - lead: Retrieval in practice
     rest: ANSWERED Aug 3 as manual retrieval. No LLM question-and-answer exists.
   - lead: What I'd do differently
-    rest: ANSWERED Aug 3 as what he WANTS. Folded into "What I want it to do".
+    rest: ANSWERED Aug 3 as what he WANTS. Now the LEAD section, by his call.
   - lead: Where it goes next
-    rest: ANSWERED Aug 3 — Substack or Medium, a newsletter. Folded in by Kyle.
+    rest: ANSWERED Aug 3 — Substack or Medium, a newsletter.
 ---
 
 <!--
-DRAFT, August 3 — shaped from Kyle's dictated answers, then edited by Kyle,
-then cut down at his request.
+DRAFT 3, August 3 — dictated by Kyle, shaped, then edited by him twice.
 
-He asked for this explicitly: he dictates, and the job is to turn what he says
-into finished, readable prose in his voice. That is a standing instruction for
-this page, not the usual "ask, don't draft" rule. It licenses SHAPING what he
-said, never adding what he didn't.
+He dictates and the job is to turn what he says into finished prose in his
+voice. That is a standing instruction for this page, not the usual "ask, don't
+draft" rule. It licenses SHAPING what he said, never adding what he didn't.
 
-NO EM DASHES IN THIS PROSE. Kyle asked for them out on August 3. handoff §6
-already banned them in the home-page paragraphs and recorded that he had been
-told and had not asked for a sweep; this is him asking, at least here. Do not
-reintroduce them, and do not "fix" a comma splice by reaching for one.
+ORDER IS DELIBERATE. "What I want it to do" leads because Kyle asked for it: a
+visitor arrives not knowing what an LLM Wiki is, and that section answers it
+better than the backstory does. Before the reorder the page spent 250 words on
+history before saying what the thing is for. The past-tense sections now read as
+the reason rather than the setup, which is why "But now things have changed"
+moved to the end of "How I was working" — it is the hinge into the future, and
+sitting mid-narrative it pointed the wrong way.
 
-NOT BUILT. Asked directly on August 3 whether LLM Wiki exists, Kyle said no: he
-is building it now. That is why the problem and the workflow are past tense and
-the model is written as intent, and it is not a style choice to be tidied away
-later. Writing this page in the present tense would put promises on a page with
-nothing behind them, the exact trap the `prompts` array was pulled out of the
-rendered template to avoid on July 30. When the retrieval layer works, this page
-gets rewritten in the present tense and earns a real worked example.
+EM DASHES. None in the prose. Kyle clarified August 3: he doesn't write with
+them, so they stay out of anything published under his name. STRUCTURAL em
+dashes are fine and were explicitly left alone (the `.log-status` line, the
+one-liners). handoff §6 banned them in the home-page paragraphs and noted he had
+not asked for a sweep; this is the sweep, for prose only.
 
-His analogies (lighting it on fire, paper thrown into the wind, the desk of
-stacked Post-its) are verbatim and should survive any future edit. They are the
-best writing on the page.
+NOT BUILT. Asked directly on August 3, Kyle confirmed LLM Wiki does not exist
+yet: he is building it. That is why everything except the lead section is past
+tense and the model is written as intent. It is not a style choice to be tidied
+away later. Present tense here would put promises on a page with nothing behind
+them, the exact trap the `prompts` array was pulled out of the rendered template
+to avoid on July 30. When retrieval works, this page earns the present tense and
+a real worked example.
 
-Kyle cut these, and they should not creep back:
+CUT BY KYLE in draft 3, flagged to him rather than restored:
+  - the desk of random papers and Post-its stacked in no particular order. It
+    was the strongest image on the page and he dropped it on a re-read. If that
+    was a dictation skip rather than a cut, it goes back in paragraph three of
+    "The problem".
+Earlier cuts, also his, which should not creep back:
   - "there was no file system, just a pile of notes loosely connected by tags"
   - "I wasn't using any of it to create new notes or to build knowledge out of"
   - the to-do list and word-search examples of manual retrieval
+  - "Very rudimentary"
+  - "never referenced any of it" became "hardly referenced any of it"
   - "everything I wrote" became "a lot of things I wrote", a smaller, truer claim
   - the password note, dropped before he ever saw it: not worth publishing
 -->
-
-## The problem
-
-I was losing track of everything I wrote.
-
-I'd write a note and it would get filed away into oblivion. The next day I'd
-write something else, and the circle would continue. I wrote and wrote and never
-referenced any of it. It was the equivalent of writing something, lighting it on
-fire, and never seeing it again. Or writing on a piece of paper and throwing it
-into the wind. If I ever saw it again, that would be pretty amazing.
-
-That was my habit with a lot of things I wrote. I didn't post it anywhere. I
-didn't refine it. Just notes, journal entries, thoughts, ideas, Bible verses,
-and other things I thought were noteworthy. If it were on a desk it would have
-been a desk full of random papers and Post-its of different sizes, stacked on
-top of each other in no particular order.
-
-I moved to Obsidian because I had file management fatigue. Knowing it was all
-there was comforting.
-
-## How I was working
-
-Click new note, title it, get the idea out in simple markdown. Headers,
-subheaders, bullets. That was the whole system.
-
-Getting anything back out relied on my memory. I'd search a hashtag, or search
-for a note by name if I remembered the name. So the only notes I ever recalled
-were the ones I already knew I had, usually the most recent ones. Eventually a
-lot of those got lost too.
-
-Mostly I just left tabs open on what I was working on and clicked back to them.
-Very rudimentary. I knew the tools were far more advanced than the way I was
-using them.
-
-One file kept growing. It was called "names": names for bands, names for
-projects, just names. I like words, so I'd keep adding to it.
 
 ## What I want it to do
 
@@ -102,7 +76,7 @@ by category. Link them in ways that actually mean something.
 
 Then I want to ask the collection questions.
 
-- What are some of the ideas I've had for apps?
+- What are the ideas I've had for apps?
 - What are some cool names I've come up with that start with the letter C?
 - What have I written about my family that I've had issues with in the past?
 - What have I written on the topic of X that would make a good newsletter or
@@ -111,6 +85,44 @@ Then I want to ask the collection questions.
 Right now the notes only flow one direction. I put ideas in. I want to put
 questions in too, and pull back out the thinking I already did and forgot, so
 the writing starts working for me instead of just accumulating.
+
+## The problem
+
+I was losing track of everything I wrote.
+
+I'd write a note and it would get filed away into oblivion. The next day I'd
+write something else, and the circle would continue. I wrote and wrote and
+hardly referenced any of it. It was the equivalent of writing something,
+lighting it on fire and never seeing it again, or writing on a piece of paper
+and throwing it into the wind. If I ever saw it again, that would be pretty
+amazing.
+
+That was my habit with a lot of things I wrote. I didn't post it anywhere, I
+didn't refine it. Just notes, journal entries, thoughts, ideas, Bible verses,
+and other things I thought were noteworthy.
+
+I moved to Obsidian because I had file management fatigue. Knowing it was all
+there was comforting enough for me.
+
+## How I was working
+
+Create new note, title it, get the idea out in simple markdown. Headers,
+subheaders, bullets. That was the whole system.
+
+Getting anything back out relied on my memory. I'd search a hashtag, or search
+for a note by name if I remembered the name. So the only notes I ever recalled
+were the ones I already knew I had, usually the most recent ones. Eventually a
+lot of those got lost too.
+
+Mostly I just left tabs open on what I was working on and clicked back to them.
+I knew the tools were far more advanced than the way I was using them.
+
+One file kept growing. It was called "names": names for bands, names for
+projects, just names. I like words, so I keep adding to it.
+
+But now things have changed.
+
+## Where it goes next
 
 Next is a way to push out to Substack or Medium, and a newsletter built around
 the things that interest me and the places they converge. If the way I think is
