@@ -1,7 +1,9 @@
 ---
 name: Personal AI OS
 order: 1
-oneLiner: An AI operating system that runs quietly in the background like a digital assistant, flagging opportunities and spotting bottlenecks before they become real problems.
+# A colon inside an unquoted YAML scalar starts a mapping, which fails the
+# build. Quoted so the one-liner can use one. This is not a style preference.
+oneLiner: "An AI operating system that runs quietly in the background like a digital assistant: keeping me on track, strategizing with me, flagging opportunities, and spotting bottlenecks before they become real problems."
 # Sitemap <lastmod>. Seeded from this file's last commit date, not invented.
 updated: 2026-07-30
 # Held, not displayed. Kyle added "Nate Herk style" as a subtitle to credit where
@@ -51,7 +53,7 @@ that day for anything published in his voice.
 
 ## What it is
 
-An AI operating system has the tools you already use linked into it, so you are
+An AI operating system has the tools you already use linked into it, so you're
 not clicking around a browser all day. Gmail, Google Calendar, Granola, Slack,
 Instagram. Instead of going to each one, you work from a single place.
 
@@ -60,16 +62,23 @@ better at helping me organize what I already do, and at surfacing things I don't
 do yet. It takes a rough idea and turns it into a working project, and it helps
 me get projects out the door instead of piling ideas up.
 
-The structure of it came from Nate Herk. He'd put a repo out publicly, so I
-started from that instead of from a blank page. It gave me the scaffolding, and
-more than that, a direction to build in. What I've made is my own now, but the
-shape of it is his.
+The structure of it came from Nate Herk. He'd put a repo out publicly, so
+instead of starting from a blank page I started from his. It gave me the
+scaffolding and, more than that, a direction to build in. I've shaped it around
+how I work since then, but the foundation is his, and I wouldn't have gotten off
+the ground without it.
 
 ## How it's built
 
-It lives on my own computer. Everything in it is Markdown files, which keeps it
-light. An LLM reads it and runs it, in my case Claude. The files sit in my
-Obsidian vault.
+It lives on my own computer. Everything in it is Markdown files, which are just
+plain text with a little formatting on top.
+
+That's what keeps it light. There's no database underneath it and no app it has
+to run inside. I can open any piece of it in any text editor, read it myself,
+and change it by hand if I want to.
+
+An LLM reads it and runs it, in my case Claude. The files sit in my Obsidian
+vault.
 
 It reaches Gmail, Calendar and OBS through MCP servers and APIs, and it doesn't
 only read them. It writes back.
