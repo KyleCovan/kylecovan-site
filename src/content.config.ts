@@ -64,6 +64,13 @@ const writing = defineCollection({
     // and the post gets its own URL. `reference` means a typo fails the BUILD
     // rather than silently orphaning the post.
     build: reference('builds').optional(),
+    // Free text, NOT a reference, and that is the whole point. `build` above is
+    // validated, so tagging a draft to a project that has no build page yet fails
+    // the site build. Queueing content must never force a page into existence:
+    // Kyle can describe a new project today and have posts queued for it before
+    // any page exists. NOT RENDERED anywhere — it is a holding label. When the
+    // build page is eventually created, add `build:` and retire this.
+    project: z.string().optional(),
     // Free text, not an enum. These come from Kyle's chat-to-obsidian skill,
     // which writes them when a note is captured out of a conversation. An enum
     // here would reject a valid vault file over a value this repo hasn't seen
