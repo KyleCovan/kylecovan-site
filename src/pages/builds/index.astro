@@ -38,9 +38,19 @@ const fmt = (d: Date) =>
 const label = (n: number) => `Project ${String(n).padStart(2, '0')}`;
 
 const title = 'Building in public — Kyle Covan';
+/* Opens with Kyle's h1, verbatim. Settled August 5; six rejected drafts and the
+   reasoning are in handoff §6, which is where copy decisions live — don't start a
+   second copy history here.
+
+   The length is the one thing worth knowing at this line: Base.astro feeds this
+   string to BOTH `description` and `og:description`, so it is also the
+   LinkedIn/X/Slack share card. Google rewrites descriptions at will; those
+   platforms print it verbatim. Nothing tests a meta description — verify_site.py
+   only checks it is unique per page — so this line fails silently and in public,
+   which is how the version it replaced stayed stale for four weeks. */
 const description =
-  'What Kyle Covan is building: a personal AI OS that ranks and tracks ideas, ' +
-  'and an AI-powered second brain. Documented as he goes.';
+  'The things I build, finished or not. AI systems, and whatever it takes to ' +
+  'run them, written up as it actually went, including what broke.';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -50,7 +60,10 @@ const jsonLd = {
       '@id': 'https://kylecovan.com/builds/#page',
       url: 'https://kylecovan.com/builds/',
       name: 'Building in public',
-      description: 'What Kyle Covan is building, documented as he goes.',
+      /* Reuses the const rather than carrying its own copy. It used to hold a
+         separately-worded description, which is a second string that can drift
+         stale with nothing testing it — exactly how the meta tag rotted. */
+      description,
       inLanguage: 'en',
       author: { '@id': 'https://kylecovan.com/#kyle' },
       /* Every name and url below is rendered on this page as a heading and a

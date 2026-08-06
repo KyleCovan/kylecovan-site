@@ -777,6 +777,70 @@ exactly what Kyle called this section in conversation. See the vocabulary note i
 §7: portfolio, blog and build log are the three internal words, for talking about
 the site rather than labelling it.
 
+### The `/builds` meta description — settled August 5
+
+> The things I build, finished or not. AI systems, and whatever it takes to run
+> them, written up as it actually went, including what broke.
+
+**137 characters, and the length is deliberate.** `Base.astro` feeds this one
+string to **both** `<meta name="description">` and `<meta property="og:description">`,
+so it is also the LinkedIn / X / Slack share card. Google rewrites descriptions
+freely and no character count prevents that — but those platforms print the string
+verbatim and never rewrite it, and a card is read by someone who has **not**
+clicked yet. That is why it is not the bare 36-character h1, which Kyle preferred
+until the share-card use was found.
+
+**It replaced a description that was stale twice over:** it named two builds when
+three rendered, and still said "Second Brain" four weeks after that build was
+renamed LLM Wiki. **Nothing tests a meta description** — `verify_site.py` only
+asserts it is unique per page — so this is a line that fails silently and in
+public. Same failure class as the headings in this section, and the reason the
+final version carries no count and no build names.
+
+**Rejections are evidence, not law.** Kyle's point, and he is right: *"This is a
+relative conversation, not an absolute one. And projects and things change."*
+Each entry below was correct for the conditions of August 5. Recheck it against
+what is true now before reusing **or** re-rejecting it — a line killed because the
+work was expanding becomes correct again if it stops. **What lasts is the reason,
+not the veto.**
+
+**This does not extend to rejections about character**, which do not expire:
+cutting "hide" (*"I'm not trying to hide anything. That sounds a little
+deceptive"*), cutting "confirm" for sounding pleased with himself, keeping the
+prayer line a petition rather than a claim. Those are recorded above and stay.
+
+Rejected, with Kyle's reasons:
+
+- **Naming or counting builds.** The original rotted twice over exactly this way.
+- **"what it is, how it's built, and what broke along the way"** — describes the
+  *sections of a write-up*, not what Kyle builds. He caught that it says nothing
+  about the subject: a stranger still cannot tell whether he builds software,
+  furniture or websites.
+- **The Ecclesiastes epigraph.** Rejected on **placement, never on content** —
+  this page already opens with the verse above the h1, by Kyle's design. In a
+  search result or a share card it is the same topical mismatch that keeps the
+  verse out of the h1 (see the epigraph note in §4), and a visitor reads it three
+  seconds after clicking anyway.
+- **"and the sites around them"** — *"around them"* makes websites an accessory,
+  and they are one of the two core builds. **The preposition was the problem, not
+  the noun**; swapping in "pieces" or "components" would have kept the demotion
+  and only made it vaguer.
+- **"AI systems, automations, and websites"** — a category list, and Kyle named
+  its expiry himself: the work is widening beyond those three, so the line would
+  go stale the same way its predecessor did.
+- **"Software, hardware, and the AI running through them"** — exhaustive and
+  genuinely rot-proof, but it **leads with categories not yet shipped**, so a
+  visitor arrives expecting a catalog and finds three write-ups. **AI leads
+  instead, deliberately.**
+
+**"Whatever it takes to run them" is the elastic clause** doing the work a list
+used to do. It absorbs new kinds of project without an edit, which is the whole
+point after two enumerated versions rotted.
+
+**The JSON-LD `CollectionPage` reuses this same const** rather than carrying its
+own copy. It used to hold a second, separately-worded description, which is one
+more string that can drift out of date with nothing testing it.
+
 ---
 
 ## 7. Open TODOs
