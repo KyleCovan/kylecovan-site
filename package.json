@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "verify": "python3 scripts/verify.py && python3 scripts/verify_site.py"
+    "verify": "./.venv/bin/python3 scripts/verify.py && ./.venv/bin/python3 scripts/verify_site.py"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
