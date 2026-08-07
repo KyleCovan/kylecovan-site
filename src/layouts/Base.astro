@@ -175,7 +175,11 @@ const fallback = videos[0];
   </main>
 
   <footer class="colophon">
-    <p>© <span>2026</span> Kyle Covan</p>
+    {/* Privacy sits in the footer, not the nav. The nav is four pillars of who
+        Kyle is and what he makes; a privacy policy is plumbing, and the footer
+        is where a reader looks for it. Adding a fifth pillar would also break
+        the masthead reasoning in handoff section 6. */}
+    <p>© <span>2026</span> Kyle Covan · <a href="/privacy/">Privacy</a></p>
     <p class="credit">Built in partnership with
       <a href="https://avatar.andrewng.org" target="_blank" rel="noopener noreferrer">AI Andrew Ng</a></p>
   </footer>

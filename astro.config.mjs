@@ -96,6 +96,21 @@ if (writingIndex) LASTMOD[`${SITE}/writing/`] = writingIndex;
 const home = newest(buildsIndex, writingIndex);
 if (home) LASTMOD[`${SITE}/`] = home;
 
+/* /privacy/ is the one page here that isn't generated from a collection, so it
+   has no frontmatter to age it. Its date still isn't invented: a privacy policy
+   has to show its effective date to the reader anyway, so that date is real
+   content, and it lives in src/data/privacy.json. The page renders it as the
+   visible "Last updated" line and this reads the same file for <lastmod>. One
+   date, two uses, no second copy to drift.
+
+   Read with fs like everything else in this block: config load happens before
+   the content layer exists, and a JSON import here would need an import
+   assertion for no benefit. */
+const privacyUpdated = day(
+  JSON.parse(readFileSync(new URL('./src/data/privacy.json', import.meta.url), 'utf8')).updated
+);
+if (privacyUpdated) LASTMOD[`${SITE}/privacy/`] = privacyUpdated;
+
 export default defineConfig({
   site: 'https://kylecovan.com',
 

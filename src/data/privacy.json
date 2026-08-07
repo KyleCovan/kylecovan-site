@@ -1,0 +1,4 @@
+{
+  "updated": "2026-08-06",
+  "_comment": "The privacy policy's effective date, in ONE place. It is read twice: src/pages/privacy.astro renders it as the visible 'Last updated' line, and astro.config.mjs reads it with fs at config load to set that URL's sitemap <lastmod>. Two copies of this date would drift, and a wrong <lastmod> costs the whole sitemap its credibility (see the note at the top of astro.config.mjs). Bump it whenever the policy's SUBSTANCE changes — not for a typo, same rule as a post's frontmatter date."
+}

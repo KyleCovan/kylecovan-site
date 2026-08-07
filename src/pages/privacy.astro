@@ -1,0 +1,127 @@
+---
+/**
+ * The privacy policy. Added August 6, 2026.
+ *
+ * THE COPY BELOW IS NOT KYLE'S. Along with 404.astro it is one of only two
+ * places on this site where that is true, and handoff section 6 is the reason
+ * that matters. It is here because a site with no privacy page at all is a gap
+ * a reader notices, and it is written to be replaced or corrected rather than
+ * defended. Kyle should read it as a claim he is making publicly.
+ *
+ * IT ALSO ADDRESSES THE READER AS "you", which nothing else on this site does.
+ * Section 6 rejected imperatives in the closing line for smuggling a "you" back
+ * in. That rule was about voice in Kyle's prose; a document explaining what
+ * happens when a person emails him cannot avoid the second person, and using it
+ * here does not license it anywhere else.
+ *
+ * EVERY FACTUAL CLAIM BELOW WAS VERIFIED AGAINST THE LIVE SITE on August 6,
+ * rather than assumed from how the site is built:
+ *   - no Set-Cookie header on /, /builds/ or /writing/
+ *   - no <form> element on any of the seven pages
+ *   - no external resource fetch: the portrait and favicon are data URIs, and
+ *     og-2.png is fetched by crawlers only, never by a visitor's browser
+ *   - outbound links go to exactly five hosts: youtube.com, youtu.be, x.com,
+ *     linkedin.com, avatar.andrewng.org
+ * If any of that stops being true, this page is now a false statement and has
+ * to change in the same commit. Nothing tests it.
+ *
+ * This is a plain description of what the site actually does. It is not legal
+ * advice and nobody with a licence has read it.
+ */
+import Base from '../layouts/Base.astro';
+import privacy from '../data/privacy.json';
+
+const title = 'Privacy — Kyle Covan';
+const description =
+  'What this site collects, which is nothing: no cookies, no analytics, no third-party scripts.';
+
+const fmt = (iso: string) =>
+  new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-US', {
+    month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC',
+  });
+
+/* A Person stub pointing at the home page's definition rather than redefining
+   Kyle — verify_site.py asserts every page other than the home page does this,
+   and that its @id resolves there. */
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://kylecovan.com/privacy/#page',
+      url: 'https://kylecovan.com/privacy/',
+      name: 'Privacy',
+      description,
+      inLanguage: 'en',
+      dateModified: privacy.updated,
+      author: { '@id': 'https://kylecovan.com/#kyle' },
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://kylecovan.com/#kyle',
+      name: 'Kyle Covan',
+      url: 'https://kylecovan.com/',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': 'https://kylecovan.com/privacy/#breadcrumbs',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Kyle Covan', item: 'https://kylecovan.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Privacy', item: 'https://kylecovan.com/privacy/' },
+      ],
+    },
+  ],
+};
+---
+<Base title={title} description={description} path="/privacy/" jsonLd={jsonLd}>
+
+  <header class="masthead-page">
+    <h1>Privacy</h1>
+  </header>
+
+  <p class="lede">This site collects nothing about you. The rest of this page
+    explains what that means and where the exceptions are.</p>
+
+  <h2>What this site does not do</h2>
+  <p>There are no cookies, no analytics, no tracking pixels, no advertising, and
+    no third-party scripts. There is no form to fill in and no newsletter to
+    join. Every page loads as a single file — the portrait and the icon are
+    embedded in it, so your browser never fetches anything from another server
+    while reading.</p>
+  <p>One small script runs, and only on the home page. It picks a video title
+    at random from a list built into the page. It reads nothing and sends
+    nothing anywhere.</p>
+
+  <h2>What the host sees</h2>
+  <p>The site is served by Cloudflare Pages. Like any web host, it processes
+    the ordinary details of a request — the IP address it came from, the browser
+    making it, and the page asked for — in order to deliver the site and protect
+    it from abuse. I don't run analytics on top of that, and I don't build
+    profiles of visitors.</p>
+
+  <h2>If you email me</h2>
+  <p>Writing to me sends an email, which lands in my mailbox with my email
+    provider, Google Workspace. I read it and I reply. I keep the correspondence
+    the way anyone keeps their email. I won't add you to a mailing list, because
+    there isn't one, and I won't pass your address to anyone else.</p>
+
+  <h2>Links away from here</h2>
+  <p>This site links out to YouTube, X, LinkedIn, and one page on
+    avatar.andrewng.org. Once you follow a link you're on someone else's site,
+    under their privacy policy rather than this one.</p>
+
+  <h2>AI and this writing</h2>
+  <p>The <a href="/robots.txt">robots.txt</a> file grants search engines and AI
+    systems permission to index this site, to draw on it when answering
+    questions, and to train on it. That's a deliberate choice about my own
+    writing. It says nothing about you, because there is nothing about you here
+    to give away.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes in substance, the date below changes with it.</p>
+
+  <p class="entry-date">Last updated {fmt(privacy.updated)}</p>
+
+  <p class="more"><a href="/">Back to the home page</a></p>
+
+</Base>
