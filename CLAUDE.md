@@ -87,8 +87,12 @@ scripts/verify_site.py        site-level suite
 - **The share card's filename is versioned (`og-2.png`) and must change every
   time the image does.** iMessage, Slack, X and LinkedIn cache share cards by
   image URL, so reusing a filename means nobody ever sees the new card. Update
-  all four references in `Base.astro` and `index.astro`; `verify_site.py`
-  asserts the `og:image` URL resolves to a file that ships.
+  **all five** references: `Base.astro` (×2), `index.astro` (×2), and
+  `writing/[post].astro` (×1, the `BlogPosting.image`, added August 6).
+  `verify_site.py` asserts the `og:image` URL resolves to a file that ships —
+  but only the `og:image`, so the other four can go stale silently. Five
+  hardcoded copies of one filename is the actual defect; a single shared
+  constant is the fix, and it is a deliberate refactor rather than a drive-by.
 - **The card's typography cannot be regenerated.** `build_assets.py` only
   replaces the photo inside it. Changing its *words* needs a design source that
   is still missing from this repo.

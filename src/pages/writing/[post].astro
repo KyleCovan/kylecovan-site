@@ -41,6 +41,21 @@ const jsonLd = {
       headline: post.data.title,
       datePublished: iso(post.data.date),
       inLanguage: 'en',
+      /* The share card, and this is the ONE claim on the page that is not
+         backed by something a visitor sees — so it needs its justification
+         written down. Google's Article guidance wants a representative image,
+         and `Base.astro` already declares this exact file as `og:image` and
+         `twitter:image` for this page. Naming it here says the same thing to a
+         third parser; it does not invent a new claim. Any other value would,
+         because these posts carry no images.
+
+         FIFTH REFERENCE TO `og-2.png`. The other four are in `Base.astro` (x2)
+         and `index.astro` (x2). The filename is versioned and MUST change every
+         time the picture does — a stale card URL is cached forever by iMessage,
+         Slack, X and LinkedIn — so a version bump has to sweep five places now,
+         not four. CLAUDE.md's count was updated in the same commit. The real fix
+         is one shared constant; that is a deliberate refactor, not a drive-by. */
+      image: 'https://kylecovan.com/og-2.png',
       author: { '@id': 'https://kylecovan.com/#kyle' },
       publisher: { '@id': 'https://kylecovan.com/#kyle' },
     },
