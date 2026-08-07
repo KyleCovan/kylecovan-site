@@ -147,7 +147,10 @@ const jsonLd = {
           <p class="log-status">Build log — first entry coming soon.</p>
         )}
 
-        <p class="more"><a href={`/builds/${b.id}/`}>Read more</a></p>
+        {/* Names its destination — see the note beside the matching link on the
+            home page. The two must stay in step: they were identical labels
+            pointing at six different pages, which is what made them a problem. */}
+        <p class="more"><a href={`/builds/${b.id}/`}>Read more about {b.data.name}</a></p>
       </article>
     );
   })}

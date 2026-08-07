@@ -204,7 +204,17 @@ const jsonLd = {
         <p class="project-index">{buildLabel(b.data.order)}</p>
         <h3 class="project-title">{b.data.name}</h3>
         <p class="one-liner">{b.data.oneLiner}</p>
-        <p class="more"><a href={`/builds/${b.id}/`}>Read more</a></p>
+        {/* "Read more about <name>", not a bare "Read more". Three links on
+            this page and three more on /builds/ all read "Read more" and went
+            to six different places. Screen reader users commonly navigate by
+            pulling up a list of every link on the page, and that list showed
+            six identical labels with nothing to choose between. Naming the
+            destination also gives crawlers real anchor text instead of a word
+            that describes the click rather than the page.
+
+            Derived from `name`, never typed per build, so a renamed build
+            renames its links. */}
+        <p class="more"><a href={`/builds/${b.id}/`}>Read more about {b.data.name}</a></p>
       </article>
     ))}
   </section>
