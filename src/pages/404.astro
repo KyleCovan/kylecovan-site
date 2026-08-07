@@ -1,0 +1,43 @@
+---
+/**
+ * The 404 page — added August 6, 2026, and it exists to fix a status code, not
+ * to say anything.
+ *
+ * THE BUG IT FIXES. Cloudflare Pages falls back to serving index.html with a
+ * 200 for any path it cannot match, when the deployment contains no 404.html.
+ * So https://kylecovan.com/anything-at-all returned the FULL HOME PAGE and told
+ * every crawler it was a real, successful page. That is a "soft 404": Google
+ * reads it as one page duplicated across infinite URLs, spends crawl budget
+ * confirming each one, and learns that this site's status codes cannot be
+ * trusted. Reproduced on kylecovan-site.pages.dev as well as the apex, which is
+ * how it was pinned on Pages' fallback rather than on a Cloudflare zone rule.
+ *
+ * Shipping ANY 404.html turns that fallback off — Pages serves this file with a
+ * real 404 instead. That is the entire job. The words below are incidental.
+ *
+ * NO JSON-LD, deliberately. Every other page carries a block and verify_site.py
+ * asserts exactly one on each, but that check globs `**\/index.html` and Astro
+ * emits this route as `dist/404.html`, so this page is correctly outside it.
+ * Structured data describes a document worth indexing; an error page is not one.
+ *
+ * The copy is NOT Kyle's — it is placeholder written to be replaced, and it is
+ * the only text on the site not in his voice. Three short strings, no prose, so
+ * that swapping them costs nothing. See handoff section 6.
+ */
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Page not found — Kyle Covan"
+  description="That page doesn't exist. Links to the rest of the site."
+  path="/404.html"
+>
+
+  <header class="masthead-page">
+    <h1>Page not found</h1>
+  </header>
+
+  <p class="lede">That page doesn't exist, or it moved.</p>
+
+  <p class="more"><a href="/">Back to the home page</a></p>
+
+</Base>
