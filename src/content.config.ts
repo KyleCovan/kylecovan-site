@@ -32,7 +32,25 @@ const builds = defineCollection({
     // Drives display order and the "Project 01" label, which is derived rather
     // than stored — storing it meant renumbering by hand on every insert.
     order: z.number().int().positive(),
+    // RENDERED, and it is Kyle's copy: the `.lede` on the build's own page and
+    // the `.one-liner` on both the home page and /builds/. Section 6 of
+    // docs/handoff.md puts it out of reach — changes come from Kyle as exact
+    // text, or from options he picks.
     oneLiner: z.string(),
+    // NOT rendered. Overrides `oneLiner` for <meta name="description"> and the
+    // og:description share card ONLY, and only on builds that set it.
+    //
+    // Added August 6, 2026 because one string was carrying two jobs with one
+    // length budget. On the page, a one-liner can run as long as it reads well.
+    // In a search result it is cut around 155 characters, and on a LinkedIn or
+    // X card it is printed verbatim to someone who has NOT clicked yet — the
+    // same reasoning that fixed the /builds/ description at 137 (handoff §6).
+    // Personal AI OS's one-liner is 210 and truncates mid-clause.
+    //
+    // Leave it unset and nothing changes; the one-liner still does both jobs,
+    // which is right whenever it already fits. Nothing tests the length of
+    // either string, so this is a line that fails silently and in public.
+    description: z.string().optional(),
     // Not rendered. Feeds <lastmod> in the sitemap, which is the one hint in
     // that file Google actually reads — it ignores <priority> and <changefreq>
     // outright. A build page's real lastmod is the LATER of this date and the

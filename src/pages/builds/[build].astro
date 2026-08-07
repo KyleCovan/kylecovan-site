@@ -48,8 +48,21 @@ const url = `https://kylecovan.com/builds/${build.id}/`;
 const title = `${build.data.name} — Kyle Covan`;
 /* Descriptions must be unique per page (verify_site.py check 2). The one-liner
    is already unique per build, so it does that work without a second string to
-   keep in sync with it. */
-const description = build.data.oneLiner;
+   keep in sync with it.
+
+   `description` OVERRIDES it, and only when a build actually sets one. Added
+   August 6 because `oneLiner` was being asked to do two jobs with one length
+   budget. It is VISIBLE COPY — the `.lede` on this page and the `.one-liner` on
+   both the home page and /builds/ — and it is Kyle's words, which section 6 puts
+   out of reach. It is ALSO the `<meta name="description">` and, through
+   `Base.astro`, the `og:description` share card, where anything past roughly 155
+   characters is cut mid-sentence. Personal AI OS's runs 210.
+
+   Those two jobs disagree, so the fix is a second field rather than a shorter
+   sentence: the page keeps saying what Kyle wrote, and the search result and the
+   share card get a string written for that budget. Every build is currently
+   unset and therefore unchanged. */
+const description = build.data.description ?? build.data.oneLiner;
 
 /* Structured data is derived from the same collection the page renders from, so
    the markup cannot claim a headline or a date the page doesn't show. That is
@@ -63,7 +76,11 @@ const jsonLd = {
       '@id': `${url}#blog`,
       url,
       name: build.data.name,
-      description: build.data.oneLiner,
+      /* The same const the <meta> uses, not a second copy of the text. A
+         separately-worded JSON-LD description was removed from /builds/ for
+         exactly this reason: it is one more string that drifts with nothing
+         testing it. */
+      description,
       inLanguage: 'en',
       author: { '@id': 'https://kylecovan.com/#kyle' },
       publisher: { '@id': 'https://kylecovan.com/#kyle' },
