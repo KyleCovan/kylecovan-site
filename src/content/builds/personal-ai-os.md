@@ -4,6 +4,14 @@ order: 1
 # A colon inside an unquoted YAML scalar starts a mapping, which fails the
 # build. Quoted so the one-liner can use one. This is not a style preference.
 oneLiner: "An AI operating system that runs quietly in the background like a digital assistant: keeping me on track, strategizing with me, flagging opportunities, and spotting bottlenecks before they become real problems."
+# NOT rendered — overrides oneLiner for <meta name="description"> and the
+# og:description share card only. Kyle picked this wording on August 6.
+# The one-liner above is 210 characters and was being cut mid-clause in search
+# results and on LinkedIn/X cards, which print it verbatim to someone who has
+# not clicked yet. This keeps all four verbs — they are the substance — and
+# drops the simile and the closing qualifier to land at 152. The page itself
+# still says exactly what Kyle wrote.
+description: "An AI operating system that runs quietly in the background: keeping me on track, strategizing with me, flagging opportunities, and spotting bottlenecks."
 # Sitemap <lastmod>. Seeded from this file's last commit date, not invented.
 updated: 2026-08-03
 # Held, not displayed. Kyle added "Nate Herk style" as a subtitle to credit where
