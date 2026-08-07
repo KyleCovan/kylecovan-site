@@ -1,4 +1,24 @@
+# Content Signals, added August 6, 2026. Kyle's call, and it is a deliberate
+# YES on all three — not a default.
+#
+#   search    building a search index and returning links and short excerpts.
+#   ai-input  feeding the page to a model at answer time (RAG, grounding, AI
+#             search summaries).
+#   ai-train  training or fine-tuning models on it.
+#
+# Everything here is Kyle writing in public about building with AI. Withholding
+# it from the models he builds on would be an odd position to hold, so all three
+# are granted rather than left unstated. An omitted signal grants nothing and
+# forbids nothing, which is why "yes" is written out instead of assumed.
+#
+# Format checked against a live implementation (developers.cloudflare.com), not
+# against the spec: the IETF draft (draft-romm-aipref-contentsignals) defines the
+# three category names but carries no robots.txt example, and has expired. If the
+# syntax is ever standardised differently, this line is where it changes.
+
 User-agent: *
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
+
 Allow: /
 
 Sitemap: https://kylecovan.com/sitemap-index.xml
