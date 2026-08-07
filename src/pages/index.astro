@@ -243,8 +243,32 @@ const jsonLd = {
 
     <h2 id="contact-heading">Reach out anytime</h2>
 
+    {/* email_off is Cloudflare's opt-out from Scrape Shield's Email Address
+        Obfuscation, and it has to stay.
+
+        WHAT IT FIXES. With obfuscation on, Cloudflare rewrote this href at the
+        edge into /cdn-cgi/l/email-protection#<hash> and injected a decoder
+        script. That URL returns a 404. So the only contact path on the site was
+        dead for anyone without JavaScript, and for every crawler and AI agent —
+        while the injected script also broke the one-executing-script rule in
+        CLAUDE.md.
+
+        WHY OPTING OUT COSTS NOTHING. It was never protecting the address. The
+        JSON-LD Person block above publishes "email": "mailto:kyle@kylecovan.com"
+        in plaintext on this same page, and Cloudflare does not touch it. The
+        obfuscated hash also decodes with one line of XOR — confirmed, it
+        returned the address in seconds. The feature was buying a dead link and
+        no privacy.
+
+        Hiding the address for real would mean pulling it from the JSON-LD too,
+        which costs the machine-readable contact signal. That is a different
+        decision and Kyle chose against it on August 6.
+
+        A raw HTML comment, NOT an Astro {/* */} comment, which never reaches the
+        output. Verified present in dist/index.html after building — if it ever
+        stops surviving the build, this silently reverts to a 404. */}
     <p>
-      <a class="email" href="mailto:kyle@kylecovan.com">kyle@kylecovan.com</a>
+      <!--email_off--><a class="email" href="mailto:kyle@kylecovan.com">kyle@kylecovan.com</a><!--/email_off-->
     </p>
 
     {/* The line breaks inside these tags are load-bearing: each sits between a
