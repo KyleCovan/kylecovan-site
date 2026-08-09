@@ -1,7 +1,9 @@
 # Deploy and DNS — where things stand
 
-**As of August 3, 2026: Steps 1–5 are DONE. The DMARC record is the one thing
-still open.**
+**As of August 9, 2026: Steps 1–5 are DONE. The DMARC record is the one thing
+still open.** The August 6 audit branch (`audit-fixes-2026-08-06`) is merged to
+`main` and live — real `/404.html`, `/privacy/`, content-signal `robots.txt`,
+contact `mailto:` with Cloudflare `email_off`, and build `shareDescription`.
 
 **kylecovan.com is live.** DNS is served by Cloudflare, the site is served by
 Cloudflare Pages, and Google Workspace email survived the move intact.
@@ -47,8 +49,10 @@ npm run verify     # both suites — ALL CHECKS PASSED twice
    are build-time tooling; the deployed output is static HTML.
 
 4. **`npm run verify` failed on `ModuleNotFoundError: No module named 'playwright'`.**
-   The verify script is `python3 scripts/verify.py && python3 scripts/verify_site.py`
-   and both need Playwright plus a real Chromium:
+   Both suites need Playwright plus a real Chromium in the project venv.
+   `package.json` now calls `./.venv/bin/python3` directly (so the documented
+   `npm run verify` works without a prior `activate`), but the venv still has
+   to exist and have Playwright installed:
 
    ```bash
    python3 -m venv .venv
@@ -57,9 +61,8 @@ npm run verify     # both suites — ALL CHECKS PASSED twice
    playwright install chromium      # ~150 MB
    ```
 
-   **`source .venv/bin/activate` is required in every new Terminal window before
-   `npm run verify` works.** `npm run dev` and `npm run build` don't need it.
-   `.venv/` and `shot-*.png` are in `.gitignore`.
+   `npm run dev` and `npm run build` don't need the venv. `.venv/` and
+   `shot-*.png` are in `.gitignore`.
 
 ---
 
@@ -224,11 +227,11 @@ time, and the cause was the measuring instrument, not the zone.
   with *"Invalid sitemap address."* That check runs in the browser before
   Google fetches anything — it is never evidence that the sitemap is broken.
 
-  **And it is `sitemap-index.xml`, never `sitemap.xml`.** Astro's integration
-  emits the former. `/sitemap.xml` still answers **HTTP 200** because Cloudflare
-  Pages falls back to the home page for unknown paths — so it looks alive while
-  serving `text/html`, and Google would fail to parse it. Verified by checking
-  the content-type, not the status code.
+   **And it is `sitemap-index.xml`, never `sitemap.xml`.** Astro's integration
+  emits the former. Unknown paths used to answer **HTTP 200** with the home page
+  (Pages' no-`404.html` fallback); as of the August 6 audit merge they return a
+  real **404**. Still verify by content-type when checking a URL that should be
+  XML — status alone is not enough.
 
   Before submitting, all seven URLs in the sitemap were confirmed to return 200,
   and the deployed XML was confirmed byte-identical to the local `dist/` build.
@@ -262,14 +265,17 @@ Nothing else to touch. (The frontmatter field is `build:`, not `project:`, and
 
 ## Still open
 
-1. **Step 5 — Search Console**, and the DMARC record above.
+1. **DMARC record** (see Step 5). Search Console is done; this is the leftover.
 2. **Dark mode.** Decision recorded in `docs/handoff.md` §7: automatic via
    `prefers-color-scheme`, no toggle. Deferred; it is a real design pass.
 3. **Restore the Tapo Canyon link** the day tapocanyon.com resolves. The anchor
    was removed July 29 because it was a dead end; Kyle's sentence is untouched
    and a comment in `src/pages/index.astro` says to put it back.
 4. **"What broke" entry for Project 01**, and Project 02's first entry.
-5. **The original `headshot.jpg`** is not in the repo. A true zoom-out on the
-   portrait needs it. Kyle declined on July 29 — crop B is final for now.
+5. **Branch `content/audit-triage-post`** — still unmerged. Queues the drafted
+   “half a website audit was wrong” post plus `content-queue/` platform drafts.
 6. **The old GoDaddy zone** can be left alone indefinitely — there is no cost to
    leaving it, and it is the rollback. Don't delete it just to tidy up.
+
+*(Item about `headshot.jpg` missing from the repo is closed — source photos and
+`build_assets.py` shipped with handoff §53.)*
