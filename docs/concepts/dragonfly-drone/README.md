@@ -5,7 +5,8 @@
 
 | File | What it is |
 |---|---|
-| [`field-revision.md`](field-revision.md) | **Start here for the real goal** — outdoor, distance, RC rethink |
+| [`pigeon-pivot.md`](pigeon-pivot.md) | **Strong option** — pigeon instead of dragonfly; anatomical accuracy levels |
+| [`field-revision.md`](field-revision.md) | Outdoor, distance, RC rethink (written for dragonfly; principles still apply) |
 | [`remote-control.md`](remote-control.md) | Why a handset beats an iPhone as primary control |
 | [`phase-a-first-weekend.md`](phase-a-first-weekend.md) | Desk camera proof (still useful; not the whole project) |
 | [`design-brief.md`](design-brief.md) | Earlier first-principles indoor stack (historical in this folder) |
