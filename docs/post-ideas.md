@@ -78,6 +78,19 @@ Honest, and unusual to admit in public.
 
 ---
 
+## 6. A ship you fly from home
+
+First-principles brief is parked at
+`docs/ideas/home-controlled-spacecraft.md`. Not a build page until there is a
+craft in the world. If Stage 2 (near-space balloon) returns a curvature still
+and a logged in-flight telecommand, that flight report is the natural first
+writing entry — tagged to a build only once the build exists.
+
+Tone risk: easy to sound like a pitch deck. The brief's rule stands — show the
+work, never sell a service from this site.
+
+---
+
 ## Deliberately not written up
 
 The backup codes that were sitting in one of the four folders. It is fixed, and
