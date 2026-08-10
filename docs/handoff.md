@@ -1119,8 +1119,12 @@ For **Onesimus access across desktop / phone / cloud**, do the checklist in
 
 **Highest-value next steps, in order:**
 
-1. **Search Console** (`docs/deploy-status.md` Step 5), so the SEO work becomes
+1. **Onesimus sync checklist** (`docs/onesimus-sync-plan.md`) at the desktop:
+   confirm the private GitHub remote, fix Cloud/agent access to that private
+   repo, open Onesimus as its own Cursor project, then move the lasting note
+   into Onesimus.
+2. **Search Console** (`docs/deploy-status.md` Step 5), so the SEO work becomes
    measurable. Add the DMARC record in the same sitting.
-2. Get Kyle's "what broke" answer for Project 01, and Project 02's first entry.
-3. Once each project has ~2 entries, split them to their own URLs (§4).
-4. Dark mode, as its own focused pass (§7).
+3. Get Kyle's "what broke" answer for Project 01, and Project 02's first entry.
+4. Once each project has ~2 entries, split them to their own URLs (§4).
+5. Dark mode, as its own focused pass (§7).
