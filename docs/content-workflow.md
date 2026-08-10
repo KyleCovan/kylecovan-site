@@ -1,4 +1,4 @@
-# Content workflow — keep one copy, stop the drift
+# Content workflow  -  keep one copy, stop the drift
 
 **For Kyle.** Written August 10, 2026 after the first Cursor iPhone session that
 parked Unless the Lord drafts on a PR. Read this when you come back cold and
@@ -16,7 +16,7 @@ an idea parking lot. Two full copies is how drafts drift apart.
 | Kind | Where it lives | Publishes? |
 |---|---|---|
 | Site blog / build-log entry | `src/content/writing/<slug>.md` | Only when `draft` is false / absent, and the branch is on `main` |
-| LinkedIn, Substack, X, etc. | `content-queue/<same-slug>/` | Never from the repo — you paste from here |
+| LinkedIn, Substack, X, etc. | `content-queue/<same-slug>/` | Never from the repo  -  you paste from here |
 | Ideas said but not written | `docs/post-ideas.md` | Never |
 | Decisions / why we did it | `docs/handoff.md` | Never |
 
@@ -58,26 +58,49 @@ Optional. Only useful if you want to **edit words** on the PR.
 
 1. Open **kylecovan-site** in Cursor (`~/Projects/kylecovan-astro` locally).
 2. Check out / pull the PR branch (or continue from the open PR).
-3. Edit the **blog file first** — that is the canonical copy.
+3. Edit the **blog file first**  -  that is the canonical copy.
 4. Then update `content-queue/<slug>/` so LinkedIn / Substack stay short
    adaptations, not a second full essay.
 5. When ready to publish the site post:
    - set `draft: false` (or remove `draft:`)
-   - `npm run build && npm run verify` — both must say **ALL CHECKS PASSED**
+   - `npm run build && npm run verify`  -  both must say **ALL CHECKS PASSED**
    - commit, merge to `main` (Cloudflare deploys from `main`)
 6. Post LinkedIn / Substack from the queue files when you choose. After posting,
    mark them posted or clear them so the queue does not become a junk drawer.
 
 ---
 
-## Obsidian
+## Two paths, not three
 
-- **Not** the source of truth for kylecovan.com prose.
-- **Optional** scratch: thinking, prayer, rough Substack shape. If you make a
-  vault note, put a **one-line pointer** to the repo path
-  (`src/content/writing/<slug>.md`) at the top.
-- When the site version wins an edit, update or archive the vault note. Do not
-  polish both forever.
+Keep the workflow simple:
+
+| Path | Role |
+|---|---|
+| **Cursor + the site project** | Primary. Edit, verify, publish. Default habit. |
+| **GitHub PR** | Backup / phone. Same files, another door  -  not a second home. |
+| **Obsidian** | Not required for site content. Skip it for drafts that already live in git. |
+
+You do not need a vault pointer if Cursor and the PR already cover find + edit.
+
+---
+
+## When Obsidian *is* the right tool
+
+Use Obsidian for thinking, jotting, and capturing ideas that are **not yet tied**
+to something you are already working on in Cursor or that already has a git
+repo  -  or for personal/faith/life notes that will never need to be a site or
+code file.
+
+Do **not** use it as the home for kylecovan.com prose, LinkedIn/Substack queue
+copy, or anything that already has a branch/PR.
+
+When an Obsidian idea *turns into* a site post, move it into
+`src/content/writing/` (and `content-queue/` if needed). Stop polishing a second
+full copy in the vault.
+
+If you still want a vault note as a bookmark into the repo, a one-line pointer
+to `src/content/writing/<slug>.md` is enough  -  never a duplicate draft. Most of
+the time you can skip that entirely.
 
 Faith writing that belongs on Unless the Lord still ends in
 `src/content/writing/` with no `build:` field so it gets its own `/writing/` URL.
@@ -86,10 +109,12 @@ Faith writing that belongs on Unless the Lord still ends in
 
 ## Quick recovery ("where did that draft go?")
 
-1. GitHub → kylecovan-site → Pull requests (or the branch name from the agent).
-2. Or locally: `src/content/writing/` for `draft: true` files, and
-   `content-queue/` for platform copies.
+1. Open the site project in Cursor and look under `src/content/writing/` /
+   `content-queue/` (or the PR branch).
+2. Or GitHub → kylecovan-site → Pull requests (handy on the phone).
 3. Or `docs/post-ideas.md` if it was only an idea, not a draft yet.
+
+Not: Obsidian, Downloads, or a third "organized" folder.
 
 ---
 
