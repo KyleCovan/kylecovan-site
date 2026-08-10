@@ -1,69 +1,82 @@
-# BOM — Phase 1 (soft platform)
+# Build order — prove Anisoptera without abandoning the ask
 
-**Purpose:** get a micro quad in the air controlled from a phone, with an optional camera path, **before** any dragonfly cosmetics.
+Each phase proves one inversion. **Do not “temporarily” solve Phase N with a 25 g Wi‑Fi quad** unless a gate explicitly kills Anisoptera.
 
-**Spend posture:** prefer one kit over scatter-ordering parts. Confirm Apple Developer / tool spend against the standing no-new-subscriptions constraint before paying for distribution channels.
+## Phase A — Pinna on the bench (camera invention)
 
-Prices move; treat dollar figures as 2026-order-of-magnitude.
+**Goal:** phone shows a reconstructed live view from a single-detector coded imager.
 
-## Kit path (preferred)
-
-| Item | Qty | Approx | Notes |
-|---|---|---|---|
-| Seeed ESP-FLY DIY kit (XIAO ESP32-S3) | 1 | ~$60 | Frame, FC, motors, props — Co-Create with Max Imagination |
-| Spare 1S LiPo 250 mAh (+ one spare) | 2 | ~$15–25 | Swappable packs beat waiting on charge |
-| Prop set spares (CW/CCW) | 2–4 sets | ~$10 | You will break these |
-| Micro USB-C cable | 1 | owned? | Flash + charge depending on board |
-| **Optional:** 5.8 GHz AIO FPV cam compatible with frame | 1 | ~$20–40 | Path A video |
-| **Optional:** cheap FPV monitor or used goggles | 1 | varies | Only if Path A |
-
-**Tools you need if not already owned**
-
-| Tool | Why |
+| Need | Notes |
 |---|---|
-| 0.01 g scale | Weight budget discipline |
-| Soldering iron + fine solder | Repairs, camera leads |
-| Lipo bag + 1S charger with storage charge | Don’t charge unattended on wood |
-| Prop remover / tweezers | Fingers vs 70k RPM is a bad bet |
+| Photodiode + TIA | Breakout OK on bench |
+| Coded mask | LCD shutter, printed film wheel, or DEA |
+| Metasurface or simple lenslet | Start with lenslet; replace later |
+| Host MCU | Streams measurements over USB/serial to Mac/phone |
+| Reconstruction code | Python → Core ML / NPU |
 
-## DIY scatter path (only if kit unavailable)
+**Pass:** recognizable 64×64 scene @ ≥3 Hz under desk lighting.  
+**Fail:** if only dense raster scanning of N pixels works, compressive path needs better priors — iterate algorithms before adding flight.
 
-Rough equivalent to ESP-FLY:
+Spend: optics + electronics dozens to low hundreds of USD. No airframe yet.
 
-- Seeed XIAO ESP32-S3
-- MPU-6050 breakout (or integrated FC PCB)
-- 4× SI2300 (or kit MOSFET board)
-- 4× 615 coreless motors + 30–31 mm props
-- 50 mm-class printed frame (PETG or lightweight PLA)
-- 1S 250 mAh JST-PH
+## Phase B — Return Gleam on a stick
 
-Expect more debug time; the kit’s value is a known frame + wiring.
+**Goal:** measurement stream survives an MRR optical link across a room.
 
-## Phase 2 add-ons (do not buy yet)
-
-| Item | Why wait |
+| Need | Notes |
 |---|---|
-| Dragonfly shell materials (Mylar, carbon rod, transparent film) | Airframe must fly first |
-| Resin printer time / service | CAD after crash geometry is known |
-| Custom PCB | Premature until FC firmware is yours |
-| XIAO ESP32-S3 Sense / camera | After stick latency is acceptable |
+| Corner-cube or cat’s-eye | Small optic |
+| Modulator | MQW if obtainable; else LCD/liquid crystal shutter for low rate proof |
+| Interrogator | Lab laser + PD on the receiver side (keel prototype) |
+| Pointing | Manual first, then simple galvo/tracker |
 
-## Phase 4 / research (do not buy)
+**Pass:** ≥20 kb/s usable throughput at 3–6 m with bit error low enough for Pinna.  
+**Fail:** improve modulator / optics; do not add Wi‑Fi TX to the *aircraft* mockup as the “fix.”
 
-Piezo actuators, custom flexures, DelFly-style linkages — only after an explicit decision to open the flapping track.
+## Phase C — Lumen Keel power
 
-## Software checklist (no cart)
+**Goal:** deliver ≥0.25 W electrical into a PV + boost load the size of the abdomen budget.
 
-- [ ] ESP-IDF or PlatformIO toolchain on the build machine
-- [ ] Clone ESP-FLY / ESP-Drone firmware, flash, confirm motors (props off)
-- [ ] Packet-capture the phone control protocol
-- [ ] Scaffold SwiftUI stick app (personal device)
-- [ ] Written failsafe behavior
+| Need | Notes |
+|---|---|
+| IR laser + driver | Interlocked enclosure or certified product path |
+| PV matched to λ | Small cells |
+| Tracker | Keep spot on PV while target moves on a rail |
 
-## Acceptance for Phase 1 complete
+**Pass:** continuous power under motion profile that mimics slow flight.  
+**Eye safety:** non-negotiable; enclosed range until interlocks are real.
 
-1. Hover 30 seconds indoors over soft surface, phone-only sticks
-2. Controlled landing (not a cut-throttle drop)
-3. Documented AUW on the scale
-4. Crash once, repair once, fly again (proves maintainability)
-5. Decision recorded: Path A, Path B, or no camera for Phase 2
+Reference existence: UW laser-powered 190 mg liftoff — we are productizing, not proposing new physics.
+
+## Phase D — Vein Drive lifter
+
+**Goal:** 1–2 g class flapping vehicle hovers / orbits under beamed power **without** Pinna first.
+
+| Need | Notes |
+|---|---|
+| Piezo or DEA wings | Follow RoboBee/Robofly fabrication literature |
+| HV drive electronics | Milligram-class packaging |
+| Beam tracking on moving target | Hardest integration |
+
+**Pass:** 30 s controlled flight under keel.  
+**Only here** does AUW get sacred.
+
+## Phase E — Integrate Pinna + Gleam on the flyer
+
+**Goal:** phone shows reconstructed video from the living aircraft while you pilot from the app.
+
+**Pass:** the original ask, indoors.
+
+## Explicitly retired path
+
+ESP-FLY / 25 g phone quad was the **old** brief’s on-ramp. It teaches sticks, not Anisoptera. Use it only as a **human training tool** for iOS UI, never as the vehicle architecture.
+
+## Rough cost posture (orders of magnitude)
+
+| Phase | Order |
+|---|---|
+| A–B | $100–800 materials + time |
+| C | Dominated by safe laser + tracking (can be $1k+ if bought wrong — design before shopping) |
+| D–E | Fabrication tooling is the real cost; partner with a micro-robotics lab if needed |
+
+Standing rule still applies: no new **subscriptions** lightly; capital parts are a conscious Gate 0 choice.

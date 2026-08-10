@@ -1,65 +1,54 @@
-# Decision gates
+# Decision gates — Anisoptera
 
-Use these as explicit checkpoints. Do not blur “learning” into “committed product.”
+## Gate 0 — Place the work
 
-## Gate 0 — Place the idea
+Onesimus may be unavailable in cloud agents. Before capital spend:
 
-Onesimus was not available when this concept pack was written. Before kit money:
+- [ ] Idea placed in priority stack (not silent parallel life)  
+- [ ] Accept Lumen Keel as part of v1 product (phone pilots; puck powers/interrogates)  
+- [ ] Accept Pinna as the camera (reconstructed view), not a tiny CMOS module  
 
-- [ ] `/untangle` or equivalent: is this a parked idea, a builds-log project, or an active priority?
-- [ ] Confirm it does not jump ahead of paying-client work or the Personal AI OS track without a conscious choice
-- [ ] Confirm hardware spend is OK under the no-new-subscriptions rule (kits ≠ SaaS, but cash is still cash)
+**No →** park the folder.  
+**Yes →** Phase A.
 
-**No →** leave this folder as the artifact; do not order parts.
-**Yes →** fill Gate 1.
+## Gate 1 — Pinna is a camera
 
-## Gate 1 — Product definition (written answers)
+- [ ] Reconstructed view is pilot-useful to a human on an iPhone  
+- [ ] Measurement bitrate ≤ 80 kb/s for the chosen resolution/fps  
+- [ ] Mass model for flying Pinna ≤ 150 mg  
 
-| Question | Answer |
-|---|---|
-| Literal insect mass (~1–4 g) required? | Y/N — if Y, this is research, not Phase 1 kit |
-| Success look: photo reads “dragonfly” from 2 m? | Y/N |
-| Video must be on the same iPhone with no dongle? | Y/N — if Y, budget Path B mass |
-| Indoor only for v1? | Y/N |
-| Minimum useful flight time | ___ minutes |
-| Hard budget ceiling | $___ |
-| Willing to fly line-of-sight while video is optional? | Y/N |
+**Fail →** iterate compressive architecture (more diodes, better priors). **Do not** redefine success as “buy a webcam drone.”
 
-**Recommended defaults if undecided:** N literal mass, Y 2 m look, N dongle-free video for v1, Y indoor, 3+ minutes, LOS OK.
+## Gate 2 — Return Gleam uplink
 
-## Gate 2 — Phase 1 flight proven
+- [ ] Room-scale link at Pinna bitrate  
+- [ ] Mass model ≤ 100 mg  
+- [ ] Control downlink on same beam demonstrated on the bench  
 
-From `bom-phase-1.md` acceptance list. If failsafe or phone latency is unsafe, **stop** and fix software — do not CAD wings.
+## Gate 3 — Lumen Keel power
 
-## Gate 3 — Identity layer worth it?
+- [ ] ≥ 0.25 W electrical into flight-shaped PV under motion  
+- [ ] Documented eye-safety story you would allow in your own house  
+- [ ] Brownout behavior with micro-store characterized  
 
-After a shell prototype:
+## Gate 4 — Vein Drive flight
 
-- [ ] Does it still hover with ≥2:1 thrust margin?
-- [ ] Do photos/video sell the concept without claiming flapping?
-- [ ] Is repair time still sane after a tip-over?
+- [ ] AUW ≤ 2.0 g  
+- [ ] Controlled flight ≥ 30 s under beam  
+- [ ] Looks like a dragonfly in motion (flapping, silhouette) — subjective but recorded on video  
 
-**No →** ship as micro quad build, drop biomimicry, or iterate shell lighter.
-**Yes →** allow Phase 3 shrink / camera integration spend.
+## Gate 5 — Full ask
 
-## Gate 4 — Open flapping research?
+- [ ] Gates 1–4 integrated  
+- [ ] iPhone app is the only pilot interface in hand  
+- [ ] Live Pinna view during flight  
 
-Only if all are true:
+## Kill criteria (architecture-level)
 
-- [ ] Gates 0–3 passed
-- [ ] Flapping is still emotionally non-negotiable
-- [ ] Time and tools exist for micro-mechanism work (or a lab partner)
-- [ ] Camera + iPhone requirements have been **explicitly relaxed** to DelFly-like analog reality
+Kill **Anisoptera** (not “kill curiosity”) if:
 
-Otherwise keep flapping labeled **stretch** forever — that is a valid outcome.
+- After serious Phase A–B work, no compressive/MRR path yields usable view+bitrate at the mass ceiling  
+- Eye-safe living-room beaming cannot approach actuator power after real optical engineering  
+- Priority stack cannot fund Phase C–D tooling and no lab partner appears  
 
-## Kill criteria (any phase)
-
-Stop or park if:
-
-- Priority stack says this displaced revenue work by accident
-- Two kit airframes destroyed with no protocol notes captured
-- iOS link cannot meet <80 ms stick feel after a serious firmware attempt
-- The only way to hit “dragonfly size” is to delete the camera *and* the phone link
-
-Parking is success if it frees attention. The concept pack remains the memory.
+If killed, document *which* first-principles budget failed. That failure knowledge is worth more than a costume quad that pretends the ask was met.

@@ -1,161 +1,98 @@
-# Dragonfly drone — design brief
+# Design brief — first principles revision
 
-## What was asked
+## The ask (unchanged)
 
-A drone that:
+1. Remote-controlled from an iPhone  
+2. Has a camera  
+3. Looks like a dragonfly **and** is the size of a dragonfly  
 
-1. Is remote-controlled from an iPhone
-2. Has a camera
-3. Looks like a dragonfly **and** is the size of a dragonfly
+## What the first draft got wrong
 
-Those three constraints do not pull in the same direction. The brief below separates what physics allows from what a home workshop can ship, then recommends a path that gets something flying from the phone before chasing insect authenticity.
+It treated three **historical assemblies** as if they were **physical necessities**:
 
-## What “dragonfly size” actually means
+| Assumed onboard | What physics actually requires onboard |
+|---|---|
+| CMOS camera module + lens + ISP | A way to collect scene photons and turn them into *information* |
+| Wi‑Fi / BLE SoC transmitter | A way to move that information to the phone |
+| Flight battery sized for the whole mission | Energy *available during flight* (stored **or** delivered) |
+| Quad frame + 4 ESCs as the only practical airframe | Lift + control authority at insect Reynolds numbers |
 
-| Reference | Wingspan | Mass | Camera | Phone control |
-|---|---|---|---|---|
-| Real dragonfly (typical large spp.) | ~5–10 cm | ~0.2–1 g | n/a | n/a |
-| Harvard RoboBee | ~3 cm | ~0.08–0.26 g | no useful camera | tethered / lab power |
-| DelFly Micro (TU Delft) | 10 cm | ~3 g | yes (tiny analog, ~0.4 g tx) | custom RC, ~50 m, ~3 min |
-| DelFly Nimble | 33 cm | ~29 g | optional ~4 g payload | research platform |
-| ESP-FLY DIY micro quad | ~5–7 cm frame | ~25–28 g w/ LiPo + FPV | optional analog FPV | Wi‑Fi phone app |
-| X‑Fly / Bionic Bird class | bird-scale, not insect | tens of grams | usually none / weak | smartphone BLE/app |
+DelFly, RoboBee, and ESP-FLY are existence proofs of **pieces**. They are not upper bounds on what a recombined system can do. Copying their bill of materials into a dragonfly silhouette is what makes the problem look closed.
 
-**Takeaway:** the only free-flying camera ornithopter near true insect size is DelFly Micro — a university MAV with a gram-scale mass budget and minutes of flight. RoboBee is smaller still, but not a practical camera + iPhone product. Consumer “bionic bird” toys are closer to small birds than dragonflies.
+## First principles (non‑negotiable)
 
-So “looks like and is the size of a dragonfly” is either:
+These are not “industry best practices.” They are constraints. Everything else is negotiable packaging.
 
-- **Literal:** research-grade flapping MAV (years, specialized tools, analog or ultra-micro video), or
-- **Honest compromise:** insect *silhouette* and *scale class* (hand-sized or smaller), quadrotor propulsion under a dragonfly shell, digital or analog camera, iPhone UI.
+1. **Mass:** large dragonflies are order **10⁻¹–10⁰ g**. Target AUW: **≤ 2.0 g** (stretch **≤ 1.0 g**).
+2. **Lift power:** insect-scale hover/forward flight needs order **10⁻¹ W** electrical at the actuators once conversion losses are included (UW laser-powered fly class: electronics drew **>250 mW** just to drive piezo wings at 190 mg vehicle scale). Budget **0.25–0.60 W** continuous at the airframe for a 1–2 g flapper.
+3. **Information, not pixels:** a “camera” is an information channel from scene → pilot. Resolution is whatever the channel + prior + compute can reconstruct — not whatever a VGA sensor datasheet prints.
+4. **Diffraction is real:** aperture diameter *D* still limits angular resolution (~1.22 λ/D). Computational imaging does not create photons or violate diffraction; it **uses priors** so fewer measurements still yield a useful image.
+5. **Energy conservation is real:** 0.4 W for 10 minutes is 240 J. At 1 g AUW you will not carry that in a packaged LiPo without eating the mass budget. Therefore mission energy is either **short** or **beamed** or **hybrid**.
+6. **The iPhone is already a supercomputer with radios, an IR illuminator ecosystem, cameras, and an NPU.** Putting equivalent silicon on a 2 g vehicle is the historical mistake.
 
-This brief assumes the second unless Kyle explicitly chooses the research path.
+## The inversion
 
-## The three requirements, scored
+**Old stack (fails at dragonfly mass):**
 
-### 1. Dragonfly size + appearance
+```
+scene → heavy lens+CMOS → onboard ISP → Wi‑Fi TX → phone display
+         battery powers motors + TX + camera
+```
 
-Flapping four wings at insect Reynolds numbers needs:
+**Anisoptera stack (designed to close):**
 
-- Extreme mass discipline (battery often eats 30%+ of takeoff weight)
-- Carbon / Mylar / micro-linkage fabrication, not hobby PLA frames
-- High flapping frequency (DelFly Micro ~30 Hz) and precise kinematics
-- Almost no spare grams for Wi‑Fi SoCs, digital cameras, or App Store stacks
+```
+scene → Pinna (ultralight compressive oculus)
+          → bits modulate Return Gleam (modulating retroreflector)
+          → phone/puck laser interrogates; phone NPU reconstructs frames
 
-A quadrotor can wear a dragonfly shell. The props will still look like props up close, and the mass will be closer to 15–40 g than to 1 g unless custom everything.
+phone app → control bits on interrogator beam (or BLE beacon)
+          → Vein Drive flapping actuators
 
-### 2. Camera
+Lumen Keel puck → eye-interlocked IR power beam → onboard PV + thin store
+```
 
-| Class | Typical mass | What you get |
+The aircraft keeps **transduction and actuation**. The ground keeps **joules, joules-per-bit transmit power, and reconstruction.**
+
+## Existence proofs we recombine (not copy)
+
+| Piece | What it already showed | What we do not copy |
 |---|---|---|
-| Analog AIO FPV (5.8 GHz) | ~1.5–4 g | Live view on FPV goggles / ground receiver; phone needs a separate RX dongle or second radio path |
-| ESP32-CAM / XIAO Sense JPEG over Wi‑Fi | ~5–15 g module class | Phone-native preview; higher latency; power hungry |
-| DelFly-class analog micro camera + TX | ~0.4 g | Exists in labs; not a Digi-Key cart item with docs |
+| DelFly Micro (~3 g, camera) | Free flight + *some* camera near insect size | Their analog TX mass budget as destiny |
+| RoboBee / Robofly | Milligram flapping mechanisms | Tether as permanent destiny |
+| UW laser-powered fly (190 mg) | **Wireless optical power** can lift insect-scale robots | Enclosure-only forever — we productize the interrogator as a puck |
+| NRL / Oxford MRRs | **Mbps optical uplink with almost no onboard TX power** via modulating retroreflector | Large UAV packaging |
+| Single-pixel / compressive cameras | Images from one detector + known patterns + sparse priors | Lab optical-table bulk |
+| iPhone Neural Engine | On-device learned reconstruction at video-class rates | Using it only for Portrait mode |
 
-**Conflict:** digital Wi‑Fi video that an iPhone can show natively wants more mass and power than a true insect airframe has. Analog FPV is lighter but breaks the “just my iPhone” story unless the phone is paired with a receiver accessory.
+The invention is the **joint system**, especially the camera (**Pinna**) and the phone-centric optical duplex (**Return Gleam** + **Lumen Keel**). Details and budgets: [`anisoptera-stack.md`](anisoptera-stack.md).
 
-### 3. iPhone remote control
+## Why this meets all three requirements
 
-iPhones speak BLE and Wi‑Fi well. They do **not** speak ExpressLRS / Crossfire / classic RC without hardware.
+| Requirement | How Anisoptera satisfies it |
+|---|---|
+| Dragonfly size & look | Four-wing flapping airframe at 5–10 cm span, ≤2 g, vein aesthetics are structural (conductors + spars), not decals on a quad |
+| Camera | Pinna is a real imaging instrument (scene photons → measurements → reconstructed view). It is a **new camera architecture**, not a missing camera |
+| iPhone control | Pilot UI, reconstruction, and link supervision run on iPhone; optical companion puck is slaved to the phone (BLE). The phone remains the control surface you hold |
 
-Practical phone stacks:
+## What we are still inventing (honest R&D, not magic)
 
-| Link | Latency | Range | Video on same link? | Notes |
-|---|---|---|---|---|
-| Wi‑Fi SoftAP (ESP-Drone style) | OK indoors | ~30–50 m typical | Yes (MJPEG / custom) | Simplest “phone only” path |
-| BLE | Fine for sticks | Short | Poor for video | Good for telemetry / arming; weak for FPV |
-| ESP-NOW | Low | Longer | No | Needs a companion TX; not native iPhone |
-| Analog 5.8 GHz video + Wi‑Fi control | Split | Video depends on RX | Phone needs RX hardware | Best image per gram |
+Physics allows the budgets below. Engineering must still integrate them:
 
-**iOS reality:** App Store distribution for a drone controller is extra work (TestFlight is enough for personal use). Background Wi‑Fi to an ESP SoftAP works; low-latency custom video on iOS is the hard software piece, not the joystick UI.
+1. **Pinna** as a ≤150 mg compressive oculus with stable calibration in flight vibration  
+2. **Return Gleam** MRR at ~50–100 mg that holds link while the body pitches at flapping frequency  
+3. **Lumen Keel** auto-track power beam safe enough for a living room  
+4. **Vein Drive** efficiency good enough that 0.3–0.5 W electrical yields controlled flight at 1–2 g  
 
-## Architecture options
+None of those require new particles or violated thermodynamics. They require **focused invention** on packaging, tracking, and control — which is exactly what “make this doable” means.
 
-### Option A — True flapping dragonfly (literal ask)
+## Non-goals (so the design stays sharp)
 
-- **Pros:** Matches the dream.
-- **Cons:** Fabrication, aero, and power are graduate-lab problems. iPhone + useful camera on a ~3 g vehicle is not a known hobby recipe.
-- **AI leverage:** literature synthesis, control-theory helpers, CAD of linkages — **not** a substitute for a micro-robotics bench.
-- **Verdict:** park unless this becomes a multi-year research build with partners/tools.
+- Not a highway-range surveillance platform  
+- Not App Store consumer toy on day one  
+- Not “iPhone flashlight alone powers hover at 5 m” (irradiance math fails; see power section in the stack doc)  
+- Not claiming DelFly’s analog camera was “wrong” — only that **digital phone-native imaging at gram scale needs a different camera**
 
-### Option B — Micro quadrotor + dragonfly shell (recommended product path)
+## Recommended stance
 
-- **Pros:** Phone control and camera already exist on kits (~25 g). Shell + paint + slender body can read “dragonfly” at a glance. Iterate airframe after the link works.
-- **Cons:** Not true insect flight. Props visible. Still small-battery (~5 min) and indoor-first.
-- **AI leverage:** high — CAD shell, firmware forks, SwiftUI app, CV experiments later.
-- **Verdict:** best “heavy lifting → something that flies from the phone.”
-
-### Option C — Buy a bionic bird (X‑Fly class) and learn
-
-- **Pros:** Fastest way to feel flapping + phone control.
-- **Cons:** Bird, not dragonfly. Camera usually absent or weak. Less transferable to insect scale.
-- **Verdict:** optional learning detour, not the target vehicle.
-
-### Option D — Hybrid research (DelFly-inspired)
-
-- Build or acquire a larger flapping trainer (20–30 cm class), then shrink.
-- Only after Option B proves the phone/camera UX you actually want.
-
-## Recommended path
-
-**Phase 0 — Lock the product definition (no spend)**
-
-Answer in writing (see `decision-gates.md`):
-
-- Indoor only, or outdoor in wind?
-- “Looks like” from 2 m away, or entomology-accurate?
-- Live video on the same iPhone, or control on phone + FPV goggles?
-- Target flight time (2 min vs 8 min changes everything)?
-- Budget ceiling (standing constraint: no new paid subscriptions; hardware kit spend is a separate call)?
-
-**Phase 1 — Soft platform: phone-controlled micro quad**
-
-- Hardware: ESP-FLY (XIAO ESP32-S3) or equivalent open micro quad (~$60 kit class).
-- Goal: arm, fly, land from iPhone; optional analog FPV first.
-- Deliverable: notes on latency, range, crash rate, battery life.
-- **Kill / continue gate:** if phone control is miserable, fix the link before any biomimicry.
-
-**Phase 2 — Dragonfly identity layer**
-
-- CAD a slender abdomen + four wing *shapes* (decorative or semi-functional covers) around a 40–65 mm quad.
-- Prefer clear / veined wing films that don’t block prop inflow; or push props into a “body” layout with careful ducting (harder).
-- Recolor: warm earth / iridescent blues-greens — avoid toy-plastic look.
-- Goal: photographs and short clips that read “dragonfly drone” without lying about propulsion.
-
-**Phase 3 — Shrink + integrate camera for phone preview**
-
-- Custom PCB / lighter motors / smaller LiPo if Phase 2 works.
-- Prefer one SoC for FC + Wi‑Fi video if mass allows; else keep analog FPV and document the phone accessory honestly.
-- Only here consider custom molded body.
-
-**Phase 4 — Flapping research (optional, expensive)**
-
-- Open only if Phases 1–3 still leave the flapping requirement non-negotiable.
-- Study DelFly papers, linkage designs, and whether a *hover-capable* four-wing is required vs forward-flight ornithopter.
-
-## What AI can carry vs what needs hands
-
-| Workstream | AI / remote agent | Needs Kyle / shop |
-|---|---|---|
-| Feasibility, BOM, firmware research | High | Review + buy |
-| iOS controller app (TestFlight) | High | Apple Developer account, device test |
-| Flight-controller firmware fork | Medium–high | Bench flash, IMU tune, crashes |
-| Dragonfly shell CAD → print | High | Printer / resin / finishing |
-| True flapping mechanism | Low–medium | Micro fabrication, iteration |
-| Outdoor reliability / wind | Low | Flight testing |
-
-**Default Shift answer:** AI can own the software stack, CAD, and documentation end-to-end. AI cannot own first flight, crash repair, or insect-scale flapping without a physical lab. Start where AI leverage is highest (Phase 1 software + Phase 2 shell).
-
-## Risks worth naming early
-
-1. **Mass creep.** Every “nice” feature (GPS, digital HD, obstacle avoid) destroys insect scale.
-2. **Regulatory.** Even tiny drones are aircraft. Recreational rules, airspace, and privacy still apply; don’t film people without thinking.
-3. **Expectation drift.** “Dragonfly” in a pitch deck often means *cute micro drone*. Literal size is a different project.
-4. **Cost vs priorities.** This is a new limb. It should be placed in the priority stack before kit money moves — Onesimus was not mounted in the environment that wrote this brief.
-5. **Site scope.** If this becomes public on kylecovan.com, it is a **build** (show the work), never a service offering.
-
-## Suggested decision
-
-1. Treat **Option B + Phases 0–2** as the real project.
-2. Keep literal flapping as a labeled stretch goal, not the definition of success.
-3. Do not open a live `/builds/` page until there is hardware in hand and Kyle writes the one-liner.
-4. Next concrete action if greenlit: buy Phase 1 kit (see `bom-phase-1.md`) and scaffold an iOS TestFlight controller against the kit’s Wi‑Fi protocol.
+Treat Anisoptera as the **definition of done** for this idea. Use phased proofs that each remove one historical assumption (see `bom-phase-1.md`), not a detour into a 25 g quad that quietly abandons the ask.
