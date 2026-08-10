@@ -17,6 +17,9 @@ rules, and decision history. **Read it before any change and update it after.**
 - `docs/content-workflow.md` — where drafts live, what `draft: true` means, how
   `content-queue/` relates to the site, and how not to drift into Obsidian
   duplicates. Read before parking or publishing writing.
+- `docs/onesimus-sync-plan.md` — desktop checklist for Onesimus: private GitHub
+  as single source of truth, no three-way cloud sync. Sticky note until the
+  lasting copy lives inside Onesimus itself.
 
 ## Where it lives
 

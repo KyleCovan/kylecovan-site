@@ -1104,6 +1104,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **55** | **August 6 audit fixes merged to `main`.** Branch `audit-fixes-2026-08-06` (8 commits) fast-forwarded and deployed. **404 page** so Cloudflare Pages stops serving the home page with a 200 for unknown URLs. **Builds "Read more" links** named by destination. **BlogPosting `image`** points at `og-2.png` (fifth hardcoded share-card filename reference — `CLAUDE.md` corrected). Optional **`shareDescription`** so page one-liners stay Kyle's full wording while meta/og get a ~155-char budget; Personal AI OS is the first set. **`/privacy/`** in the footer only, date from `src/data/privacy.json` (one file feeds the page and sitemap `lastmod`). **`robots.txt` content signals** explicitly grant `search`, `ai-input`, and `ai-train` — Kyle's call. **Contact `mailto:`** opted out of Cloudflare email obfuscation in-repo (`email_off`); the obfuscated link was a 404 and the address was already in JSON-LD. Both suites green on the merge. |
 | **56** | **Draft: "What consciousness discovers tends to glory as its own discovery."** Kyle dictated the seed sentence and the elaboration on August 10. Shaped into an untagged Unless the Lord draft at `src/content/writing/glory-as-its-own-discovery.md` with `draft: true` (invisible until the flag comes off), plus LinkedIn and Substack drafts in `content-queue/glory-as-its-own-discovery/`. His edits win; title still open. Logged in `docs/post-ideas.md` §6. |
 | **57** | **`docs/content-workflow.md` added.** Phone-session reminder: one canonical full text in `src/content/writing/`, platform adaptations in `content-queue/<slug>/`, ideas in `docs/post-ideas.md`. **Two paths, not three:** Cursor site project primary, GitHub PR backup/phone, Obsidian only for thinking/jots not yet tied to a repo (never a second home for site prose). Pointed from `CLAUDE.md` and this section so cold returns (and agents) find it. |
+| **58** | **`docs/onesimus-sync-plan.md` parked.** Kyle agreed: private GitHub Onesimus is the single source of truth; desktop pulls/pushes; cloud/phone are temporary checkouts — not a third syncing twin. Cloud session could not see the private repo; desktop checklist includes fixing GitHub/Cursor private-repo access and moving the lasting note into Onesimus. Sticky in this site repo only until then. |
 
 ---
 
@@ -1113,6 +1114,8 @@ Open `~/Projects/kylecovan-astro` in VS Code and run Claude Code there.
 `CLAUDE.md` loads automatically; read this document when the change touches
 design, copy, or the top bar. For **where drafts and platform posts live**, and
 how not to duplicate them into Obsidian, read `docs/content-workflow.md`.
+For **Onesimus access across desktop / phone / cloud**, do the checklist in
+`docs/onesimus-sync-plan.md` (then move that note into Onesimus itself).
 
 **Highest-value next steps, in order:**
 
