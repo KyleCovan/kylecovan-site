@@ -299,6 +299,17 @@ Mac where Kyle is logged into GitHub:
    pointed at the old URL should update its remote; GitHub redirects the old
    name, but the canonical remote should be the new one.
 
+### Cloudflare agent tooling (August 10, 2026)
+
+Installed from `https://developers.cloudflare.com/agent-setup/prompt.md`:
+
+- Skills under `.agents/skills/` (lockfile: `skills-lock.json`)
+- MCP servers in `.cursor/mcp.json` — `cloudflare`, `cloudflare-docs`,
+  `cloudflare-bindings`, `cloudflare-builds`, `cloudflare-observability`
+
+Restart the agent after pulling so the MCP servers load. OAuth runs on first
+use of an authenticated Cloudflare tool (`cloudflare-docs` needs none).
+
 ---
 
 ## Still open
