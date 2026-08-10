@@ -81,7 +81,8 @@ Physics allows the budgets below. Engineering must still integrate them:
 
 1. **Pinna** as a ≤150 mg compressive oculus with stable calibration in flight vibration  
 2. **Return Gleam** MRR at ~50–100 mg that holds link while the body pitches at flapping frequency  
-3. **Lumen Keel** auto-track power beam safe enough for a living room  
+3. **Lumen Keel** auto-track power beam safe enough to use indoors at home  
+
 4. **Vein Drive** efficiency good enough that 0.3–0.5 W electrical yields controlled flight at 1–2 g  
 
 None of those require new particles or violated thermodynamics. They require **focused invention** on packaging, tracking, and control — which is exactly what “make this doable” means.

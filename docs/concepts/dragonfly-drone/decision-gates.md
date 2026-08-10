@@ -5,7 +5,7 @@
 Onesimus may be unavailable in cloud agents. Before capital spend:
 
 - [ ] Idea placed in priority stack (not silent parallel life)  
-- [ ] Accept Lumen Keel as part of v1 product (phone pilots; puck powers/interrogates)  
+- [ ] Accept Lumen Keel as part of v1 (phone pilots; table puck powers/interrogates)  
 - [ ] Accept Pinna as the camera (reconstructed view), not a tiny CMOS module  
 
 **No →** park the folder.  
@@ -48,7 +48,7 @@ Onesimus may be unavailable in cloud agents. Before capital spend:
 Kill **Anisoptera** (not “kill curiosity”) if:
 
 - After serious Phase A–B work, no compressive/MRR path yields usable view+bitrate at the mass ceiling  
-- Eye-safe living-room beaming cannot approach actuator power after real optical engineering  
+- Eye-safe indoor beaming cannot approach actuator power after real optical engineering  
 - Priority stack cannot fund Phase C–D tooling and no lab partner appears  
 
 If killed, document *which* first-principles budget failed. That failure knowledge is worth more than a costume quad that pretends the ask was met.
