@@ -14,6 +14,9 @@ rules, and decision history. **Read it before any change and update it after.**
 - `docs/deploy-status.md` — where the deploy and DNS stand, and what's still open.
 - `docs/dns-records.md` — the verified DNS record inventory. Read before touching
   DNS; Kyle's email runs on Google Workspace through those records.
+- `docs/content-workflow.md` — where drafts live, what `draft: true` means, how
+  `content-queue/` relates to the site, and how not to drift into Obsidian
+  duplicates. Read before parking or publishing writing.
 
 ## Where it lives
 
