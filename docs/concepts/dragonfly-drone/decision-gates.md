@@ -1,54 +1,36 @@
-# Decision gates — Anisoptera
+# Decision gates — field ask
 
-## Gate 0 — Place the work
+## Gate 0 — Agree on the real goal
 
-Onesimus may be unavailable in cloud agents. Before capital spend:
+- [ ] Outdoor use at distance is in scope  
+- [ ] Primary control is a **radio handset**, not iPhone-only  
+- [ ] Success mass is **outdoor-capable** (~25–45 g class), not 1–2 g in wind  
+- [ ] iPhone is viewer/mission computer  
 
-- [ ] Idea placed in priority stack (not silent parallel life)  
-- [ ] Accept Lumen Keel as part of v1 (phone pilots; table puck powers/interrogates)  
-- [ ] Accept Pinna as the camera (reconstructed view), not a tiny CMOS module  
+**No →** rewrite the ask. Don’t build the wrong machine.
 
-**No →** park the folder.  
-**Yes →** Phase A.
+## Gate 1 — Pinna / camera proof (desk)
 
-## Gate 1 — Pinna is a camera
+From Phase A: phone shows a usable reconstructed or camera view from the chosen imaging path.
 
-- [ ] Reconstructed view is pilot-useful to a human on an iPhone  
-- [ ] Measurement bitrate ≤ 80 kb/s for the chosen resolution/fps  
-- [ ] Mass model for flying Pinna ≤ 150 mg  
+## Gate 2 — Handset proficiency
 
-**Fail →** iterate compressive architecture (more diodes, better priors). **Do not** redefine success as “buy a webcam drone.”
+- [ ] ELRS (or chosen) handset bound to a trainer / sim / tiny whoop  
+- [ ] Failsafe demonstrated (RX loss → motors cut or known behavior)  
 
-## Gate 2 — Return Gleam uplink
+## Gate 3 — Field airframe
 
-- [ ] Room-scale link at Pinna bitrate  
-- [ ] Mass model ≤ 100 mg  
-- [ ] Control downlink on same beam demonstrated on the bench  
+- [ ] Dragonfly silhouette  
+- [ ] Hover/controlled flight outdoors on a mild day  
+- [ ] AUW recorded; battery minutes recorded  
 
-## Gate 3 — Lumen Keel power
+## Gate 4 — Camera at distance
 
-- [ ] ≥ 0.25 W electrical into flight-shaped PV under motion  
-- [ ] Documented eye-safety story you would allow in your own house  
-- [ ] Brownout behavior with micro-store characterized  
+- [ ] View on goggles or iPhone across a park-scale distance  
+- [ ] Control link still solid beyond video range (video may die first — that’s normal)  
 
-## Gate 4 — Vein Drive flight
+## Kill / reshape
 
-- [ ] AUW ≤ 2.0 g  
-- [ ] Controlled flight ≥ 30 s under beam  
-- [ ] Looks like a dragonfly in motion (flapping, silhouette) — subjective but recorded on video  
-
-## Gate 5 — Full ask
-
-- [ ] Gates 1–4 integrated  
-- [ ] iPhone app is the only pilot interface in hand  
-- [ ] Live Pinna view during flight  
-
-## Kill criteria (architecture-level)
-
-Kill **Anisoptera** (not “kill curiosity”) if:
-
-- After serious Phase A–B work, no compressive/MRR path yields usable view+bitrate at the mass ceiling  
-- Eye-safe indoor beaming cannot approach actuator power after real optical engineering  
-- Priority stack cannot fund Phase C–D tooling and no lab partner appears  
-
-If killed, document *which* first-principles budget failed. That failure knowledge is worth more than a costume quad that pretends the ask was met.
+- If wind always wins at chosen mass → increase size/thrust or restrict to calm days explicitly  
+- If handset+video path works but flapping never gives outdoor margin → hybrid propulsion, keep the look  
+- Do not “fix” by switching back to phone-only SoftAP and calling range solved  
