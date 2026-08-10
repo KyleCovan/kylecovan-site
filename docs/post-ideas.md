@@ -10,6 +10,9 @@ enforced in six places (`rss.xml.js`, `builds/[build].astro`, `builds/index`,
 `writing/index`, `writing/[post]`, and the home page), so a draft is genuinely
 invisible until the flag comes off.
 
+**Where drafts, LinkedIn/Substack copies, and Obsidian fit:** see
+`docs/content-workflow.md`.
+
 ---
 
 ## 1. Onesimus, and why the operating system is named after him
