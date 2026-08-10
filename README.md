@@ -2,6 +2,8 @@
 
 Personal site. Astro, deployed static to Cloudflare Pages.
 
+**Hardware concept (not the site):** open root [`PIGEON.md`](PIGEON.md) → `docs/concepts/pigeon/` (Level B pigeon ornithopter).
+
 **Read `docs/handoff.md` before changing anything.** It holds the hard
 constraints, the design tokens, and — most importantly — the copy rules.
 Section 6 lists every correction Kyle has made to his own words. Several of them

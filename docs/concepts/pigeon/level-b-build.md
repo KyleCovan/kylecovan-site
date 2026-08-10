@@ -143,4 +143,4 @@ Rough early spend order of magnitude: handset + bench drive + materials often la
 |---|---|
 | Flapping never makes outdoor margin | Declare hybrid assist **openly**, keep Level B look — or reopen lock |
 | Want museum 5 m realism | That’s Level C — new decision, after B ships |
-| Want dragonfly again | Separate project; don’t derail B |
+| Want insect-scale again | Separate project; don’t derail B |

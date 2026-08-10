@@ -1111,6 +1111,10 @@ Open `~/Projects/kylecovan-astro` in VS Code and run Claude Code there.
 `CLAUDE.md` loads automatically; read this document when the change touches
 design, copy, or the top bar.
 
+**Parked hardware concept (not site content):** Level B **pigeon ornithopter** —
+bookmark `PIGEON.md` at the repo root, pack at `docs/concepts/pigeon/`. Locked
+2026-08-10. Do not confuse with `/builds/` until Kyle writes a public build page.
+
 **Highest-value next steps, in order:**
 
 1. **Search Console** (`docs/deploy-status.md` Step 5), so the SEO work becomes

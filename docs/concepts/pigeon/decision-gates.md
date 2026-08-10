@@ -1,10 +1,10 @@
-# Decision gates — Level B pigeon (LOCKED)
+# Decision gates — Level B pigeon ornithopter (LOCKED)
 
-Source of truth for the goal: [`LOCKED.md`](LOCKED.md). Build order: [`level-b-build.md`](level-b-build.md).
+Source of truth: [`LOCKED.md`](LOCKED.md). Build order: [`level-b-build.md`](level-b-build.md).
 
 ## Gate 0 — Lock (done 2026-08-10)
 
-- [x] Vehicle is **rock-pigeon scale**, not dragonfly  
+- [x] Vehicle is **rock-pigeon scale**  
 - [x] Anatomical success bar is **Level B**  
 - [x] Outdoor + distance in scope  
 - [x] Primary control is **radio handset**; iPhone is viewer/map  
@@ -55,7 +55,7 @@ Source of truth for the goal: [`LOCKED.md`](LOCKED.md). Build order: [`level-b-b
 
 ## Kill / reopen rules
 
-- Do not quietly drop to Level A and call Level B done  
+- Do not quietly drop anatomical scope and call Level B done  
 - Do not add Level C scope without a new lock  
 - Hybrid thrust only if declared and still passes “anatomical flight machine” look  
 - Phone-only SoftAP is never the outdoor control fix  

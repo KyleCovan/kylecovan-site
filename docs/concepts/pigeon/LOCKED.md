@@ -1,7 +1,9 @@
-# LOCKED — Level B pigeon
+# LOCKED — Level B pigeon ornithopter
 
+**Project title:** Pigeon ornithopter (Level B)  
 **Decision date:** 2026-08-10  
-**Status:** locked success bar (not built yet)
+**Status:** locked success bar (not built yet)  
+**Path:** `docs/concepts/pigeon/`
 
 ## What we are building
 
@@ -12,7 +14,7 @@ An **anatomically inspired rock-pigeon ornithopter** for outdoor use at distance
 - **Primary remote: radio handset** (ExpressLRS-class); iPhone is viewer/map only  
 - Anatomical accuracy **Level B** (see below)  
 
-Dragonfly / gram-scale / Level C museum finish are **out of scope** unless this lock is explicitly reopened.
+Gram-scale insect flyers and Level C museum finish are **out of scope** unless this lock is explicitly reopened.
 
 ## Level B means (acceptance checklist)
 
