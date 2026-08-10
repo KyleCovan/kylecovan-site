@@ -11,7 +11,7 @@ Cloudflare Pages, and Google Workspace email survived the move intact.
 | Thing | Where |
 |---|---|
 | Local project | `~/Projects/kylecovan-astro` |
-| Repo | https://github.com/KyleCovan/kylecovan-site (public) |
+| Repo | https://github.com/KyleCovan/kylecovan-com (public) |
 | Host | Cloudflare Pages project `kylecovan-site` |
 | Live URL | **https://kylecovan.com** |
 | Also live | https://kylecovan-site.pages.dev (build/preview URL) |
@@ -68,7 +68,7 @@ npm run verify     # both suites — ALL CHECKS PASSED twice
 
 ## Step 2 — GitHub ✅ DONE
 
-Repo: **https://github.com/KyleCovan/kylecovan-site**, public, branch `main`.
+Repo: **https://github.com/KyleCovan/kylecovan-com** (renamed from `kylecovan-site` August 10, 2026), public, branch `main`.
 
 **Auth:** no Homebrew and no `gh` on this Mac, so the route was a classic
 Personal Access Token (`repo` scope) pasted at the `Password:` prompt, with
@@ -92,8 +92,16 @@ masked address, so Kyle's real email never appears in the public repo.
 
 ## Step 3 — Cloudflare Pages ✅ DONE
 
-Project `kylecovan-site`, connected to the GitHub repo, GitHub App scoped to
-**only that repository**.
+Project `kylecovan-site`, connected to the GitHub repo
+(`KyleCovan/kylecovan-com`, renamed from `kylecovan-site` August 10, 2026).
+The Cloudflare Pages **project** name is unchanged — that is what
+`kylecovan-site.pages.dev` is tied to. The GitHub App was originally scoped to
+**only that repository**; after a rename, confirm the installation still lists
+`kylecovan-com` under Repository access
+(`https://github.com/settings/installations` → Cloudflare Workers & Pages →
+Configure). GitHub keeps a redirect from the old name, so deploys usually keep
+working without recreating the Pages project — verify with a push to `main`
+anyway.
 
 | Setting | Value |
 |---|---|
@@ -260,6 +268,47 @@ Cloudflare rebuilds and deploys on push. The entry appears on its build's page a
 `/builds/<build>/`, in the structured data, in the sitemap and in the RSS feed.
 Nothing else to touch. (The frontmatter field is `build:`, not `project:`, and
 `/building/` became `/builds/` on July 30 — see handoff §4.)
+
+---
+
+## GitHub repo rename — `kylecovan-site` → `kylecovan-com` (August 10, 2026)
+
+**Current name:** `https://github.com/KyleCovan/kylecovan-com`
+
+The Cloudflare Pages **project** is still `kylecovan-site`. That name controls
+`kylecovan-site.pages.dev`. Do not rename the Pages project unless the preview
+URL is meant to change too.
+
+### What to do on the machine that owns the rename
+
+Cloud agents cannot rename the repo (no admin on the integration token). On a
+Mac where Kyle is logged into GitHub:
+
+1. **Rename:** GitHub → `KyleCovan/kylecovan-site` → Settings → General →
+   Repository name → `kylecovan-com` → Rename.
+2. **Local clone remote:**
+   `git -C ~/Projects/kylecovan-astro remote set-url origin https://github.com/KyleCovan/kylecovan-com.git`
+3. **Onesimus refs:** with the Acasis SSD mounted,
+   `python3 scripts/fix_onesimus_repo_refs.py` from this repo (or pass
+   `--onesimus /path/to/Onesimus`).
+4. **Cloudflare:** push a trivial commit to `main` and confirm Pages rebuilds.
+   If it does not, open
+   `https://github.com/settings/installations` → Cloudflare Workers & Pages →
+   Configure, and ensure `kylecovan-com` is in Repository access.
+5. **Cursor / other clones:** any open Cloud Agent or local checkout still
+   pointed at the old URL should update its remote; GitHub redirects the old
+   name, but the canonical remote should be the new one.
+
+### Cloudflare agent tooling (August 10, 2026)
+
+Installed from `https://developers.cloudflare.com/agent-setup/prompt.md`:
+
+- Skills under `.agents/skills/` (lockfile: `skills-lock.json`)
+- MCP servers in `.cursor/mcp.json` — `cloudflare`, `cloudflare-docs`,
+  `cloudflare-bindings`, `cloudflare-builds`, `cloudflare-observability`
+
+Restart the agent after pulling so the MCP servers load. OAuth runs on first
+use of an authenticated Cloudflare tool (`cloudflare-docs` needs none).
 
 ---
 

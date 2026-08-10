@@ -20,7 +20,7 @@ rules, and decision history. **Read it before any change and update it after.**
 | | |
 |---|---|
 | Local | `~/Projects/kylecovan-astro` |
-| Repo | https://github.com/KyleCovan/kylecovan-site (public, branch `main`) |
+| Repo | https://github.com/KyleCovan/kylecovan-com (public, branch `main`) |
 | Host | Cloudflare Pages project `kylecovan-site` — auto-deploys on push to `main` |
 | Live | **https://kylecovan.com** (also `kylecovan-site.pages.dev`) |
 | `www` | 301 redirect rule → apex, path and query preserved |

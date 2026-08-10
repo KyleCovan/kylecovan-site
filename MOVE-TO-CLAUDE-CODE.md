@@ -91,7 +91,7 @@ whole body with a pointer.** Something like:
 
 ```text
 This site is maintained in Claude Code, not here.
-Repo: github.com/KyleCovan/kylecovan-site — local ~/Projects/kylecovan-astro
+Repo: github.com/KyleCovan/kylecovan-com — local ~/Projects/kylecovan-astro
 CLAUDE.md at the repo root plus docs/ are the source of truth.
 Do not make site changes from a chat in this project; they cannot be built,
 verified or deployed from here.
