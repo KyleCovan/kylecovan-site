@@ -5,6 +5,7 @@
 **Status:** Independent technical note (not affiliated with SpaceX, NVIDIA, or the FCC)  
 **Date:** 2026-08-10  
 **Audience:** Satellite engineers, AI systems engineers, FCC Space Bureau commenters  
+**Plain-language companion:** [`orbital-ai-inference-first-plain.md`](./orbital-ai-inference-first-plain.md)  
 **Claim type key:** **[FACT]** public record · **[PHYSICS]** first-principles / established engineering · **[CLAIM]** company statement · **[INFERENCE]** conclusion of this note · **[OPEN]** unknown / needs disclosure
 
 ---
