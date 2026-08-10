@@ -37,7 +37,9 @@ Be precise or the project never ends.
 
 **Doable as the main build target.**
 
-### Level B — Anatomical flight machine (serious biomimetics)
+### Level B — Anatomical flight machine (serious biomimetics) — **LOCKED 2026-08-10**
+
+**This is the project success bar.** See [`LOCKED.md`](LOCKED.md) and [`level-b-build.md`](level-b-build.md).
 
 Level A, plus:
 
@@ -144,6 +146,6 @@ If the goal is **outdoor + distance + anatomically convincing + camera**, **pige
 
 ---
 
-## Success definition (pigeon)
+## Success definition (pigeon) — Level B LOCKED
 
-You win when a stranger at park distance says “that’s a pigeon” (or “robot pigeon”), you are flying it from a handset, and you have a usable camera view — with wings that flap and twist rather than spin props in the open. Props hidden as last-resort assist are a compromise to declare, not sneak in.
+You win when the Level B checklist in [`LOCKED.md`](LOCKED.md) is complete: avian wing path + twist, feathered/analogue surfaces, bird-like tail and folding legs, outdoor handset flight, integrated camera at park distance. Level C museum finish is optional later — not required to call this done.

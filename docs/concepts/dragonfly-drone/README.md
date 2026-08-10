@@ -1,21 +1,19 @@
-# Dragonfly drone — concept pack
+# Biomimetic flyer — concept pack
 
-**Status:** field-revised architecture. Not built. Not a site build.  
-**Ask:** dragonfly look + camera + **outdoor use at distance** + a remote that actually works in the field.
+**LOCKED (2026-08-10):** Level B rock-pigeon ornithopter — outdoor, camera, handset RC.  
+See [`LOCKED.md`](LOCKED.md).
 
 | File | What it is |
 |---|---|
-| [`pigeon-pivot.md`](pigeon-pivot.md) | **Strong option** — pigeon instead of dragonfly; anatomical accuracy levels |
-| [`field-revision.md`](field-revision.md) | Outdoor, distance, RC rethink (written for dragonfly; principles still apply) |
-| [`remote-control.md`](remote-control.md) | Why a handset beats an iPhone as primary control |
-| [`phase-a-first-weekend.md`](phase-a-first-weekend.md) | Desk camera proof (still useful; not the whole project) |
-| [`design-brief.md`](design-brief.md) | Earlier first-principles indoor stack (historical in this folder) |
-| [`anisoptera-stack.md`](anisoptera-stack.md) | Indoor inventions (Pinna etc.) — keep camera idea, demote optical power/link for field |
-| [`weight-budget.md`](weight-budget.md) | Gram indoor budgets; see field-revision for outdoor mass class |
-| [`iphone-stack.md`](iphone-stack.md) | Phone as viewer/brain — not sole outdoor RC |
-| [`bom-phase-1.md`](bom-phase-1.md) | Older phased proof order |
-| [`decision-gates.md`](decision-gates.md) | Gates (update against field-revision when deciding) |
+| [`LOCKED.md`](LOCKED.md) | **Decision lock** — Level B acceptance checklist |
+| [`level-b-build.md`](level-b-build.md) | Phased build sequence + what to buy when |
+| [`decision-gates.md`](decision-gates.md) | Go / no-go gates for Level B |
+| [`pigeon-pivot.md`](pigeon-pivot.md) | Why pigeon scale; Levels A/B/C defined |
+| [`remote-control.md`](remote-control.md) | Handset primary; iPhone viewer |
+| [`field-revision.md`](field-revision.md) | Outdoor / distance first principles (pre-pigeon wording OK) |
+| [`phase-a-first-weekend.md`](phase-a-first-weekend.md) | Optional desk camera experiments (not required for pigeon cam) |
+| [`design-brief.md`](design-brief.md) / [`anisoptera-stack.md`](anisoptera-stack.md) / [`weight-budget.md`](weight-budget.md) | Earlier dragonfly-gram work — archived context only |
+| [`iphone-stack.md`](iphone-stack.md) / [`bom-phase-1.md`](bom-phase-1.md) | Older notes |
 
-**Verdict (field):** Outdoor distance favors **pigeon scale** over true dragonfly grams — see `pigeon-pivot.md`. Dragonfly remains a micro stretch. Either way: **radio handset** primary, iPhone as viewer.
-
-**Language:** “Indoors” means inside a building. Not a product category.
+**Remote:** radio handset primary. iPhone = viewer/map only.  
+**Not a site build page** — docs only until you write public copy in your voice.

@@ -1,36 +1,61 @@
-# Decision gates — field ask
+# Decision gates — Level B pigeon (LOCKED)
 
-## Gate 0 — Agree on the real goal
+Source of truth for the goal: [`LOCKED.md`](LOCKED.md). Build order: [`level-b-build.md`](level-b-build.md).
 
-- [ ] Outdoor use at distance is in scope  
-- [ ] Primary control is a **radio handset**, not iPhone-only  
-- [ ] Success mass is **outdoor-capable** (~25–45 g class), not 1–2 g in wind  
-- [ ] iPhone is viewer/mission computer  
+## Gate 0 — Lock (done 2026-08-10)
 
-**No →** rewrite the ask. Don’t build the wrong machine.
+- [x] Vehicle is **rock-pigeon scale**, not dragonfly  
+- [x] Anatomical success bar is **Level B**  
+- [x] Outdoor + distance in scope  
+- [x] Primary control is **radio handset**; iPhone is viewer/map  
+- [x] Level C and covert “fake wildlife” are out of scope  
 
-## Gate 1 — Pinna / camera proof (desk)
+## Gate 1 — Study + handset
 
-From Phase A: phone shows a usable reconstructed or camera view from the chosen imaging path.
+- [ ] Morphometric sketch (span, length, CG) on paper/CAD  
+- [ ] ELRS handset owned/borrowed; sim or trainer stick time started  
+- [ ] Failsafe understood on a binder/trainer before the pigeon ever flaps free  
 
-## Gate 2 — Handset proficiency
+## Gate 2 — Bench flapper
 
-- [ ] ELRS (or chosen) handset bound to a trainer / sim / tiny whoop  
-- [ ] Failsafe demonstrated (RX loss → motors cut or known behavior)  
+- [ ] Flaps at ~5–8 Hz on the stand  
+- [ ] Power and lift logged  
+- [ ] Lift path credible vs weight target (or redesign triggered)  
 
-## Gate 3 — Field airframe
+## Gate 3 — Avian path + twist
 
-- [ ] Dragonfly silhouette  
-- [ ] Hover/controlled flight outdoors on a mild day  
-- [ ] AUW recorded; battery minutes recorded  
+- [ ] Stroke path looks avian in slow-mo  
+- [ ] Twist active or proven passive  
+- [ ] Not “flat paddle only”  
 
-## Gate 4 — Camera at distance
+## Gate 4 — Feathered / analogue wing surface
 
-- [ ] View on goggles or iPhone across a park-scale distance  
-- [ ] Control link still solid beyond video range (video may die first — that’s normal)  
+- [ ] Covering on; bench or hop behavior acceptable  
+- [ ] Repair plan exists (feathers break)  
 
-## Kill / reshape
+## Gate 5 — Body + outdoor flight
 
-- If wind always wins at chosen mass → increase size/thrust or restrict to calm days explicitly  
-- If handset+video path works but flapping never gives outdoor margin → hybrid propulsion, keep the look  
-- Do not “fix” by switching back to phone-only SoftAP and calling range solved  
+- [ ] Battery in breast/keel; AUW recorded (350–500 g class)  
+- [ ] Tail used for control  
+- [ ] Legs fold; can stand  
+- [ ] Controlled outdoor flight, mild day, handset  
+- [ ] Failsafe demonstrated on this airframe  
+
+## Gate 6 — Camera at distance
+
+- [ ] Integrated camera (head/breast)  
+- [ ] Park-scale view on goggles and/or iPhone  
+- [ ] Control link still solid when video gets soft  
+
+## Gate 7 — Level B dress complete
+
+- [ ] All checkboxes in `LOCKED.md` Level B acceptance list  
+- [ ] Park-distance “that’s a pigeon / robot pigeon”  
+- [ ] No dangling brick cam / open quad props as the visible propulsion story  
+
+## Kill / reopen rules
+
+- Do not quietly drop to Level A and call Level B done  
+- Do not add Level C scope without a new lock  
+- Hybrid thrust only if declared and still passes “anatomical flight machine” look  
+- Phone-only SoftAP is never the outdoor control fix  
