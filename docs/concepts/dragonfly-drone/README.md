@@ -16,6 +16,6 @@
 | [`bom-phase-1.md`](bom-phase-1.md) | Older phased proof order |
 | [`decision-gates.md`](decision-gates.md) | Gates (update against field-revision when deciding) |
 
-**Verdict (field):** Doable as a **dragonfly-shaped outdoor micro flyer (~25–45 g)**, camera aboard, flown with a **real radio handset**, iPhone as map/video viewer. True 1–2 g outdoor-in-wind-at-distance remains a stretch, not the success bar.
+**Verdict (field):** Outdoor distance favors **pigeon scale** over true dragonfly grams — see `pigeon-pivot.md`. Dragonfly remains a micro stretch. Either way: **radio handset** primary, iPhone as viewer.
 
 **Language:** “Indoors” means inside a building. Not a product category.
