@@ -140,16 +140,18 @@ Phase A does **not** include flying, lasers, or the table puck. Those come after
 ## How this connects to the dragonfly (so the weekend isn’t a random science fair)
 
 ```text
-THIS WEEKEND (desk)          LATER (dragonfly)
+THIS WEEKEND (desk)          LATER (field dragonfly)
 -------------------------    --------------------------
-Pattern + one sensor    →    same idea, shrunk as Pinna
-Numbers to Mac/phone    →    numbers via light reflector
-Phone shows picture     →    same phone app, in flight
-Big battery / USB       →    tiny store + table beam puck
-No wings                →    flapping body
+Pattern + one sensor    →    same idea as Pinna (lower bitrate helps range)
+Numbers to Mac/phone    →    numbers over RF (not a table laser) at distance
+Phone shows picture     →    phone or goggles as viewer
+USB power               →    onboard battery outdoors
+No wings                →    flapping / hybrid body
+Control not in scope    →    real radio handset (see field-revision.md)
 ```
 
-You’re not building a toy camera for its own sake. You’re proving the only part of the plan that sounds magical: **“a dragonfly-weight camera can still give me a view on my iPhone.”**
+You’re proving: **a sparse camera can still give you a view on a phone.**  
+Outdoor distance and the real remote are covered in [`field-revision.md`](field-revision.md) — Phase A does not try to solve those.
 
 ---
 
