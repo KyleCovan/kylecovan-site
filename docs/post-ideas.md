@@ -76,6 +76,19 @@ working with a system you only partly understand, leaning on the model's
 expertise deliberately, and learning the missing pieces when something breaks.
 Honest, and unusual to admit in public.
 
+## 6. Glory as its own discovery — DRAFTED August 10
+
+Seed sentence from Kyle: "What conscious discovers tends to glory as its own
+discovery." Spoken elaboration about limited perception, glorying in the find,
+ignorance of the source, and pursuit of our own devices.
+
+Drafted (not published) at:
+`src/content/writing/glory-as-its-own-discovery.md` (`draft: true`, untagged,
+so it will get its own `/writing/` URL when the flag comes off).
+
+Platform drafts in `content-queue/glory-as-its-own-discovery/` (LinkedIn +
+Substack). His edits win. Title still open.
+
 ---
 
 ## Deliberately not written up
