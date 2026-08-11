@@ -19,7 +19,7 @@ rules, and decision history. **Read it before any change and update it after.**
 
 | | |
 |---|---|
-| Local | `~/Projects/kylecovan-astro` |
+| Local | `~/1. Projects/kylecovan-site` — quote it, the folder name has a space |
 | Repo | https://github.com/KyleCovan/kylecovan-site (public, branch `main`) |
 | Host | Cloudflare Pages project `kylecovan-site` — auto-deploys on push to `main` |
 | Live | **https://kylecovan.com** (also `kylecovan-site.pages.dev`) |
