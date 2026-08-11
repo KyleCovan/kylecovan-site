@@ -265,9 +265,8 @@ Nothing else to touch. (The frontmatter field is `build:`, not `project:`, and
 1. **Step 5 — Search Console**, and the DMARC record above.
 2. **Dark mode.** Decision recorded in `docs/handoff.md` §7: automatic via
    `prefers-color-scheme`, no toggle. Deferred; it is a real design pass.
-3. **Restore the Tapo Canyon link** the day tapocanyon.com resolves. The anchor
-   was removed July 29 because it was a dead end; Kyle's sentence is untouched
-   and a comment in `src/pages/index.astro` says to put it back.
+3. ~~**Restore the Tapo Canyon link**~~ — **done August 10, 2026.** Linked again
+   at Kyle's request ahead of tapocanyon.com going live.
 4. **"What broke" entry for Project 01**, and Project 02's first entry.
 5. **The original `headshot.jpg`** is not in the repo. A true zoom-out on the
    portrait needs it. Kyle declined on July 29 — crop B is final for now.

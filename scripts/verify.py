@@ -23,6 +23,12 @@ TITLES = re.findall(r'\{"title":"((?:[^"\\]|\\.)*)","url":"([^"]+)"\}', HTML)
 # what is asserted now.
 assert len(TITLES) >= 2, f"expected the video list in the HTML, found {len(TITLES)}"
 N_VIDEOS = len(TITLES)
+
+# Restored August 10 (§55). Unlinked July 29 while tapocanyon.com did not
+# resolve; the sentence must stay a real outbound link so "That one" in the
+# note has somewhere to point.
+assert '<a href="https://tapocanyon.com">Tapo Canyon</a>' in HTML, \
+    "closing line must link 'Tapo Canyon' to https://tapocanyon.com"
 DECODED = [t.replace('\\"', '"') for t, _ in TITLES]
 LONGEST = max(DECODED, key=len)
 
