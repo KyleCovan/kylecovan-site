@@ -2,10 +2,12 @@
 
 **The short version: the code has already moved. Only the context needs to.**
 
-The site stopped being "a Claude project" on July 29 — it became a git repo at
-`~/Projects/kylecovan-astro`, pushed to GitHub, auto-deploying from Cloudflare
-Pages. Claude Code opens that folder and works on it directly, with a real
-terminal, so it can run `npm run build`, run both verify suites, and push.
+The site stopped being "a Claude project" on July 29 — it became a git repo
+(then named `kylecovan-astro`). **Live local path as of 2026-08-11:**
+`~/1. Projects/kylecovan-site` (quote it — spaces in the folder name). Repo on
+GitHub, auto-deploying from Cloudflare Pages. Open that folder and work it
+directly, with a real terminal, so you can run `npm run build`, both verify
+suites, and push.
 
 What has *not* moved is everything the claude.ai project was carrying in its head:
 the instructions prepended to every chat, and the four project docs. Claude Code
@@ -24,8 +26,8 @@ time.
 You already run Claude Code, so you may be done here. If not:
 
 - VS Code → Extensions → search **Claude Code** → Install.
-- Open the folder `~/Projects/kylecovan-astro` (File → Open Folder).
-- Open the Claude Code panel and sign in with the same account you use here.
+- Open the folder `~/1. Projects/kylecovan-site` (quote paths in the shell).
+- Or open `/Users/kylecovan/1. Projects/Onesimus-with-sites.code-workspace`.
 
 The extension runs Claude Code inside the folder you have open, so **open the
 repo folder, not your home folder or a parent.** Same reasoning as the `git init`
@@ -35,11 +37,11 @@ trap in `docs/deploy-status.md`.
 
 ## Step 2 — Drop this bundle into the repo
 
-Unzip it and copy the contents into `~/Projects/kylecovan-astro`, preserving the
+Unzip it and copy the contents into `~/1. Projects/kylecovan-site`, preserving the
 folder structure. You should end up with:
 
 ```
-kylecovan-astro/
+kylecovan-site/
 ├── CLAUDE.md              ← loaded automatically at the start of every session
 ├── docs/
 │   ├── handoff.md          the full source of truth
@@ -91,7 +93,7 @@ whole body with a pointer.** Something like:
 
 ```text
 This site is maintained in Claude Code, not here.
-Repo: github.com/KyleCovan/kylecovan-site — local ~/Projects/kylecovan-astro
+Repo: github.com/KyleCovan/kylecovan-site — local ~/1. Projects/kylecovan-site
 CLAUDE.md at the repo root plus docs/ are the source of truth.
 Do not make site changes from a chat in this project; they cannot be built,
 verified or deployed from here.

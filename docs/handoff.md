@@ -982,7 +982,7 @@ because `/builds/second-brain/` had never been deployed.
 ## 8. How to verify changes
 
 ```bash
-cd ~/Projects/kylecovan-astro
+cd "/Users/kylecovan/1. Projects/kylecovan-site"
 source .venv/bin/activate      # REQUIRED in a fresh Terminal, for verify only
 npm run build                  # writes dist/
 npm run verify                 # both suites — ALL CHECKS PASSED twice
@@ -1108,7 +1108,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 
 ## 10. Starting a session
 
-Open `~/Projects/kylecovan-astro` in VS Code and run Claude Code there.
+Open `~/1. Projects/kylecovan-site` in Cursor (or the multi-root `Onesimus-with-sites.code-workspace`) and work there.
 `CLAUDE.md` loads automatically; read this document when the change touches
 design, copy, or the top bar.
 

@@ -10,7 +10,7 @@ Cloudflare Pages, and Google Workspace email survived the move intact.
 
 | Thing | Where |
 |---|---|
-| Local project | `~/Projects/kylecovan-astro` |
+| Local project | `~/1. Projects/kylecovan-site` (quote it — the folder name has a space) |
 | Repo | https://github.com/KyleCovan/kylecovan-site (public) |
 | Host | Cloudflare Pages project `kylecovan-site` |
 | Live URL | **https://kylecovan.com** |
@@ -82,8 +82,8 @@ Personal Access Token (`repo` scope) pasted at the `Password:` prompt, with
   happened once on July 29; that token was revoked and replaced.
 - `git init` acts on whatever directory you are standing in. It was once run in
   `~`, creating a repo that claimed the entire home folder. Fix was
-  `rm -rf /Users/kylecovan/.git`. **Check the prompt ends in `kylecovan-astro %`
-  before any git command.**
+  `rm -rf /Users/kylecovan/.git`. **Check the prompt ends in `kylecovan-site %`
+  (or that pwd is `~/1. Projects/kylecovan-site`) before any git command.**
 
 **Commit identity:** `122067564+KyleCovan@users.noreply.github.com` — GitHub's
 masked address, so Kyle's real email never appears in the public repo.
