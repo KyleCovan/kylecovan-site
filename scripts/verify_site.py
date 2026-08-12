@@ -409,17 +409,26 @@ if rd.exists():
     live = {p[:-len('index.html')].strip('/') for p in PAGES}
     for r in rules:
         src_path, dest = r[0], r[1]
-        # The destination must be a page that actually exists, or the redirect
-        # sends visitors from one 404 to another.
-        target = ROOT / dest.strip('/') / 'index.html'
-        note(target.exists(), f'redirect target exists: {dest}',
-             str(target.relative_to(ROOT)))
+        # The destination must actually exist, or the redirect sends visitors
+        # from one 404 to another. Destinations are usually pages (a directory
+        # with index.html); /sitemap.xml → /sitemap-index.xml is a file target,
+        # so check both shapes instead of assuming a directory.
+        dest_clean = dest.strip('/')
+        page_target = ROOT / dest_clean / 'index.html'
+        file_target = ROOT / dest_clean
+        note(page_target.exists() or file_target.is_file(),
+             f'redirect target exists: {dest}', dest_clean)
         # And the SOURCE must NOT be a live page. If /builds/ were ever both a
         # real page and a redirect source, the redirect would shadow the page
         # and it would be invisible — the site would still build, still pass
         # every other check, and quietly serve the wrong thing.
         note(src_path.strip('/') not in live,
              f'redirect source {src_path} does not shadow a real page')
+    # Conventional short name → Astro's real sitemap. robots.txt already
+    # declares sitemap-index.xml; this catches tools that still request
+    # /sitemap.xml. Added August 12 after QA found a hard 404 there.
+    note(any(r[0] == '/sitemap.xml' and r[1] == '/sitemap-index.xml' for r in rules),
+         '_redirects maps /sitemap.xml → /sitemap-index.xml')
     # Every build must carry an id on /builds/, so a deep link to it lands on
     # the right build rather than the top of the page. Derived from the built
     # pages rather than a hardcoded list, so a new build is covered for free.

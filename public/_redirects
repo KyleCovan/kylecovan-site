@@ -15,3 +15,8 @@
 # build instead of the top of the page.
 /building/  /builds/  301
 /building   /builds/  301
+#
+# Conventional /sitemap.xml → Astro's sitemap-index.xml. robots.txt already
+# points at the real file; this catches tools and humans that still request the
+# short name. Same pattern as tapocanyon.com.
+/sitemap.xml  /sitemap-index.xml  301
