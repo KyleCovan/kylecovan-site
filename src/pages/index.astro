@@ -264,9 +264,11 @@ const jsonLd = {
         which costs the machine-readable contact signal. That is a different
         decision and Kyle chose against it on August 6.
 
-        A raw HTML comment, NOT an Astro {/* */} comment, which never reaches the
-        output. Verified present in dist/index.html after building — if it ever
-        stops surviving the build, this silently reverts to a 404. */}
+        A raw HTML comment, NOT an Astro comment. Astro comments never reach the
+        output — nesting an example of their delimiter here once closed this
+        block early and leaked the rest of the note onto the live page. Verified
+        present in dist/index.html after building — if it ever stops surviving
+        the build, this silently reverts to a 404. */}
     <p>
       <!--email_off--><a class="email" href="mailto:kyle@kylecovan.com">kyle@kylecovan.com</a><!--/email_off-->
     </p>
