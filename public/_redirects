@@ -1,9 +1,12 @@
 # Cloudflare Pages redirects. Copied verbatim out of public/ at build time.
 #
-# /building/ was live and indexed from July 29-30, 2026, and the home page
-# linked to /building/#personal-ai-os and /building/#second-brain. Those URLs
-# exist in Google's index and in anything anyone shared, so they redirect
-# rather than 404.
+# /building/ was live and indexed from July 29-30, 2026. /builds/ and
+# /builds/<id>/ were the next door, live from July 30. Those URLs exist in
+# Google's index and in anything anyone shared, so they redirect rather
+# than 404.
+#
+# August 21, 2026: the house is Unless the Lord. Builds is not a second
+# blog. Every old builds URL leads into /writing/.
 #
 # 301 (permanent) is deliberate: it passes ranking signal to the new URL and
 # tells Google to replace the old one in its index. A 302 would leave the dead
@@ -11,7 +14,15 @@
 #
 # Note on fragments: browsers never send the "#personal-ai-os" part to the
 # server, so no redirect rule can route it. That is handled on the other end —
-# /builds/ keeps an id on each build, so an old deep link lands on the right
-# build instead of the top of the page.
-/building/  /builds/  301
-/building   /builds/  301
+# /writing/ keeps an id for each former build, so an old deep link lands in
+# the house instead of 404ing.
+/building/                 /writing/  301
+/building                  /writing/  301
+/builds/                   /writing/  301
+/builds                    /writing/  301
+/builds/personal-ai-os/    /writing/  301
+/builds/personal-ai-os     /writing/  301
+/builds/llm-wiki/          /writing/  301
+/builds/llm-wiki           /writing/  301
+/builds/kylecovan-com/     /writing/  301
+/builds/kylecovan-com      /writing/  301

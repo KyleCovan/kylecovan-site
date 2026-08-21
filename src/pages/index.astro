@@ -9,24 +9,23 @@ import Base from '../layouts/Base.astro';
 import portrait from '../data/portrait.txt?raw';
 import { getCollection } from 'astro:content';
 
-/* Was src/data/projects.json. Now the same collection /builds/ renders from, so
-   a new build appears in this summary, on the index, at its own URL and in the
-   sitemap from one file — with no chance of the home page and /builds/ drifting
-   out of sync, which two separate sources guaranteed eventually. */
+/* Was src/data/projects.json. Now the builds collection: name, order, and
+   one-liner for the home summary. Product pages are gone; old /builds/ URLs
+   redirect into Unless the Lord. */
 const builds = (await getCollection('builds'))
   .sort((a, b) => a.data.order - b.data.order);
 
 const buildLabel = (n: number) => `Project ${String(n).padStart(2, '0')}`;
 
-/* The three most recent posts, for the summary section. Each links to wherever
-   it actually lives: a post tagged to a build renders in full on that build's
-   page, an untagged one has its own URL. Same resolution as /writing/. */
+/* The three most recent posts, for the summary section. Every published
+   post lives at /writing/<id>/ — essays and logs, one house. */
 const allPosts = (await getCollection('writing', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const recentPosts = allPosts.slice(0, 3).map(p => ({
   ...p,
-  href: p.data.build ? `/builds/${p.data.build.id}/#${p.id}` : `/writing/${p.id}/`,
+  href: `/writing/${p.id}/`,
+  isLog: p.data.kind === 'log',
 }));
 
 const fmtDate = (d: Date) =>
@@ -192,7 +191,7 @@ const jsonLd = {
         with evidence attached, it reads as collaboration; in a heading, with
         nothing behind it, a prospect reads need. */}
     <h2 id="building-heading">Because explaining it shows me what I understand</h2>
-    {/* Lede removed July 30 — see the note on /builds/. Retired, not reworded. */}
+    {/* Lede removed July 30. Retired, not reworded. */}
 
     {/* Each build links to its own page rather than to an anchor on a shared
         one. The qualifier span ("Nate Herk style") was removed on July 30 at
@@ -204,17 +203,11 @@ const jsonLd = {
         <p class="project-index">{buildLabel(b.data.order)}</p>
         <h3 class="project-title">{b.data.name}</h3>
         <p class="one-liner">{b.data.oneLiner}</p>
-        {/* "Read more about <name>", not a bare "Read more". Three links on
-            this page and three more on /builds/ all read "Read more" and went
-            to six different places. Screen reader users commonly navigate by
-            pulling up a list of every link on the page, and that list showed
-            six identical labels with nothing to choose between. Naming the
-            destination also gives crawlers real anchor text instead of a word
-            that describes the click rather than the page.
-
-            Derived from `name`, never typed per build, so a renamed build
-            renames its links. */}
-        <p class="more"><a href={`/builds/${b.id}/`}>Read more about {b.data.name}</a></p>
+        {/* "Read more about <name>", not a bare "Read more". Naming the
+            destination gives screen-reader link lists and crawlers real
+            anchor text. Links into Unless the Lord at the matching fragment.
+            Derived from `name`, never typed per build. */}
+        <p class="more"><a href={`/writing/#${b.id}`}>Read more about {b.data.name}</a></p>
       </article>
     ))}
   </section>
@@ -229,8 +222,11 @@ const jsonLd = {
     <h2 id="writing-heading">Writing on faith, technology, and the daily striving</h2>
 
     {recentPosts.map(p => (
-      <article class="project">
-        <p class="entry-date">{fmtDate(p.data.date)}</p>
+      <article class:list={['project', p.isLog ? 'entry-log' : 'entry-essay']}>
+        <p class="entry-date">
+          {p.isLog && <span class="entry-kind">Log</span>}
+          {fmtDate(p.data.date)}
+        </p>
         <h3 class="project-title"><a href={p.href}>{p.data.title}</a></h3>
       </article>
     ))}

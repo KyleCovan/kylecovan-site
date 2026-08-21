@@ -1,7 +1,8 @@
 ---
 title: "All clouds are not equal"
 date: 2026-08-11
-build: personal-ai-os
+kind: log
+project: Personal AI OS
 draft: true
 ---
 

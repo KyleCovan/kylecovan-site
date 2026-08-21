@@ -1,28 +1,24 @@
 /**
  * Two collections.
  *
- * `builds` — one Markdown file per thing Kyle has made. Frontmatter carries the
- * structured parts; the body carries the prose about the thing itself.
+ * `writing` — everything dated, one house. Unless the Lord at /writing/ is
+ * the door. A post is a full page at /writing/<id>/ whether it is an essay
+ * or a log. `kind: log` marks the frequent dated notes so a reader can skip
+ * them without leaving the house. `kind` defaults to essay when unset, so
+ * existing essays need no new field and no new filename scheme.
  *
- * `writing` — everything dated. One collection, not two, and this is the July 30
- * decision worth understanding before changing it:
+ * `project` is a free-text label for "this log is about a named thing." It is
+ * not a second door and it does not hide a post from the house.
  *
- *   A post with a `build:` field renders IN FULL on that build's page and is
- *   listed (not duplicated) in the writing index. A post without one gets its
- *   own page at /writing/<id>/.
+ * August 21, 2026: the July 30 lock that sent any post with `build:` off
+ * /writing/ and onto a product page is reversed. That field is gone. Logs
+ * live in the house. Old /builds/ URLs redirect; they are not a blog.
  *
- * That means Kyle never has to decide "is this a log entry or a blog post?" when
- * he sits down — he just writes, and one optional field decides where it lands.
- * The tag can be added or removed later without rewriting anything.
- *
- * It also keeps each build page a PILLAR PAGE: description plus every dated
- * entry about it, in one document. handoff §1 settled that generative engines
- * work at the passage level and reward exactly that shape. Splitting build
- * writing onto separate URLs was considered and rejected for this reason — see
- * §7. There is only ever ONE full copy of any text, so nothing is duplicate
- * content.
+ * `builds` — structured facts for the three things named on the home page
+ * (name, one-liner, order). The Markdown bodies stay in the repo. They are
+ * not rendered as product pages; that was the second door.
  */
-import { defineCollection, reference, z } from 'astro:content';
+import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const builds = defineCollection({
@@ -32,41 +28,22 @@ const builds = defineCollection({
     // Drives display order and the "Project 01" label, which is derived rather
     // than stored — storing it meant renumbering by hand on every insert.
     order: z.number().int().positive(),
-    // RENDERED, and it is Kyle's copy: the `.lede` on the build's own page and
-    // the `.one-liner` on both the home page and /builds/. Section 6 of
+    // RENDERED on the home page as the `.one-liner`. Section 6 of
     // docs/handoff.md puts it out of reach — changes come from Kyle as exact
     // text, or from options he picks.
     oneLiner: z.string(),
-    // NOT rendered. Overrides `oneLiner` for <meta name="description"> and the
-    // og:description share card ONLY, and only on builds that set it.
-    //
-    // Added August 6, 2026 because one string was carrying two jobs with one
-    // length budget. On the page, a one-liner can run as long as it reads well.
-    // In a search result it is cut around 155 characters, and on a LinkedIn or
-    // X card it is printed verbatim to someone who has NOT clicked yet — the
-    // same reasoning that fixed the /builds/ description at 137 (handoff §6).
-    // Personal AI OS's one-liner is 210 and truncates mid-clause.
-    //
-    // Leave it unset and nothing changes; the one-liner still does both jobs,
-    // which is right whenever it already fits. Nothing tests the length of
-    // either string, so this is a line that fails silently and in public.
+    // NOT rendered. Was the /builds/<id>/ meta/og override. Those pages
+    // redirect now. Kept so the files do not fail the schema.
     description: z.string().optional(),
-    // Not rendered. Feeds <lastmod> in the sitemap, which is the one hint in
-    // that file Google actually reads — it ignores <priority> and <changefreq>
-    // outright. A build page's real lastmod is the LATER of this date and the
-    // newest post tagged to the build, because the page renders both; see the
-    // note in astro.config.mjs. Bump it when the prose here changes and no new
-    // post lands, otherwise an edited page keeps advertising a stale date.
-    // Optional on purpose: a build with no date simply gets no <lastmod>, which
-    // is honest. A wrong date is worse than a missing one — Google learns to
-    // distrust the whole file when lastmod stops matching what actually changed.
+    // Not rendered. Still ages the home page's sitemap <lastmod> when the
+    // home summary lists these names. Optional on purpose: a missing date
+    // costs nothing, a wrong one costs the file's credibility.
     updated: z.coerce.date().optional(),
     // Where the idea came from. Not rendered — see the note in the build files.
     inspiration: z.string().optional(),
     // NOT RENDERED. These were the old "What the log will cover" outline, which
     // published a list of promises on a page with nothing behind it. They are
-    // now writing prompts for the Markdown body: Kyle answers them in prose and
-    // the answers become the page. Never render this array again.
+    // now writing prompts for the Markdown body. Never render this array.
     prompts: z.array(z.object({ lead: z.string(), rest: z.string() })),
   }),
 });
@@ -78,16 +55,12 @@ const writing = defineCollection({
     // Authored as ISO so it sorts correctly and lands in JSON-LD without a
     // parsing step; rendered as "July 28, 2026".
     date: z.coerce.date(),
-    // Optional. Set it and the post lands on that build's page; leave it off
-    // and the post gets its own URL. `reference` means a typo fails the BUILD
-    // rather than silently orphaning the post.
-    build: reference('builds').optional(),
-    // Free text, NOT a reference, and that is the whole point. `build` above is
-    // validated, so tagging a draft to a project that has no build page yet fails
-    // the site build. Queueing content must never force a page into existence:
-    // Kyle can describe a new project today and have posts queued for it before
-    // any page exists. NOT RENDERED anywhere — it is a holding label. When the
-    // build page is eventually created, add `build:` and retire this.
+    // essay (default) or log. A log is a kind inside Unless the Lord, not a
+    // second blog. Unset means essay — do not make Kyle add a field to every
+    // scarce piece.
+    kind: z.enum(['essay', 'log']).default('essay'),
+    // Free text, NOT a reference. A label for a named thing. It does not
+    // hide the post and it does not mint a product page.
     project: z.string().optional(),
     // Free text, not an enum. These come from Kyle's chat-to-obsidian skill,
     // which writes them when a note is captured out of a conversation. An enum

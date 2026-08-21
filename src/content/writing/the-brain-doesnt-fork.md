@@ -1,7 +1,8 @@
 ---
 title: "The brain doesn't fork"
 date: 2026-08-08
-build: personal-ai-os
+kind: log
+project: Personal AI OS
 draft: true
 ---
 

@@ -152,7 +152,8 @@ with sync_playwright() as pw:
                 const prev = h.previousElementSibling;
                 if (!prev) return null;
                 if (prev.classList.contains('eyebrow') ||
-                    prev.classList.contains('entry-date')) return null;
+                    prev.classList.contains('entry-date') ||
+                    prev.classList.contains('entry-kind')) return null;
                 const gap = h.getBoundingClientRect().top - prev.getBoundingClientRect().bottom;
                 return gap < 20 ? [h.textContent.trim().slice(0, 34), Math.round(gap)] : null;
             }).filter(Boolean)""")
@@ -266,26 +267,28 @@ for p in PAGES:
          f'{p}: Person @id resolves to the home page definition',
          stub.get('@id') if stub else 'no Person node')
 
-# Every BlogPosting headline, date and anchor must appear on the page declaring
-# it. Was hardcoded to the building page; now runs wherever a Blog is declared,
-# so a new build page with entries is covered the day it exists.
-blogs = 0
+# Every BlogPosting headline and date must appear on the page declaring it.
+# August 21: a log is a full post at /writing/<id>/, not a fragment on a
+# product page. The old check required a Blog wrapper on /builds/<id>/.
+# That lock is reversed — the assertion now follows the house.
+postings = 0
 for p in PAGES:
     src = (ROOT / p).read_text()
-    blog = next((n for n in (ld.get(p) or {}).get('@graph', []) if n.get('@type') == 'Blog'), None)
-    if not blog: continue
-    blogs += 1
-    for post in blog.get('blogPost', []):
-        note(post['headline'] in src, f'{p}: BlogPosting headline is on the page',
-             post['headline'][:44])
-        y, m, d = post['datePublished'].split('-')
+    for node in (ld.get(p) or {}).get('@graph', []):
+        if node.get('@type') != 'BlogPosting':
+            continue
+        postings += 1
+        note(node['headline'] in src, f'{p}: BlogPosting headline is on the page',
+             node['headline'][:44])
+        y, m, d = node['datePublished'].split('-')
         human = datetime.datetime(int(y), int(m), int(d)).strftime('%B %-d, %Y')
         note(human in src, f'{p}: BlogPosting date matches the visible date', human)
-        anchor = post['url'].split('#')[-1]
-        note(f'id="{anchor}"' in src, f'{p}: BlogPosting anchor exists on the page', anchor)
-note(blogs >= 1, 'at least one page declares a Blog', f'{blogs} found')
+        note(node['url'].startswith('https://kylecovan.com/writing/'),
+             f'{p}: BlogPosting url is in the house', node['url'])
+note(postings >= 1, 'published writing declares BlogPosting on its own page',
+     f'{postings} found')
 
-# Same rule for the ItemList on /builds/: every build it names must be a real
+# Same rule for the ItemList on /writing/: every post it names must be a real
 # heading on the page, and every url it points at must be a page that exists.
 for p in PAGES:
     src = (ROOT / p).read_text()
@@ -294,11 +297,10 @@ for p in PAGES:
         if not item_list: continue
         for it in item_list.get('itemListElement', []):
             note(it['name'] in src, f'{p}: ItemList name is on the page', it['name'])
-            # An ItemList url may carry a fragment: a post tagged to a build
-            # lives at /builds/<build>/#<post>. Resolve the page, then confirm
-            # the fragment actually exists there rather than stopping at the
-            # page — a link to a real page and a dead anchor still lands the
-            # reader in the wrong place.
+            # An ItemList url may carry a fragment. Resolve the page, then
+            # confirm the fragment actually exists there rather than stopping
+            # at the page — a link to a real page and a dead anchor still
+            # lands the reader in the wrong place.
             path, _, frag = it['url'].replace('https://kylecovan.com/', '').partition('#')
             target = ROOT / path.strip('/') / 'index.html'
             note(target.exists(), f'{p}: ItemList url resolves to a real page', it['url'])
@@ -354,29 +356,23 @@ posts = []
 for f in sorted((SRC / 'writing').glob('*.md')):
     b = frontmatter(f)
     posts.append({'id': f.stem, 'date': (fm_field(b, 'date') or '')[:10],
-                  'build': fm_field(b, 'build'),
-                  'draft': fm_field(b, 'draft') == 'true'})
-posts = [p for p in posts if p['date'] and not p['draft']]
+                  'kind': fm_field(b, 'kind') or 'essay',
+                  'draft': fm_field(b, 'draft') == 'true',
+                  'title': fm_field(b, 'title')})
+published = [p for p in posts if p['date'] and not p['draft']]
+drafts = [p for p in posts if p['draft']]
 
-# An untagged post owns its URL, so its lastmod is simply its own date.
-for p in posts:
+# Every published post owns /writing/<id>/, essay or log. lastmod is its date.
+for p in published:
     url = f"https://kylecovan.com/writing/{p['id']}/"
-    if p['build'] or url not in entries: continue
+    if url not in entries: continue
     note(entries[url] == p['date'], f"/writing/{p['id']}/ lastmod is the authored date",
          f"sitemap {entries[url]} vs frontmatter {p['date']}")
 
-# A build page renders its own prose AND every post tagged to it, so either can
-# age it. This is the check that catches a post landing on a build page while
-# the page keeps advertising the older date.
-for f in sorted((SRC / 'builds').glob('*.md')):
-    url = f'https://kylecovan.com/builds/{f.stem}/'
-    if url not in entries: continue
-    dates = [d for d in [(fm_field(frontmatter(f), 'updated') or '')[:10]] if d]
-    dates += [p['date'] for p in posts if p['build'] == f.stem]
-    if not dates: continue
-    note(entries[url] == max(dates),
-         f'/builds/{f.stem}/ lastmod is the newest of its prose and its posts',
-         f'sitemap {entries[url]} vs expected {max(dates)}')
+# /builds/ is a redirect, not a page. A sitemap that still lists it would
+# tell Google the old door is the document.
+for loc in entries:
+    note('/builds/' not in loc, 'sitemap does not list /builds/ as a page', loc)
 
 # --- 5c. the share card the meta tags promise actually ships -----------------
 # New August 3. The card's filename is versioned on purpose: iMessage, Slack, X
@@ -397,9 +393,10 @@ for u in sorted(og_refs):
     note(f.exists(), 'share image resolves to a file that ships', u)
 
 # --- 6. Redirects for URLs that used to be live ------------------------------
-# /building/ was indexed. A redirect file that stops being copied, or that
-# points at a path which no longer exists, fails silently — the visitor gets a
-# 404 and nobody finds out. Both halves are checked here.
+# /building/ was indexed. /builds/ and /builds/<id>/ were the next door.
+# August 21: those URLs lead into the house. A redirect file that stops
+# being copied, or that points at a path which no longer exists, fails
+# silently — the visitor gets a 404 and nobody finds out.
 rd = ROOT / '_redirects'
 note(rd.exists(), '_redirects survives the build into dist/')
 if rd.exists():
@@ -407,61 +404,104 @@ if rd.exists():
              if l.strip() and not l.startswith('#')]
     note(bool(rules), f'_redirects has {len(rules)} rule(s)')
     live = {p[:-len('index.html')].strip('/') for p in PAGES}
+    note('builds' not in live and not any(p.startswith('builds/') for p in live),
+         '/builds/ is not a live page')
     for r in rules:
         src_path, dest = r[0], r[1]
-        # The destination must be a page that actually exists, or the redirect
-        # sends visitors from one 404 to another.
-        target = ROOT / dest.strip('/') / 'index.html'
+        dest_path = dest.split('#', 1)[0]
+        target = ROOT / dest_path.strip('/') / 'index.html'
         note(target.exists(), f'redirect target exists: {dest}',
              str(target.relative_to(ROOT)))
-        # And the SOURCE must NOT be a live page. If /builds/ were ever both a
-        # real page and a redirect source, the redirect would shadow the page
-        # and it would be invisible — the site would still build, still pass
-        # every other check, and quietly serve the wrong thing.
         note(src_path.strip('/') not in live,
              f'redirect source {src_path} does not shadow a real page')
-    # Every build must carry an id on /builds/, so a deep link to it lands on
-    # the right build rather than the top of the page. Derived from the built
-    # pages rather than a hardcoded list, so a new build is covered for free.
-    builds_src = (ROOT / 'builds/index.html').read_text()
-    build_ids = [pathlib.Path(p).parent.name for p in PAGES
-                 if p.startswith('builds/') and p != 'builds/index.html']
+        if src_path.rstrip('/').startswith('/building') or src_path.rstrip('/').startswith('/builds'):
+            note(dest_path.rstrip('/') == '/writing',
+                 f'{src_path} leads into the house', dest)
+    writing_src = (ROOT / 'writing/index.html').read_text()
+    build_ids = [f.stem for f in (SRC / 'builds').glob('*.md')]
     for bid in build_ids:
-        note(f'id="{bid}"' in builds_src, f'/builds/ has an anchor for {bid}')
-    # `/building/#personal-ai-os` was published and still resolves via the id
-    # above. `/building/#second-brain` does NOT: that build was renamed to
-    # llm-wiki on July 30, before /builds/second-brain/ was ever deployed. The
-    # fragment was live for roughly one day and only ever on the home page's own
-    # links, so the loss is a reader landing at the top of /builds/ instead of
-    # on the right build. Recorded rather than silently dropped.
-    note('id="personal-ai-os"' in builds_src,
+        note(f'id="{bid}"' in writing_src, f'/writing/ has an anchor for {bid}')
+    # `/building/#personal-ai-os` was published. The server never sees the
+    # fragment, so the id has to live on the page the 301 lands on.
+    # `/building/#second-brain` does NOT: that build was renamed to llm-wiki
+    # on July 30, before /builds/second-brain/ was ever deployed. Recorded
+    # rather than silently dropped.
+    note('id="personal-ai-os"' in writing_src,
          'old deep link /building/#personal-ai-os still has a target')
 
-# --- 7. RSS items point at pages and anchors that exist ----------------------
+# --- 7. RSS items point at pages that exist ----------------------------------
 # New on July 30, and it earned its place immediately: the first version of the
 # per-entry links rendered as ".../#2026-07-28-too-many-ideas/" because
 # @astrojs/rss appends the site's trailing slash to the end of the whole string,
 # fragment included. The feed was valid XML, the build passed, and every link
 # was subtly broken. Nothing else on the site checks the feed's contents.
+#
+# August 21: every item links to /writing/<id>/. The channel title names the
+# house, not the old "Building in public" door.
 feed = ROOT / 'rss.xml'
 note(feed.exists(), 'rss.xml is built')
 if feed.exists():
     xml = feed.read_text()
+    channel_title = re.search(r'<channel>\s*<title>(.*?)</title>', xml, re.S)
+    note(channel_title is not None and 'Unless the Lord' in channel_title.group(1),
+         'rss channel title names the house',
+         channel_title.group(1) if channel_title else 'missing')
+    note('Building in public' not in (channel_title.group(1) if channel_title else ''),
+         'rss channel title is not "Building in public"')
     item_links = re.findall(r'<link>(.*?)</link>', xml)[1:]   # [0] is the channel link
     note(bool(item_links), f'rss.xml has {len(item_links)} item link(s)')
     for u in item_links:
         note('/#' not in u or not u.endswith('/'),
              'rss link has no slash after the fragment', u)
+        note('/writing/' in u and '/builds/' not in u,
+             'rss item link is in the house', u)
         path, _, frag = u.replace('https://kylecovan.com/', '').partition('#')
         target = ROOT / path.strip('/') / 'index.html'
         note(target.exists(), 'rss link resolves to a real page', u)
         if frag and target.exists():
             note(f'id="{frag}"' in target.read_text(),
                  'rss link fragment exists on that page', f'#{frag}')
-    # Every published entry must be in the feed. A draft that silently stays in,
-    # or an entry that silently drops out, is invisible without this.
     titles = re.findall(r'<title>(.*?)</title>', xml)[1:]
     note(len(titles) == len(item_links), 'every rss item has a title and a link')
+    note(len(titles) == len(published),
+         'every published post is in the feed',
+         f'{len(titles)} items vs {len(published)} published')
+    for d in drafts:
+        note(d['title'] not in titles and d['id'] not in xml,
+             f'draft stays out of the feed: {d["id"]}')
+
+# --- 8. One house: nav, writing stream, drafts -------------------------------
+home_src = (ROOT / 'index.html').read_text()
+writing_src = (ROOT / 'writing/index.html').read_text()
+nav_labels = re.findall(
+    r'<nav class="topnav"[^>]*>.*?</nav>', home_src, re.S)
+nav_html = nav_labels[0] if nav_labels else ''
+note('Builds' not in nav_html, 'nav has no Builds item')
+note('Unless the L' in nav_html or 'Unless the Lord' in nav_html,
+     'nav still has Unless the Lord')
+note(nav_html.count('href="/writing/"') == 1 and 'href="/builds/"' not in nav_html,
+     'nav writing door is /writing/ only')
+
+# Published posts appear on /writing/; drafts do not.
+for p in published:
+    note(p['title'] in writing_src, f'/writing/ lists published post: {p["id"]}')
+    note((ROOT / 'writing' / p['id'] / 'index.html').exists(),
+         f'/writing/{p["id"]}/ is a real page')
+for d in drafts:
+    note(d['title'] not in writing_src,
+         f'draft stays off /writing/: {d["id"]}')
+    note(not (ROOT / 'writing' / d['id'] / 'index.html').exists(),
+         f'draft has no public URL: {d["id"]}')
+
+# Logs are marked; essays are not buried under the same mark.
+logs = [p for p in published if p['kind'] == 'log']
+essays = [p for p in published if p['kind'] != 'log']
+if logs:
+    note('entry-kind' in writing_src and '>Log<' in writing_src,
+         'logs are marked on /writing/')
+if essays:
+    note(any(e['title'] in writing_src for e in essays),
+         'essays appear on /writing/')
 
 print()
 print('SITE RESULT:', 'ALL CHECKS PASSED' if not fails else f'{len(fails)} FAILURE(S): {fails}')

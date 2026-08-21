@@ -25,25 +25,23 @@ rules, and decision history. **Read it before any change and update it after.**
 | Live | **https://kylecovan.com** (also `kylecovan-site.pages.dev`) |
 | `www` | 301 redirect rule → apex, path and query preserved |
 
-An **Astro** project, not hand-written HTML. Nav: **Kyle Covan · Builds ·
-Unless the L**ORD** · Contact**. Pages are `/` (Story, Builds summary, Writing
-summary, Contact), `/builds/`, `/builds/<id>/`, `/writing/`, `/writing/<id>/`.
+An **Astro** project, not hand-written HTML. Nav: **Kyle Covan · Unless the
+L**ORD** · Contact**. Pages are `/` (Story, Builds summary, Writing summary,
+Contact), `/writing/`, `/writing/<id>/`. Old `/builds/` URLs 301 into the house.
 
 ```
 src/
   layouts/Base.astro          head, top bar, footer, the one inline script
   pages/index.astro           home
-  pages/builds/index.astro    the builds directory
-  pages/builds/[build].astro  one page per build
   pages/writing/index.astro   the writing index — "Unless the Lord"
-  pages/writing/[post].astro  one page per UNTAGGED post
+  pages/writing/[post].astro  one page per published post
   pages/rss.xml.js            RSS feed
   styles/site.css             ALL the CSS, once
   data/videos.json            the video titles + urls
   data/portrait.txt           WebP data URI, 340px
   data/favicon.txt            PNG data URI, 64px
-  content/builds/*.md         one file per build — frontmatter + prose
-  content/writing/*.md        everything dated — posts and build-log entries
+  content/builds/*.md         names + one-liners for the home summary
+  content/writing/*.md        everything dated — essays and logs
   content.config.ts           both collection schemas
 public/                       og-2.png, robots.txt, _redirects
 scripts/verify.py             home-page suite
@@ -51,16 +49,14 @@ scripts/verify_site.py        site-level suite
 ```
 
 - **All CSS lives once in `src/styles/site.css`.** Never duplicate it.
-- **One `writing` collection, not two.** A post with a `build:` field renders in
-  full on that build's page; a post without one gets its own URL under
-  `/writing/`. That is why Kyle never has to decide "log entry or blog post?" —
-  he writes, and one optional field decides where it lands. **There is only ever
-  one full copy of any text**, so nothing is duplicate content.
-- **Build pages are pillar pages.** Description plus every post about that build,
-  in one document. Splitting build writing onto separate URLs was considered on
-  July 30 and rejected — see handoff §7.
-- **`build:` is a `reference('builds')`.** A typo fails the build instead of
-  silently orphaning the entry.
+- **One writing door.** Unless the Lord at `/writing/` lists essays and dated
+  logs in one stream. A log is a kind inside that house (`kind: log`), not a
+  second blog. Every published post is a full page at `/writing/<id>/`. Unset
+  `kind` means essay. Optional free-text `project:` labels a named thing; it
+  does not hide a post and it is not a second door.
+- **Do not revive `build:` as the thing that hides a post from Unless the Lord.**
+  That August lock is reversed. Old `/builds/` and `/builds/<id>/` URLs redirect
+  into the house. Fragment ids for former builds live on `/writing/`.
 - **Substantively rewriting a post body means bumping its `date` / `updated`
   frontmatter.** The sitemap's `<lastmod>` is derived from frontmatter, not from
   build time (handoff §51), so an edited body with an unchanged date tells Google
@@ -70,14 +66,13 @@ scripts/verify_site.py        site-level suite
   because "did the body change since this date?" is a git-history question.
 - **Never render a build's `prompts` array.** Those were the old "What the log
   will cover" bullets — a list of promises on a page with nothing behind it.
-  They are now writing prompts for the prose body.
-- **`.epigraph` is not the `h1`.** Each section page opens with a verse above
-  its heading. The verse must never become the heading; see the note in the CSS.
-- **`public/_redirects` keeps `/building/` alive.** That URL was indexed. Never
-  delete a rule from that file without checking what still links to it.
+- **`.epigraph` is not the `h1`.** `/writing/` opens with Psalm 127:1a above its
+  heading. The verse must never become the heading; see the note in the CSS. Do
+  not move Ecclesiastes 11:1 onto that page unless Kyle says to.
+- **`public/_redirects` keeps `/building/` and `/builds/` alive.** Those URLs
+  were indexed. Never delete a rule from that file without checking what still
+  links to it.
 - **Never hand-edit `dist/`.** It is build output.
-- Nothing is generated into the source tree. Both files under
-  `src/pages/builds/` **are** edited by hand.
 - **Images are rebuilt, never hand-edited.** `build_assets.py` regenerates the
   portrait, the favicon and the share card from `headshot.jpg` and
   `headshot-favicon.jpg`:
@@ -141,10 +136,10 @@ never appear here** — nothing on this site sells anything. The only connection
 a single closing line at the bottom of the home page.
 
 **The work itself is a different question, and Kyle narrowed this rule on
-August 4.** `/builds/` is his portfolio of things made, and it may include client
-projects and projects outside Tapo Canyon's scope. Showing the work is allowed;
-offering the service is not. If a build page starts reading like a pitch — rates,
-packages, "hire me", a call to action — it has crossed back over the line.
+August 4.** Showing the work on the home page is allowed; offering the service
+is not. If a summary starts reading like a pitch — rates, packages, "hire me", a
+call to action — it has crossed back over the line. Builds is not a nav
+destination and not a second writing door (August 21).
 
 ## Working habits that have paid off here
 

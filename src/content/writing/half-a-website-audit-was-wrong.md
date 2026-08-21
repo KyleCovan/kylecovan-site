@@ -1,7 +1,8 @@
 ---
 title: "Half a website audit was wrong"
 date: 2026-08-06
-build: kylecovan-com
+kind: log
+project: kylecovan.com
 draft: true
 ---
 

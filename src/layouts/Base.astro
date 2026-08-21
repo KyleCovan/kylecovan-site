@@ -16,7 +16,7 @@ import videos from '../data/videos.json';
 export interface Props {
   title: string;
   description: string;
-  path: string;              // "/", "/builds/", "/builds/<id>/"
+  path: string;              // "/", "/writing/", "/writing/<id>/"
   ogType?: string;
   jsonLd?: unknown;
   showWatching?: boolean;    // the rotating video line — home page only
@@ -36,25 +36,20 @@ const {
 const SITE = 'https://kylecovan.com';
 const canonical = `${SITE}${path}`;
 
-/* Rebuilt July 30. Was Story · Approach · Building · Contact.
+/* Three pillars: his name (home), Unless the Lord, Contact.
 
-   Story left the nav because Kyle spotted that it pointed at an anchor on the
-   page you are already standing on — a scroll-to-here, not a destination —
-   while nothing in the nav said "home" at all. The only way back was a text
-   link at the very bottom of the page. His name now does that job, and the
-   site gets the wordmark it never had. #story stays in the HTML, so any
-   existing /#story deep link still works.
+   August 21, 2026: Builds left the nav. It was a second writing door — the
+   Brandur / Adactio failure. The house is Unless the Lord. Old /builds/ URLs
+   redirect into it. Privacy stays in the footer.
 
-   Approach left because its 109 words became a post; see
-   src/content/writing/startup-operations-now-ai-orchestration.md.
-
-   Every pillar is now a real destination. Contact is the one remaining anchor,
-   and off the home page it has to become an absolute path or it would look for
-   #contact on a page that has no Contact section. */
+   July 30 history, still true: Story left because it pointed at an anchor on
+   the page you are already standing on, while nothing in the nav said "home."
+   His name does that job. #story stays, so /#story still works. Approach left
+   because its 109 words became a post. Contact is the one remaining in-page
+   anchor, and off the home page it has to become an absolute path. */
 const onHome = path === '/';
 const nav = [
   { label: 'Kyle Covan', href: '/' },
-  { label: 'Builds',     href: '/builds/' },
   /* The divine name in small caps, as every major English translation sets it.
      Only "ord" is wrapped, so the text stays "Unless the Lord" for copy/paste
      and screen readers. See the .sc note in site.css. */
@@ -92,7 +87,7 @@ const fallback = videos[0];
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content={`${SITE}/og-2.png`}>
 
-<link rel="alternate" type="application/rss+xml" title="Kyle Covan — Building in public" href={`${SITE}/rss.xml`}>
+<link rel="alternate" type="application/rss+xml" title="Kyle Covan — Unless the Lord" href={`${SITE}/rss.xml`}>
 
 {jsonLd && (
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />
@@ -175,10 +170,9 @@ const fallback = videos[0];
   </main>
 
   <footer class="colophon">
-    {/* Privacy sits in the footer, not the nav. The nav is four pillars of who
-        Kyle is and what he makes; a privacy policy is plumbing, and the footer
-        is where a reader looks for it. Adding a fifth pillar would also break
-        the masthead reasoning in handoff section 6. */}
+    {/* Privacy sits in the footer, not the nav. The nav is three pillars;
+        a privacy policy is plumbing, and the footer is where a reader looks
+        for it. */}
     <p>© <span>2026</span> Kyle Covan · <a href="/privacy/">Privacy</a></p>
     <p class="credit">Built in partnership with
       <a href="https://avatar.andrewng.org" target="_blank" rel="noopener noreferrer">AI Andrew Ng</a></p>

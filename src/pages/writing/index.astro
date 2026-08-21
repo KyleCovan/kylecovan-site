@@ -2,34 +2,30 @@
 /**
  * The writing index. Nav label "Unless the Lord", URL /writing/.
  *
- * The label is expressive and the URL is plain, on purpose: URLs are functional
- * and a person typing one guesses "writing", not a psalm. The name does its work
- * where a name should, on the page.
+ * The house. Essays and dated logs in one stream. A log is a kind inside
+ * this page, not a second blog. Every item links to its own /writing/<id>/.
  *
- * This is a DIRECTORY, so it lists posts rather than reprinting them. A post
- * tagged to a build lives in full on that build's page (see
- * src/pages/builds/[build].astro) and is linked here; an untagged post has its
- * own page. Either way there is exactly one full copy of any text on the site,
- * so nothing here is duplicate content.
+ * The label is expressive and the URL is plain, on purpose: URLs are functional
+ * and a person typing one guesses "writing", not a psalm. The name does its
+ * work where a name should, on the page.
  */
 import Base from '../../layouts/Base.astro';
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('writing', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-/* Resolve each post's home once. A tagged post lives on its build's page under
-   its own id; an untagged one gets /writing/<id>/. */
-const items = await Promise.all(
-  posts.map(async (p) => {
-    const build = p.data.build ? await getEntry(p.data.build) : null;
-    return {
-      post: p,
-      build,
-      href: build ? `/builds/${build.id}/#${p.id}` : `/writing/${p.id}/`,
-    };
-  })
-);
+const builds = await getCollection('builds');
+
+/* Old /building/#<id> and /builds/#<id> fragments. The server never sees a
+   hash, so a 301 to this page only works if the id still exists here. */
+const fragmentIds = builds.map((b) => b.id);
+
+const items = posts.map((p) => ({
+  post: p,
+  isLog: p.data.kind === 'log',
+  href: `/writing/${p.id}/`,
+}));
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
@@ -49,8 +45,6 @@ const jsonLd = {
       description: 'Writing on faith, technology, and the daily striving.',
       inLanguage: 'en',
       author: { '@id': 'https://kylecovan.com/#kyle' },
-      /* Names and urls below are all rendered on this page as links.
-         verify_site.py checks that from the other side. */
       mainEntity: {
         '@type': 'ItemList',
         itemListElement: items.map((it, i) => ({
@@ -86,12 +80,11 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
 
-  {/* Psalm 127:1a — the first clause only, at Kyle's instruction, so it balances
-      Ecclesiastes 11:1 on /builds/. "1a" is the standard citation for the first
-      half of a verse. LORD is small-capped because that is how every major
-      English translation sets the divine name; only "ord" is wrapped so the
-      text stays "Lord" for copy/paste and screen readers. The verse is NOT the
-      h1 — see the .epigraph note in site.css. */}
+  {/* Psalm 127:1a — the first clause only, at Kyle's instruction.
+      LORD is small-capped because that is how every major English
+      translation sets the divine name; only "ord" is wrapped so the
+      text stays "Lord" for copy/paste and screen readers. The verse is
+      NOT the h1 — see the .epigraph note in site.css. */}
   <header class="masthead-page">
     <p class="epigraph">
       Unless the L<span class="sc">ord</span> builds the house, those who build
@@ -101,12 +94,20 @@ const jsonLd = {
     <h1>Writing on faith, technology, and the daily striving</h1>
   </header>
 
+  {/* Silent targets for published /building/# and /builds/# deep links.
+      No copy. The house is the landing. */}
+  {fragmentIds.map((id) => (
+    <span id={id} class="fragment-target"></span>
+  ))}
+
   {items.length > 0 ? (
-    items.map(({ post, build, href }) => (
-      <article class="entry">
-        <p class="entry-date">{fmt(post.data.date)}</p>
+    items.map(({ post, isLog, href }) => (
+      <article class:list={['entry', isLog ? 'entry-log' : 'entry-essay']}>
+        <p class="entry-date">
+          {isLog && <span class="entry-kind">Log</span>}
+          {fmt(post.data.date)}
+        </p>
         <h2 class="entry-title"><a href={href}>{post.data.title}</a></h2>
-        {build && <p class="one-liner">On {build.data.name}.</p>}
       </article>
     ))
   ) : (
