@@ -1,7 +1,6 @@
 ---
 title: "The shallow things"
 date: 2026-08-20
-draft: true
 ---
 
 As long as people desire shallow things…
