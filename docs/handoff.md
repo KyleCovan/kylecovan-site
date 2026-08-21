@@ -295,11 +295,13 @@ The label is expressive and the URL is plain **on purpose**: URLs are functional
 and someone typing one guesses "writing", not a psalm. The name does its work on
 the page.
 
-**One `writing` collection, not two.** A post with a `build:` field renders in
-full on that build's page and is *listed* here. A post without one gets its own
-page at `/writing/<id>/`. Kyle never decides "log entry or blog post?" when he
-sits down — he writes, and one optional field decides where it lands. The tag
-can be added or removed later without rewriting anything.
+**One `writing` collection, not two.** Kyle locked this on August 21, 2026:
+Unless the Lord is the blog; build logs are not the blog. A post with a
+`build:` field renders in full on that build's page and is **not listed here**
+— nor in RSS, nor in the home writing summary. A post without one gets its own
+page at `/writing/<id>/` and is listed here. He still writes one file; one
+optional field decides where it lands. The tag can be added or removed later
+without rewriting anything.
 
 **There is exactly one full copy of any text on the site.** That is why
 `/writing/[post].astro` skips tagged posts in `getStaticPaths`. Giving them a
@@ -1104,6 +1106,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **55** | **August 6 audit fixes merged to `main`.** Branch `audit-fixes-2026-08-06` (8 commits) fast-forwarded and deployed. **404 page** so Cloudflare Pages stops serving the home page with a 200 for unknown URLs. **Builds "Read more" links** named by destination. **BlogPosting `image`** points at `og-2.png` (fifth hardcoded share-card filename reference — `CLAUDE.md` corrected). Optional **`shareDescription`** so page one-liners stay Kyle's full wording while meta/og get a ~155-char budget; Personal AI OS is the first set. **`/privacy/`** in the footer only, date from `src/data/privacy.json` (one file feeds the page and sitemap `lastmod`). **`robots.txt` content signals** explicitly grant `search`, `ai-input`, and `ai-train` — Kyle's call. **Contact `mailto:`** opted out of Cloudflare email obfuscation in-repo (`email_off`); the obfuscated link was a 404 and the address was already in JSON-LD. Both suites green on the merge. |
 | **56** | **Tapo Canyon link restored** on the home-page closing line. Closes §7 item 5. Unlinked July 29 (§43) while the domain did not resolve; restored August 10 at Kyle's request ahead of tapocanyon.com going live. Sentence untouched — only the `<a href="https://tapocanyon.com">` came back. `verify.py` now asserts the anchor is present so it cannot quietly go plain-text again. |
 | **57** | **QA fixes: leaked Contact comment, `/sitemap.xml` redirect.** The `email_off` note above the home-page mailto used an Astro `{/* */}` block that itself contained the characters `{/* */}` as an example — the inner `*/` closed the comment early and leaked the rest of the note into live HTML between "Reach out anytime" and the email link. Rewrote the note so it never nests that delimiter; kept the `<!--email_off-->` HTML markers (those are load-bearing — Astro comments would be stripped and Cloudflare would re-break mailto). **`/sitemap.xml` → `/sitemap-index.xml` 301** in `public/_redirects` (Astro emits the index name; robots.txt was already correct; conventional short URL was a hard 404 after the August 6 custom 404). `verify.py` now asserts `email_off` survives into dist and `#contact` has no comment residue; `verify_site.py` accepts file redirect targets and asserts the sitemap rule. |
+| **58** | **Unless the Lord is the blog; build logs are not.** Locked August 21, 2026. A writing entry with `build:` still renders in full on that build's page and still has no second `/writing/<id>/` URL — one collection, one full copy of any text. What changed: tagged posts are no longer *listed* on `/writing/`, in the writing-index JSON-LD, in RSS, or in the home writing summary. `/writing/` sitemap `<lastmod>` now ages from the newest untagged post only, so a new build-log entry cannot pretend the blog changed. `verify_site.py` asserts the placement both ways (tagged title on the build page and absent from `/writing/` and RSS; untagged title present on both). Comments in `content.config.ts` and `README.md` that said tagged posts were listed on the writing index were rewritten to match. |
 
 ---
 

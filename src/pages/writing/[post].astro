@@ -3,10 +3,10 @@
  * One page per UNTAGGED post.
  *
  * getStaticPaths deliberately skips any post carrying a `build:` field. Those
- * render in full on their build's page, and giving them a second URL here would
- * put the same text on two addresses — the one thing handoff §1's SEO reasoning
- * is unambiguous about. The writing index links to wherever a post actually
- * lives, so nothing becomes unreachable.
+ * render in full on their build's page and are not listed on Unless the Lord —
+ * the blog is untagged posts only (locked August 21, 2026). Giving a tagged
+ * post a second URL here would also put the same text on two addresses, which
+ * handoff §1's SEO reasoning is unambiguous about.
  */
 import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';

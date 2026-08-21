@@ -294,11 +294,10 @@ for p in PAGES:
         if not item_list: continue
         for it in item_list.get('itemListElement', []):
             note(it['name'] in src, f'{p}: ItemList name is on the page', it['name'])
-            # An ItemList url may carry a fragment: a post tagged to a build
-            # lives at /builds/<build>/#<post>. Resolve the page, then confirm
-            # the fragment actually exists there rather than stopping at the
-            # page — a link to a real page and a dead anchor still lands the
-            # reader in the wrong place.
+            # An ItemList url may carry a fragment. Resolve the page, then
+            # confirm the fragment actually exists there rather than stopping
+            # at the page — a link to a real page and a dead anchor still
+            # lands the reader in the wrong place.
             path, _, frag = it['url'].replace('https://kylecovan.com/', '').partition('#')
             target = ROOT / path.strip('/') / 'index.html'
             note(target.exists(), f'{p}: ItemList url resolves to a real page', it['url'])
@@ -377,6 +376,14 @@ for f in sorted((SRC / 'builds').glob('*.md')):
     note(entries[url] == max(dates),
          f'/builds/{f.stem}/ lastmod is the newest of its prose and its posts',
          f'sitemap {entries[url]} vs expected {max(dates)}')
+
+# /writing/ lists only untagged posts. A new build-log entry must not age it.
+untagged_dates = [p['date'] for p in posts if not p['build']]
+writing_loc = 'https://kylecovan.com/writing/'
+if untagged_dates and writing_loc in entries:
+    note(entries[writing_loc] == max(untagged_dates),
+         '/writing/ lastmod is the newest untagged post',
+         f"sitemap {entries[writing_loc]} vs expected {max(untagged_dates)}")
 
 # --- 5c. the share card the meta tags promise actually ships -----------------
 # New August 3. The card's filename is versioned on purpose: iMessage, Slack, X
@@ -467,10 +474,71 @@ if feed.exists():
         if frag and target.exists():
             note(f'id="{frag}"' in target.read_text(),
                  'rss link fragment exists on that page', f'#{frag}')
-    # Every published entry must be in the feed. A draft that silently stays in,
-    # or an entry that silently drops out, is invisible without this.
+    # Every published BLOG post must be in the feed. A draft that silently
+    # stays in, a tagged build-log entry that silently stays in, or an
+    # untagged post that silently drops out, is invisible without this.
     titles = re.findall(r'<title>(.*?)</title>', xml)[1:]
     note(len(titles) == len(item_links), 'every rss item has a title and a link')
+
+# --- 8. Unless the Lord is the blog; build logs are not ---------------------
+# Locked August 21, 2026. One writing collection, one full copy of any text.
+# The `build:` field decides destination: tagged → that build's page only;
+# untagged → /writing/, /writing/<id>/, the home writing summary, and RSS.
+# Drafts stay hidden everywhere. Confirmed to FAIL on the old listing rule
+# (tagged titles present on /writing/ and in RSS) before being trusted.
+writing_src = (ROOT / 'writing/index.html').read_text()
+home_html = (ROOT / 'index.html').read_text()
+rss_text = (ROOT / 'rss.xml').read_text() if (ROOT / 'rss.xml').exists() else ''
+
+def writing_title(block):
+    """Quoted or bare title. fm_field stops at an apostrophe, which titles use."""
+    m = re.search(r'^title:[ \t]*(?:"([^"]+)"|\'([^\']+)\'|(.+))$', block, re.M)
+    if not m:
+        return None
+    return (m.group(1) or m.group(2) or m.group(3)).strip()
+
+catalog = []
+for f in sorted((SRC / 'writing').glob('*.md')):
+    b = frontmatter(f)
+    catalog.append({
+        'id': f.stem,
+        'title': writing_title(b),
+        'build': fm_field(b, 'build'),
+        'draft': fm_field(b, 'draft') == 'true',
+    })
+
+blog = [p for p in catalog if p['title'] and not p['draft'] and not p['build']]
+logs = [p for p in catalog if p['title'] and not p['draft'] and p['build']]
+queued = [p for p in catalog if p['title'] and p['draft']]
+
+for p in blog:
+    note(p['title'] in writing_src, f'/writing/ lists untagged post', p['title'])
+    note(p['title'] in rss_text, 'rss includes untagged post', p['title'])
+    own = ROOT / 'writing' / p['id'] / 'index.html'
+    note(own.exists() and p['title'] in own.read_text(),
+         f'untagged post has /writing/{p["id"]}/', p['title'])
+
+for p in logs:
+    note(p['title'] not in writing_src, f'/writing/ does not list build-log', p['title'])
+    note(p['title'] not in rss_text, 'rss does not include build-log', p['title'])
+    note(p['title'] not in home_html, 'home writing summary does not list build-log',
+         p['title'])
+    note(not (ROOT / 'writing' / p['id'] / 'index.html').exists(),
+         f'build-log has no /writing/{p["id"]}/ URL', p['title'])
+    build_page = ROOT / 'builds' / p['build'] / 'index.html'
+    note(build_page.exists() and p['title'] in build_page.read_text(),
+         f'/builds/{p["build"]}/ renders build-log', p['title'])
+
+for p in queued:
+    note(p['title'] not in writing_src, 'draft hidden on /writing/', p['title'])
+    note(p['title'] not in rss_text, 'draft hidden in rss', p['title'])
+    note(not (ROOT / 'writing' / p['id'] / 'index.html').exists(),
+         f'draft has no /writing/{p["id"]}/ page', p['title'])
+    if p['build']:
+        build_page = ROOT / 'builds' / p['build'] / 'index.html'
+        if build_page.exists():
+            note(p['title'] not in build_page.read_text(),
+                 f'draft hidden on /builds/{p["build"]}/', p['title'])
 
 print()
 print('SITE RESULT:', 'ALL CHECKS PASSED' if not fails else f'{len(fails)} FAILURE(S): {fails}')

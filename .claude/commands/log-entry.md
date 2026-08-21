@@ -12,8 +12,9 @@ Steps:
 2. Create `src/content/writing/<slug>.md`. **The filename is the URL** — name it
    for the URL, and no date prefix.
    - Tagged to a build: set `build:` to a filename in `src/content/builds/`. The
-     post renders in full on that build's page. It is a `reference()`, so a
-     wrong value fails the build rather than passing quietly.
+     post renders in full on that build's page and is not listed on Unless the
+     Lord. It is a `reference()`, so a wrong value fails the build rather than
+     passing quietly.
    - Standalone: omit `build:` entirely and it gets its own `/writing/` page.
    - If it isn't obvious which, ask. Don't guess — the tag decides the URL.
 3. **Write from Kyle's own words only.** If I haven't given you the content, ask
@@ -23,7 +24,7 @@ Steps:
 4. Run `/verify`.
 5. Show me the rendered post before committing.
 
-Nothing else needs touching: Astro regenerates the page, the writing index, the
-home page's recent-posts list, the JSON-LD, the sitemap and the RSS feed from the
-one Markdown file. If this is a build's first entry, its "first entry coming
-soon" placeholder disappears on its own.
+Nothing else needs touching: Astro regenerates the build page (if tagged) or
+the writing index, per-post page, home recent-posts list, JSON-LD and RSS (if
+not) from the one Markdown file. If this is a build's first entry, its "first
+entry coming soon" placeholder disappears on its own.

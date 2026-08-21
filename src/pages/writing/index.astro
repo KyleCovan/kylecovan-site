@@ -6,30 +6,22 @@
  * and a person typing one guesses "writing", not a psalm. The name does its work
  * where a name should, on the page.
  *
- * This is a DIRECTORY, so it lists posts rather than reprinting them. A post
- * tagged to a build lives in full on that build's page (see
- * src/pages/builds/[build].astro) and is linked here; an untagged post has its
- * own page. Either way there is exactly one full copy of any text on the site,
- * so nothing here is duplicate content.
+ * This is the BLOG, not the build log. Kyle locked that on August 21, 2026:
+ * Unless the Lord lists only untagged, non-draft posts. A post tagged to a
+ * build lives in full on that build's page (see src/pages/builds/[build].astro)
+ * and is not listed here. An untagged post has its own page at /writing/<id>/.
+ * Either way there is exactly one full copy of any text on the site.
  */
 import Base from '../../layouts/Base.astro';
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 
-const posts = (await getCollection('writing', ({ data }) => !data.draft))
+const posts = (await getCollection('writing', ({ data }) => !data.draft && !data.build))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-/* Resolve each post's home once. A tagged post lives on its build's page under
-   its own id; an untagged one gets /writing/<id>/. */
-const items = await Promise.all(
-  posts.map(async (p) => {
-    const build = p.data.build ? await getEntry(p.data.build) : null;
-    return {
-      post: p,
-      build,
-      href: build ? `/builds/${build.id}/#${p.id}` : `/writing/${p.id}/`,
-    };
-  })
-);
+const items = posts.map((p) => ({
+  post: p,
+  href: `/writing/${p.id}/`,
+}));
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
@@ -102,11 +94,10 @@ const jsonLd = {
   </header>
 
   {items.length > 0 ? (
-    items.map(({ post, build, href }) => (
+    items.map(({ post, href }) => (
       <article class="entry">
         <p class="entry-date">{fmt(post.data.date)}</p>
         <h2 class="entry-title"><a href={href}>{post.data.title}</a></h2>
-        {build && <p class="one-liner">On {build.data.name}.</p>}
       </article>
     ))
   ) : (

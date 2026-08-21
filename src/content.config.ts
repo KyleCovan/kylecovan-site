@@ -4,16 +4,15 @@
  * `builds` — one Markdown file per thing Kyle has made. Frontmatter carries the
  * structured parts; the body carries the prose about the thing itself.
  *
- * `writing` — everything dated. One collection, not two, and this is the July 30
- * decision worth understanding before changing it:
+ * `writing` — everything dated. One collection, not two. August 21, 2026 lock:
  *
+ *   Unless the Lord (/writing/) is the blog. Build logs are not the blog.
  *   A post with a `build:` field renders IN FULL on that build's page and is
- *   listed (not duplicated) in the writing index. A post without one gets its
- *   own page at /writing/<id>/.
+ *   not listed on /writing/, in RSS, or in the home writing summary. A post
+ *   without one gets its own page at /writing/<id>/ and is listed there.
  *
- * That means Kyle never has to decide "is this a log entry or a blog post?" when
- * he sits down — he just writes, and one optional field decides where it lands.
- * The tag can be added or removed later without rewriting anything.
+ * Kyle still writes one file; one optional field decides where it lands. The
+ * tag can be added or removed later without rewriting anything.
  *
  * It also keeps each build page a PILLAR PAGE: description plus every dated
  * entry about it, in one document. handoff §1 settled that generative engines

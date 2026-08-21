@@ -51,11 +51,12 @@ scripts/verify_site.py        site-level suite
 ```
 
 - **All CSS lives once in `src/styles/site.css`.** Never duplicate it.
-- **One `writing` collection, not two.** A post with a `build:` field renders in
-  full on that build's page; a post without one gets its own URL under
-  `/writing/`. That is why Kyle never has to decide "log entry or blog post?" —
-  he writes, and one optional field decides where it lands. **There is only ever
-  one full copy of any text**, so nothing is duplicate content.
+- **One `writing` collection, not two.** Unless the Lord (`/writing/`) is the
+  blog; build logs are not the blog. A post with a `build:` field renders in
+  full on that build's page and is not listed on `/writing/`, in RSS, or in the
+  home writing summary. A post without one appears on `/writing/` and at
+  `/writing/<id>/`. One optional field decides where it lands. **There is only
+  ever one full copy of any text**, so nothing is duplicate content.
 - **Build pages are pillar pages.** Description plus every post about that build,
   in one document. Splitting build writing onto separate URLs was considered on
   July 30 and rejected — see handoff §7.
