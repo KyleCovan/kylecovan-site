@@ -26,12 +26,16 @@ git add -A && git commit -m "writing: what broke" && git push
 ```
 
 - **With `build:`** → renders in full on that build's page at
-  `/builds/<build>/#<filename>`, and is listed on `/writing/`.
-- **Without it** → gets its own page at `/writing/<filename>/`.
+  `/builds/<build>/#<filename>`. It is a build-log entry, not a blog post, and
+  is not listed on `/writing/`, in RSS, or in the home writing summary.
+- **Without it** → gets its own page at `/writing/<filename>/` and is listed
+  on Unless the Lord.
 
-Either way it lands in the JSON-LD, `sitemap-0.xml` and `rss.xml` with no other
-edit. The filename is the URL, so name it for the URL you want and skip the date
+The filename is the URL, so name it for the URL you want and skip the date
 prefix. You can add or remove `build:` later without rewriting anything.
+Untagged posts land in the writing-index JSON-LD, `sitemap-0.xml` and
+`rss.xml` with no other edit. Tagged posts age the build page's sitemap
+`<lastmod>` instead.
 
 **There is only ever one full copy of any text**, which is why a tagged post has
 no second URL under `/writing/`. Don't "fix" that by giving it one.

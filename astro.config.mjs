@@ -18,9 +18,10 @@ const SITE = 'https://kylecovan.com';
  *
  *   /builds/<id>/   the later of the build's `updated` and the newest post
  *                   tagged to it — the page renders both, so either can age it
- *   /writing/<id>/  that post's own date
- *   /builds/, /writing/, /   generated FROM the collections, so each is stale
- *                   the moment its newest member is
+ *   /writing/<id>/  that post's own date (untagged posts only)
+ *   /builds/        newest of the per-build dates
+ *   /writing/       newest untagged post — tagged posts are not listed there
+ *   /               newest of /builds/ and /writing/
  *
  * A page with no date gets no <lastmod> at all. That is deliberate: a missing
  * date costs nothing, a wrong one costs the file's credibility.
@@ -76,7 +77,7 @@ for (const b of builds) {
 }
 
 // Only an UNtagged post gets its own URL. A tagged one renders in full on its
-// build page and is merely listed in the writing index — one copy of any text.
+// build page and is not listed on /writing/ — one copy of any text.
 for (const p of posts.filter((p) => !p.build)) {
   // `posts` is already filtered to entries that have a date, so this guard
   // never fires. It is written out because a `.filter()` doesn't narrow the
@@ -86,8 +87,8 @@ for (const p of posts.filter((p) => !p.build)) {
 }
 
 const buildsIndex = newest(...builds.map((b) => LASTMOD[`${SITE}/builds/${b.id}/`]));
-// Every post is listed in the writing index, tagged or not.
-const writingIndex = newest(...posts.map((p) => p.date));
+// /writing/ lists only untagged posts, so a new build-log entry must not age it.
+const writingIndex = newest(...posts.filter((p) => !p.build).map((p) => p.date));
 if (buildsIndex) LASTMOD[`${SITE}/builds/`] = buildsIndex;
 if (writingIndex) LASTMOD[`${SITE}/writing/`] = writingIndex;
 

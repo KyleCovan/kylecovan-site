@@ -18,15 +18,15 @@ const builds = (await getCollection('builds'))
 
 const buildLabel = (n: number) => `Project ${String(n).padStart(2, '0')}`;
 
-/* The three most recent posts, for the summary section. Each links to wherever
-   it actually lives: a post tagged to a build renders in full on that build's
-   page, an untagged one has its own URL. Same resolution as /writing/. */
-const allPosts = (await getCollection('writing', ({ data }) => !data.draft))
+/* The three most recent BLOG posts, for the Unless the Lord summary. Same
+   filter as /writing/ and RSS: untagged, not draft. A post with `build:` is a
+   build-log entry and lives on that build's page — it is not listed here. */
+const allPosts = (await getCollection('writing', ({ data }) => !data.draft && !data.build))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const recentPosts = allPosts.slice(0, 3).map(p => ({
   ...p,
-  href: p.data.build ? `/builds/${p.data.build.id}/#${p.id}` : `/writing/${p.id}/`,
+  href: `/writing/${p.id}/`,
 }));
 
 const fmtDate = (d: Date) =>
