@@ -50,14 +50,12 @@ in the open.
 live on **tapocanyon.com**. kylecovan.com is personal. The only connection is a
 single closing line at the bottom of the home page.
 
-**Narrowed August 4, 2026: the boundary is selling, not subject matter.** Kyle
-said `/builds/` is his portfolio of work and will include client projects and
-projects outside Tapo Canyon's scope. So **showing the work is in scope; offering
-the service is not.** A build page describing a site he built for a client is
-fine. Rates, packages, "hire me" or any call to action on this site is not, and
-that is the test to apply when a new build looks borderline. The closing line and
-its dry note (§6) still carry the whole two-site explanation and are untouched by
-this change.
+**Narrowed August 4, 2026: the boundary is selling, not subject matter.** Showing
+the work is in scope; offering the service is not. Rates, packages, "hire me" or
+any call to action on this site is not. August 21: that work is summarized on
+the home page and written about inside Unless the Lord — Builds is not a second
+writing door. The closing line and its dry note (§6) still carry the whole
+two-site explanation.
 
 **The design reference is [andrewng.org](https://www.andrewng.org/).** What was
 taken: a horizontal nav of short section labels, and a hero with the photo left
@@ -295,27 +293,32 @@ The label is expressive and the URL is plain **on purpose**: URLs are functional
 and someone typing one guesses "writing", not a psalm. The name does its work on
 the page.
 
-**One `writing` collection, not two.** Kyle locked this on August 21, 2026:
-Unless the Lord is the blog; build logs are not the blog. A post with a
-`build:` field renders in full on that build's page and is **not listed here**
-— nor in RSS, nor in the home writing summary. A post without one gets its own
-page at `/writing/<id>/` and is listed here. He still writes one file; one
-optional field decides where it lands. The tag can be added or removed later
-without rewriting anything.
+**One writing door — August 21, 2026.** Essays and dated logs live in one house:
+Unless the Lord. A log is a kind inside that house (`kind: log` on the writing
+post), not a second blog. Every published post is a full page at
+`/writing/<id>/`. Unset `kind` means essay — existing essays need no new field.
+Optional free-text `project:` labels a named thing; it does not hide a post and
+it is not a second door.
 
-**There is exactly one full copy of any text on the site.** That is why
-`/writing/[post].astro` skips tagged posts in `getStaticPaths`. Giving them a
-second URL would be duplicate content, which §1 is unambiguous about.
+**The July 30 lock is reversed.** A `build:` field used to send a post off
+`/writing/` and onto a product page. That made Builds a second writing door —
+the Brandur / Adactio failure. `build:` is gone from the schema. Old `/builds/`
+URLs redirect into the house.
+
+**There is exactly one full copy of any text on the site.** Every published
+post has one URL under `/writing/`.
 
 ### The epigraphs — the verse is never the `h1`
 
-Both section pages open with a verse above the heading: Ecclesiastes 11:1 on
-`/builds/`, Psalm 127:1a (ESV, first clause only, at Kyle's instruction) on
-`/writing/`. **The verse is a `<p class="epigraph">`, not the `h1`, and must
-never become one.** Kyle asked for the verse on top; this gives that layout with
-the semantics intact. An `h1` reading "Cast your bread upon the waters" on a page
-about software is a mismatch Google punishes, and a screen-reader user
-navigating by heading would hear a verse instead of a page name.
+`/writing/` opens with Psalm 127:1a (ESV, first clause only, at Kyle's
+instruction) above the heading. **The verse is a `<p class="epigraph">`, not
+the `h1`, and must never become one.** Kyle asked for the verse on top; this
+gives that layout with the semantics intact. An `h1` reading a verse instead of
+a page name is a mismatch Google punishes, and a screen-reader user navigating
+by heading would hear a verse instead of a page name.
+
+**Do not move Ecclesiastes 11:1 onto `/writing/`** unless Kyle later says to.
+That verse lived on `/builds/`; the page redirects now.
 
 **LORD is small-capped** — how every major English translation sets the divine
 name, so it is correct typesetting rather than decoration. Only `ord` is
@@ -324,82 +327,22 @@ readers. Kyle asked for it in the nav *and* the verse, after being told fonts
 without true small-cap glyphs synthesise them and read slightly light. Verified
 in a render at nav size: correct on macOS.
 
-### `/builds/` — the directory
+### `/builds/` — retired as a door, kept as redirects
 
-```
-topbar        nav only, Builds marked aria-current, no video line
-masthead-page epigraph Ecclesiastes 11:1 + cite + h1 + lede
-project 01    Personal AI OS — one-liner, entry count, "Read more"
-project 02    Second Brain — one-liner, "first entry coming soon", "Read more"
-follow        "Follow along" + RSS · YouTube · X · LinkedIn
-more          back to kylecovan.com
-colophon
-```
+August 21, 2026: `/builds/` and `/builds/<id>/` are no longer pages. They 301
+into `/writing/`. The three build Markdown files remain for the home-page
+summary (name, one-liner, order). Their bodies are not rendered as product
+pages.
 
-**This page deliberately does not repeat each build's outline or its log.** Those
-live on the build's own page. Duplicating them would put identical paragraphs on
-two URLs, which is the one thing §1's SEO reasoning is unambiguous about.
+**Each former build id still exists on `/writing/`** (silent fragment targets).
+`/building/#personal-ai-os` was a real published URL. A server redirect cannot
+preserve a fragment — browsers never send it — so the id is what makes the old
+deep link land in the house rather than 404.
 
-**Each `<article>` keeps `id="<build-id>"`.** `/building/#personal-ai-os` was a
-real published URL. A server redirect cannot preserve a fragment — browsers never
-send it — so the id is what makes the old deep link land on the right build
-rather than the top of the page. Don't remove them.
+### ~~`/builds/<id>/` — one page per build~~ — RETIRED August 21
 
-### `/builds/<id>/` — one page per build
-
-```
-topbar        nav only, Builds marked aria-current, no video line
-masthead-page eyebrow "Project 01" + h1 build name + lede one-liner
-prose         the Markdown body — the thing itself. EMPTY on both builds today.
-outline       "What the log covers" / "will cover"
-build log     .log-label + dated entries, newest first, each with an id
-follow        "Follow along" + RSS · YouTube · X · LinkedIn
-more          all builds
-colophon
-```
-
-**Prose first, log second.** That order is the point of the July 30 restructure:
-someone who has never heard of the project reads what it *is* before they read a
-changelog about it. The body is empty on both builds until Kyle writes it, and an
-empty body renders nothing, so the pages read as they did on `/building/`.
-
-**IDs are on the sections; `aria-labelledby` points at `*-heading` ids on the
-h2s.** Don't collapse these into one id per heading — the nav would then scroll
-to the heading rather than the section, losing the eyebrow.
-
-**Each project carries its own "Read the build log" link**, deep-linking to that
-project's anchor. A single trailing link used to sit after both articles where
-it read as belonging only to Project 02. Kyle caught that. Keep them symmetric.
-
-**The Building page deliberately carries no portrait and no video line.** The
-rotating link is the home page's signature.
-
-### ~~When each project gets its own URL~~ — DONE July 30, trigger retired
-
-The old rule was: **each project page needs two log entries before it earns its
-own URL**, on the same thin-page test as §1. That rule was **retired rather than
-met**, and the reasoning is recorded here so it isn't reinstated by accident.
-
-The trigger assumed a project page is *an outline plus whatever entries have
-accumulated*. On that model the page genuinely does stay thin until entries pile
-up, and the rule was correct. The July 30 restructure changed the model: a build
-page is now **prose about the thing itself, written once** — what it is, why it
-exists, how it's built, a decision worth explaining, what broke. That is
-substantial from the day it is written, and it does not depend on entry count.
-
-**The old rule was measuring the wrong thing.** It is not a rule that was broken;
-it is a rule whose premise stopped being true. What has *not* changed is the
-principle underneath it — **tooling getting easier does not make a thin page less
-thin.** That still applies, and it is why the build pages carry prose rather than
-just being an outline moved to its own URL.
-
-The shape §4 predicted was right: `getStaticPaths` over the collection, one new
-file. It landed as `src/pages/builds/[build].astro`.
-
-**The honest caveat:** the prose is empty on both builds today, so until Kyle
-writes it those two pages are exactly as thin as the old rule feared. The
-structure exists so he has somewhere to write into. **This is the reason commit A
-was not pushed on its own** — see §7.
+Pillar product pages with the log inlined were the second writing door. Logs are
+full posts under Unless the Lord. See the August 21 revision.
 
 ---
 
@@ -407,28 +350,18 @@ was not pushed on its own** — see §7.
 
 ### The nav
 
-Four pillars: **Kyle Covan · Builds · Unless the L**ORD** · Contact.**
-Rebuilt July 30 from Story · Approach · Building · Contact. Still four.
+Three pillars: **Kyle Covan · Unless the L**ORD** · Contact.**
+August 21, 2026: Builds left the nav. It had become a second writing door —
+essays in Unless the Lord, logs on product pages. That is the Brandur /
+Adactio failure. The house is Unless the Lord. Privacy stays in the footer.
 
-**Every pillar is now a real destination.** Contact is the one remaining
+**Every pillar is a real destination.** Contact is the one remaining
 in-page anchor, and off the home page it becomes `/#contact`.
 
-**"Building" became "Builds".** Kyle caught the tense problem: a finished
-project sitting under a present-progressive verb is a contradiction, and it gets
-worse as more things finish. "Builds" is a noun that commits to neither state.
-The old URL redirects; see `public/_redirects`.
-
-**Story left the nav.** Kyle spotted that it pointed at an anchor on the page you
-are already standing on — a scroll-to-here rather than a destination — while
-**nothing in the nav said "home" at all**; the only way back was a text link at
-the very bottom of the page. His name now does that job and the site gets the
-wordmark it never had. `#story` stays in the HTML, so `/#story` still resolves.
-
-**Approach left the nav**, and its 109 words were **moved, not deleted** — see §6.
-
-Considered and rejected: five pillars. The original reason (five would promote
-two barely-started build logs) no longer applied, but four still reads better and
-Story and Approach both had somewhere better to be.
+**July 30 history, still true.** "Building" became "Builds" (tense), then Builds
+left entirely. Story left the nav because it pointed at an anchor on the page
+you are already standing on while nothing said "home"; his name does that job.
+`#story` stays. Approach left and its words moved to a post.
 
 ### The rotating video link
 
@@ -1106,7 +1039,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **55** | **August 6 audit fixes merged to `main`.** Branch `audit-fixes-2026-08-06` (8 commits) fast-forwarded and deployed. **404 page** so Cloudflare Pages stops serving the home page with a 200 for unknown URLs. **Builds "Read more" links** named by destination. **BlogPosting `image`** points at `og-2.png` (fifth hardcoded share-card filename reference — `CLAUDE.md` corrected). Optional **`shareDescription`** so page one-liners stay Kyle's full wording while meta/og get a ~155-char budget; Personal AI OS is the first set. **`/privacy/`** in the footer only, date from `src/data/privacy.json` (one file feeds the page and sitemap `lastmod`). **`robots.txt` content signals** explicitly grant `search`, `ai-input`, and `ai-train` — Kyle's call. **Contact `mailto:`** opted out of Cloudflare email obfuscation in-repo (`email_off`); the obfuscated link was a 404 and the address was already in JSON-LD. Both suites green on the merge. |
 | **56** | **Tapo Canyon link restored** on the home-page closing line. Closes §7 item 5. Unlinked July 29 (§43) while the domain did not resolve; restored August 10 at Kyle's request ahead of tapocanyon.com going live. Sentence untouched — only the `<a href="https://tapocanyon.com">` came back. `verify.py` now asserts the anchor is present so it cannot quietly go plain-text again. |
 | **57** | **QA fixes: leaked Contact comment, `/sitemap.xml` redirect.** The `email_off` note above the home-page mailto used an Astro `{/* */}` block that itself contained the characters `{/* */}` as an example — the inner `*/` closed the comment early and leaked the rest of the note into live HTML between "Reach out anytime" and the email link. Rewrote the note so it never nests that delimiter; kept the `<!--email_off-->` HTML markers (those are load-bearing — Astro comments would be stripped and Cloudflare would re-break mailto). **`/sitemap.xml` → `/sitemap-index.xml` 301** in `public/_redirects` (Astro emits the index name; robots.txt was already correct; conventional short URL was a hard 404 after the August 6 custom 404). `verify.py` now asserts `email_off` survives into dist and `#contact` has no comment residue; `verify_site.py` accepts file redirect targets and asserts the sitemap rule. |
-| **58** | **Unless the Lord is the blog; build logs are not.** Locked August 21, 2026. A writing entry with `build:` still renders in full on that build's page and still has no second `/writing/<id>/` URL — one collection, one full copy of any text. What changed: tagged posts are no longer *listed* on `/writing/`, in the writing-index JSON-LD, in RSS, or in the home writing summary. `/writing/` sitemap `<lastmod>` now ages from the newest untagged post only, so a new build-log entry cannot pretend the blog changed. `verify_site.py` asserts the placement both ways (tagged title on the build page and absent from `/writing/` and RSS; untagged title present on both). Comments in `content.config.ts` and `README.md` that said tagged posts were listed on the writing index were rewritten to match. |
+| **58** | **One writing door — Unless the Lord.** Builds left the nav. Essays and dated logs live in one stream at `/writing/`; logs marked with `kind: log`, essays heavier when unmarked. Every published post is a full page at `/writing/<id>/`. The July 30 `build:` lock that hid posts on product pages is reversed; `project:` is free text, not a second door. Old `/building/` and `/builds/` URLs 301 into the house; fragment ids for former builds live on `/writing/`. RSS title names the house, not "Building in public". `draft: true` still stays off public lists. Both suites updated in the same change. Supersedes main's interim "build logs are not the blog" listing rule (§57 on main), which still treated `build:` as a hide field. |
 
 ---
 

@@ -258,10 +258,11 @@ npm run build && npm run verify
 git add -A && git commit -m "log: what broke" && git push
 ```
 
-Cloudflare rebuilds and deploys on push. The entry appears on its build's page at
-`/builds/<build>/`, in the structured data, in the sitemap and in the RSS feed.
-Nothing else to touch. (The frontmatter field is `build:`, not `project:`, and
-`/building/` became `/builds/` on July 30 — see handoff §4.)
+Cloudflare rebuilds and deploys on push. The entry appears at `/writing/<slug>/`,
+in the structured data, in the sitemap and in the RSS feed. Nothing else to
+touch. Use `kind: log` for dated notes; omit it (or `kind: essay`) for scarce
+essays. Optional free-text `project:` labels a named thing — it is not a second
+door. Old `/builds/` URLs redirect into Unless the Lord (August 21).
 
 ---
 

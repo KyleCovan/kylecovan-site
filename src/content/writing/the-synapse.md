@@ -1,7 +1,8 @@
 ---
 title: "The brain that couldn't see the rest of the work"
 date: 2026-08-08
-build: personal-ai-os
+kind: log
+project: Personal AI OS
 draft: true
 ---
 

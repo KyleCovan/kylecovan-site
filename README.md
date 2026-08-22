@@ -9,14 +9,16 @@ have been undone once already by a well-meaning rewrite.
 
 ## Publishing anything you write
 
-One file, and one optional field decides where it lands.
+One file. The house is **Unless the Lord** at `/writing/`. Essays and logs live
+in one stream; a log is a kind inside that house, not a second blog.
 
 ```bash
 # create src/content/writing/what-broke.md
 ---
 title: "The version I threw away"
 date: 2026-08-15
-build: personal-ai-os     # OPTIONAL. Omit it and this is just a post.
+kind: log                 # OPTIONAL. Omit it (or essay) for a scarce essay.
+project: Personal AI OS   # OPTIONAL free-text label. Not a second door.
 ---
 
 Your words here. Plain Markdown paragraphs.
@@ -25,32 +27,13 @@ npm run build && npm run verify
 git add -A && git commit -m "writing: what broke" && git push
 ```
 
-- **With `build:`** → renders in full on that build's page at
-  `/builds/<build>/#<filename>`. It is a build-log entry, not a blog post, and
-  is not listed on `/writing/`, in RSS, or in the home writing summary.
-- **Without it** → gets its own page at `/writing/<filename>/` and is listed
-  on Unless the Lord.
+- Every published post gets its own page at `/writing/<filename>/`.
+- `kind: log` marks it on the index so a reader can skip logs without leaving.
+- Unset `kind` means essay. Do not invent a new filename scheme for kinds.
+- `draft: true` stays off public lists, the sitemap and the RSS feed.
 
-The filename is the URL, so name it for the URL you want and skip the date
-prefix. You can add or remove `build:` later without rewriting anything.
-Untagged posts land in the writing-index JSON-LD, `sitemap-0.xml` and
-`rss.xml` with no other edit. Tagged posts age the build page's sitemap
-`<lastmod>` instead.
-
-**There is only ever one full copy of any text**, which is why a tagged post has
-no second URL under `/writing/`. Don't "fix" that by giving it one.
-
-Set `draft: true` to write ahead without publishing.
-
-## Adding a build
-
-Also one file — `src/content/builds/<id>.md`. The filename becomes the URL, so
-`llm-wiki.md` is served at `/builds/llm-wiki/`. Frontmatter carries `name`,
-`order`, `oneLiner` and the `outline`; the Markdown body is the prose about the
-thing itself, which renders above the build log.
-
-`order` drives both the sort and the displayed "Project 01" label, so inserting
-a build in the middle renumbers the rest automatically.
+**There is only ever one full copy of any text.** Old `/builds/` URLs redirect
+into the house; they are not a second place to put the same post.
 
 ## Commands
 
@@ -68,20 +51,18 @@ src/
 ├── layouts/Base.astro        head, top bar, footer. The only layout.
 ├── pages/
 │   ├── index.astro           home. Kyle's prose lives here — see §6.
-│   ├── builds/index.astro    the builds directory
-│   ├── builds/[build].astro  one page per build
-│   ├── writing/index.astro   the writing index — "Unless the Lord"
-│   ├── writing/[post].astro  one page per UNTAGGED post
+│   ├── writing/index.astro   Unless the Lord — essays and logs
+│   ├── writing/[post].astro  one page per published post
 │   └── rss.xml.js            feed
-├── content/builds/*.md       ← a build: frontmatter + prose
+├── content/builds/*.md       ← names + one-liners for the home summary
 ├── content/writing/*.md      ← everything dated goes here
 ├── content.config.ts         both collection schemas
 ├── data/
-│   ├── videos.json           the 32 approved YouTube titles
+│   ├── videos.json           the approved YouTube titles
 │   ├── portrait.txt          headshot, WebP data URI
 │   └── favicon.txt           favicon, PNG data URI
 └── styles/site.css           all CSS, inlined into every page at build
-public/                       og.png, robots.txt, _redirects — copied verbatim
+public/                       og-2.png, robots.txt, _redirects — copied verbatim
 scripts/                      verify.py, verify_site.py
 ```
 
@@ -91,15 +72,13 @@ scripts/                      verify.py, verify_site.py
   page is one file with zero external requests. Don't remove it.
 - **`smartypants: false`** stops Markdown curling apostrophes. The rest of the
   site uses straight ones; mixing them is visible. See the note in the config.
-- **`.project-title` / `.entry-title` are classes, not tag selectors.** The same
-  markup renders at different heading levels on different pages.
 - **RSS item links must be absolute.** `@astrojs/rss` runs a relative link
   through the site's `trailingSlash: 'always'` and appends a slash after the
   fragment, quietly breaking every anchor. `verify_site.py` checks for this.
-- **`public/_redirects`** keeps the retired `/building/` URL alive. It was
-  indexed; the file is not decoration.
+- **`public/_redirects`** keeps retired `/building/` and `/builds/` URLs alive.
+  They were indexed; the file is not decoration. Destinations are `/writing/`.
 - **The video rotator is the only executing JavaScript on the site**, and it runs
   during parse so there is no flash of the fallback entry. The `<script>` in the
   head is `application/ld+json`, which is inert data, not code.
-- Both pages were verified **pixel-identical** to the hand-built originals Kyle
-  approved. If you change the CSS, re-run the comparison before shipping.
+- Nav is three pillars: **Kyle Covan · Unless the Lord · Contact.** Privacy is
+  in the footer. Builds is not a nav destination.

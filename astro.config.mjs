@@ -16,12 +16,13 @@ const SITE = 'https://kylecovan.com';
  * learns to ignore, and then the one page that really did change gets no
  * signal either. Every date here traces to a file Kyle actually edited:
  *
- *   /builds/<id>/   the later of the build's `updated` and the newest post
- *                   tagged to it — the page renders both, so either can age it
- *   /writing/<id>/  that post's own date (untagged posts only)
- *   /builds/        newest of the per-build dates
- *   /writing/       newest untagged post — tagged posts are not listed there
- *   /               newest of /builds/ and /writing/
+ *   /writing/<id>/  that post's own date
+ *   /writing/, /    generated FROM the writing collection (and, for home,
+ *                   the builds names still listed there), so each is stale
+ *                   the moment its newest member is
+ *
+ * August 21, 2026: /builds/ and /builds/<id>/ are redirects into the house.
+ * They are not pages and they do not belong in this file.
  *
  * A page with no date gets no <lastmod> at all. That is deliberate: a missing
  * date costs nothing, a wrong one costs the file's credibility.
@@ -57,7 +58,6 @@ const posts = collection('writing')
   .map((e) => ({
     id: e.id,
     date: day(field(e.fm, 'date')),
-    build: field(e.fm, 'build'),
     draft: field(e.fm, 'draft') === 'true',
   }))
   .filter((p) => p.date && !p.draft);
@@ -71,30 +71,17 @@ const builds = collection('builds').map((e) => ({
 /** @type {Record<string, string>} */
 const LASTMOD = {};
 
-for (const b of builds) {
-  const d = newest(b.updated, ...posts.filter((p) => p.build === b.id).map((p) => p.date));
-  if (d) LASTMOD[`${SITE}/builds/${b.id}/`] = d;
-}
-
-// Only an UNtagged post gets its own URL. A tagged one renders in full on its
-// build page and is not listed on /writing/ — one copy of any text.
-for (const p of posts.filter((p) => !p.build)) {
-  // `posts` is already filtered to entries that have a date, so this guard
-  // never fires. It is written out because a `.filter()` doesn't narrow the
-  // type, and the alternative is asserting the invariant instead of checking
-  // it — every other write to LASTMOD guards the same way.
+// Every published post owns /writing/<id>/. Essay or log, one house.
+for (const p of posts) {
   if (p.date) LASTMOD[`${SITE}/writing/${p.id}/`] = p.date;
 }
 
-const buildsIndex = newest(...builds.map((b) => LASTMOD[`${SITE}/builds/${b.id}/`]));
-// /writing/ lists only untagged posts, so a new build-log entry must not age it.
-const writingIndex = newest(...posts.filter((p) => !p.build).map((p) => p.date));
-if (buildsIndex) LASTMOD[`${SITE}/builds/`] = buildsIndex;
+const writingIndex = newest(...posts.map((p) => p.date));
 if (writingIndex) LASTMOD[`${SITE}/writing/`] = writingIndex;
 
-// The home page renders summaries of both collections, so it genuinely ages
-// when either does.
-const home = newest(buildsIndex, writingIndex);
+// The home page still names the builds and lists recent writing, so it
+// ages when either collection does.
+const home = newest(writingIndex, ...builds.map((b) => b.updated));
 if (home) LASTMOD[`${SITE}/`] = home;
 
 /* /privacy/ is the one page here that isn't generated from a collection, so it
