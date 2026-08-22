@@ -408,15 +408,21 @@ if rd.exists():
          '/builds/ is not a live page')
     for r in rules:
         src_path, dest = r[0], r[1]
+        # Destinations are usually pages (directory + index.html);
+        # /sitemap.xml → /sitemap-index.xml is a file target, so check both.
         dest_path = dest.split('#', 1)[0]
-        target = ROOT / dest_path.strip('/') / 'index.html'
-        note(target.exists(), f'redirect target exists: {dest}',
-             str(target.relative_to(ROOT)))
+        dest_clean = dest_path.strip('/')
+        page_target = ROOT / dest_clean / 'index.html'
+        file_target = ROOT / dest_clean
+        note(page_target.exists() or file_target.is_file(),
+             f'redirect target exists: {dest}', dest_clean)
         note(src_path.strip('/') not in live,
              f'redirect source {src_path} does not shadow a real page')
         if src_path.rstrip('/').startswith('/building') or src_path.rstrip('/').startswith('/builds'):
             note(dest_path.rstrip('/') == '/writing',
                  f'{src_path} leads into the house', dest)
+    note(any(r[0] == '/sitemap.xml' and r[1] == '/sitemap-index.xml' for r in rules),
+         '_redirects maps /sitemap.xml → /sitemap-index.xml')
     writing_src = (ROOT / 'writing/index.html').read_text()
     build_ids = [f.stem for f in (SRC / 'builds').glob('*.md')]
     for bid in build_ids:

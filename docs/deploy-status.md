@@ -228,7 +228,9 @@ time, and the cause was the measuring instrument, not the zone.
   Google fetches anything — it is never evidence that the sitemap is broken.
 
    **And it is `sitemap-index.xml`, never `sitemap.xml`.** Astro's integration
-  emits the former. Unknown paths used to answer **HTTP 200** with the home page
+  emits the former. As of §57, `public/_redirects` 301s `/sitemap.xml` →
+  `/sitemap-index.xml` so the conventional short name is not a hard 404.
+  Unknown *other* paths used to answer **HTTP 200** with the home page
   (Pages' no-`404.html` fallback); as of the August 6 audit merge they return a
   real **404**. Still verify by content-type when checking a URL that should be
   XML — status alone is not enough.

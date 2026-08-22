@@ -29,6 +29,23 @@ N_VIDEOS = len(TITLES)
 # note has somewhere to point.
 assert '<a href="https://tapocanyon.com">Tapo Canyon</a>' in HTML, \
     "closing line must link 'Tapo Canyon' to https://tapocanyon.com"
+
+# Cloudflare Scrape Shield rewrites bare mailto: into a 404 /cdn-cgi/ path
+# unless <!--email_off--> wraps it. That marker must survive into dist/ — an
+# Astro comment would be stripped and silently re-break the only contact path.
+# Added August 12 after a nested Astro comment delimiter leaked developer prose
+# into #contact on the live homepage (the note documenting this rule closed
+# itself early). Assert both halves: the marker is present, and no comment
+# residue reaches the output.
+assert '<!--email_off-->' in HTML and '<!--/email_off-->' in HTML, \
+    "mailto: must stay wrapped in <!--email_off--> so Cloudflare leaves it alone"
+contact = re.search(r'<section id="contact"[^>]*>(.*?)</section>', HTML, re.S)
+assert contact, "home page must have a #contact section"
+assert '*/}' not in contact.group(1), \
+    "#contact must not leak a broken Astro comment into the HTML"
+assert 'never reaches the' not in contact.group(1), \
+    "#contact must not show developer-comment prose to visitors"
+
 DECODED = [t.replace('\\"', '"') for t, _ in TITLES]
 LONGEST = max(DECODED, key=len)
 
