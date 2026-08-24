@@ -36,11 +36,13 @@ const {
 const SITE = 'https://kylecovan.com';
 const canonical = `${SITE}${path}`;
 
-/* Three pillars: his name (home), Unless the Lord, Contact.
+/* Three pillars: his name (home), Upon the Waters, Contact.
 
-   August 21, 2026: Builds left the nav. It was a second writing door — the
-   Brandur / Adactio failure. The house is Unless the Lord. Old /builds/ URLs
-   redirect into it. Privacy stays in the footer.
+   August 24, 2026: Unless the Lord became Upon the Waters; Ecclesiastes
+   11:1 replaced Psalm 127:1a on /writing/. URL stays /writing/.
+
+   August 21, 2026: Builds left the nav. Old /builds/ URLs redirect into
+   the house. Privacy stays in the footer.
 
    July 30 history, still true: Story left because it pointed at an anchor on
    the page you are already standing on, while nothing in the nav said "home."
@@ -50,11 +52,7 @@ const canonical = `${SITE}${path}`;
 const onHome = path === '/';
 const nav = [
   { label: 'Kyle Covan', href: '/' },
-  /* The divine name in small caps, as every major English translation sets it.
-     Only "ord" is wrapped, so the text stays "Unless the Lord" for copy/paste
-     and screen readers. See the .sc note in site.css. */
-  { label: 'Unless the Lord', href: '/writing/',
-    html: 'Unless the L<span class="sc">ord</span>' },
+  { label: 'Upon the Waters', href: '/writing/' },
   { label: 'Contact',    href: onHome ? '#contact' : '/#contact' },
 ];
 
@@ -87,7 +85,7 @@ const fallback = videos[0];
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content={`${SITE}/og-2.png`}>
 
-<link rel="alternate" type="application/rss+xml" title="Kyle Covan — Unless the Lord" href={`${SITE}/rss.xml`}>
+<link rel="alternate" type="application/rss+xml" title="Kyle Covan — Upon the Waters" href={`${SITE}/rss.xml`}>
 
 {jsonLd && (
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />

@@ -1,12 +1,10 @@
 /**
- * RSS feed for Unless the Lord.
+ * RSS feed for Upon the Waters.
  *
  * The feed URL stays /rss.xml. Existing subscribers are pointed here and a
  * feed that 404s is a subscriber lost silently, with no error anyone sees.
  *
- * August 21, 2026: the house is Unless the Lord. Every published post
- * appears. The title used to say "Building in public"; that named the
- * frequent log, not the door. August 24: no Log/Writing description split.
+ * August 24, 2026: Unless the Lord renamed Upon the Waters.
  */
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
@@ -30,7 +28,7 @@ export async function GET(context) {
   }));
 
   return rss({
-    title: 'Kyle Covan — Unless the Lord',
+    title: 'Kyle Covan — Upon the Waters',
     description:
       'Writing by Kyle Covan on faith, technology, and the daily striving.',
     site: context.site,

@@ -53,7 +53,7 @@ single closing line at the bottom of the home page.
 **Narrowed August 4, 2026: the boundary is selling, not subject matter.** Showing
 the work is in scope; offering the service is not. Rates, packages, "hire me" or
 any call to action on this site is not. August 21: that work is summarized on
-the home page and written about inside Unless the Lord — Builds is not a second
+the home page and written about inside Upon the Waters — Builds is not a second
 writing door and is not summarized on the home page. The closing line and its dry note (§6) still carry the whole
 two-site explanation.
 
@@ -256,7 +256,7 @@ the creed.
 
 - `--measure: 800px` — `.page` max-width, border-box, centred.
 - `--gap-section: clamp(3rem, 7vh, 4.5rem)` — every major block on the home
-  page (hero → Story, Story → Unless the Lord, Unless the Lord → Contact) and
+  page (hero → Story, Story → Upon the Waters, Upon the Waters → Contact) and
   the matching end-of-page gaps (top bar → masthead, "All writing", colophon,
   `/writing/` follow row). Was `clamp(5rem, 13vh, 9rem)` until August 24; the
   hero-to-Story fix alone left the other pillars feeling disconnected.
@@ -281,16 +281,16 @@ the creed.
 topbar        nav left, video line immediately after it
 masthead      portrait left, name / creed / role right
 #story        eyebrow "Story"      h2 Laying music down            (5 paragraphs)
-#writing       eyebrow "Unless the Lord" — three most recent posts + link
+#writing       eyebrow "Upon the Waters" — three most recent posts + link
 #contact       eyebrow "Contact"    h2 Reach out anytime
 colophon
 ```
 
-### `/writing/` — nav label "Unless the L**ORD**", URL `/writing/`
+### `/writing/` — nav label "Upon the Waters", URL `/writing/`
 
 ```
-topbar        nav only, Unless the Lord marked aria-current, no video line
-masthead-page epigraph Psalm 127:1a + cite + h1 + list of posts
+topbar        nav only, Upon the Waters marked aria-current, no video line
+masthead-page epigraph Ecclesiastes 11:1 + cite + h1 Upon the Waters + list of posts
 follow        "Follow along" + RSS · YouTube · X · LinkedIn
 more          back to kylecovan.com
 ```
@@ -299,12 +299,13 @@ The label is expressive and the URL is plain **on purpose**: URLs are functional
 and someone typing one guesses "writing", not a psalm. The name does its work on
 the page.
 
-**One writing door — August 21, 2026.** Every dated post lives in one house:
-Unless the Lord. Every published post is a full page at `/writing/<id>/`.
-Optional free-text `project:` labels a named thing; it does not hide a post and
-it is not a second door. `kind: log` may still appear in frontmatter as
-history, but **August 24 struck the log/essay visual split** — no "Log" label
-beside the date, and every title uses the same size, font and color.
+**One writing door — August 21, 2026; renamed August 24.** Every dated post
+lives in one house: **Upon the Waters** (formerly Unless the Lord). Every
+published post is a full page at `/writing/<id>/`. Optional free-text `project:`
+labels a named thing; it does not hide a post and it is not a second door.
+`kind: log` may still appear in frontmatter as history, but **August 24 struck
+the log/essay visual split** — no "Log" label beside the date, and every title
+uses the same size, font and color.
 
 **The July 30 lock is reversed.** A `build:` field used to send a post off
 `/writing/` and onto a product page. That made Builds a second writing door —
@@ -316,22 +317,19 @@ post has one URL under `/writing/`.
 
 ### The epigraphs — the verse is never the `h1`
 
-`/writing/` opens with Psalm 127:1a (ESV, first clause only, at Kyle's
-instruction) above the heading. **The verse is a `<p class="epigraph">`, not
-the `h1`, and must never become one.** Kyle asked for the verse on top; this
-gives that layout with the semantics intact. An `h1` reading a verse instead of
-a page name is a mismatch Google punishes, and a screen-reader user navigating
-by heading would hear a verse instead of a page name.
+`/writing/` opens with Ecclesiastes 11:1 (ESV, full verse) above the heading.
+**The verse is a `<p class="epigraph">`, not the `h1`, and must never become
+one.** Kyle asked for the verse on top; this gives that layout with the
+semantics intact. An `h1` reading a verse instead of a page name is a mismatch
+Google punishes, and a screen-reader user navigating by heading would hear a
+verse instead of a page name. The `h1` is **Upon the Waters**.
 
-**Do not move Ecclesiastes 11:1 onto `/writing/`** unless Kyle later says to.
-That verse lived on `/builds/`; the page redirects now.
+**Psalm 127:1a was here until August 24, 2026**, when Kyle renamed the house
+and moved Ecclesiastes 11:1 over from the retired `/builds/` page.
 
-**LORD is small-capped** — how every major English translation sets the divine
-name, so it is correct typesetting rather than decoration. Only `ord` is
-wrapped in `.sc`, so the underlying text stays "Lord" for copy/paste and screen
-readers. Kyle asked for it in the nav *and* the verse, after being told fonts
-without true small-cap glyphs synthesise them and read slightly light. Verified
-in a render at nav size: correct on macOS.
+**LORD is small-capped when it appears in copy** — how every major English
+translation sets the divine name. The nav no longer carries Psalm 127 after
+August 24. Only `ord` is wrapped in `.sc` when needed.
 
 ### `/builds/` — retired as a door, kept as redirects
 
@@ -348,7 +346,7 @@ deep link land in the house rather than 404.
 ### ~~`/builds/<id>/` — one page per build~~ — RETIRED August 21
 
 Pillar product pages with the log inlined were the second writing door. Logs are
-full posts under Unless the Lord. See the August 21 revision.
+full posts under Upon the Waters. See the August 21 revision.
 
 ---
 
@@ -356,10 +354,9 @@ full posts under Unless the Lord. See the August 21 revision.
 
 ### The nav
 
-Three pillars: **Kyle Covan · Unless the L**ORD** · Contact.**
-August 21, 2026: Builds left the nav. It had become a second writing door —
-essays in Unless the Lord, logs on product pages. That is the Brandur /
-Adactio failure. The house is Unless the Lord. Privacy stays in the footer.
+Three pillars: **Kyle Covan · Upon the Waters · Contact.**
+August 21, 2026: Builds left the nav. The house is Upon the Waters. Privacy
+stays in the footer.
 
 **Every pillar is a real destination.** Contact is the one remaining
 in-page anchor, and off the home page it becomes `/#contact`.
@@ -899,16 +896,13 @@ on the site.** They are for talking about it, not labels for visitors.
 3. Whether the Second Brain / LLM wiki entry links to the live thing, and if so
    what is safe to expose.
 
-**"Upon the Waters" was NOT used and is deliberately unspent.** Kyle proposed it
-as the `/builds/` page title. It was set aside because two allusive scripture
-names in one nav ("Upon the Waters" and "Unless the Lord" — both three words,
-both prepositional, both starting with U) stop functioning as names. Quoting the
-verse instead means the phrase still appears, inside its own source text. The
-name is held for a future series, section or newsletter.
+**"Upon the Waters" is the writing house name** (August 24, 2026). Kyle had
+proposed it for `/builds/` and set it aside while Unless the Lord held the nav;
+with Builds retired and one door left, the name moved to `/writing/`. URL stays
+`/writing/`. Ecclesiastes 11:1 came with it from the old builds page.
 
 **"Not by chariots" (Psalm 20:7) is reserved by Kyle for a post title.** It was
-the `Unless the Lord` vault folder's tagline and is no longer used on the site.
-Don't spend it elsewhere.
+the vault folder's tagline. Don't spend it elsewhere.
 
 **`second-brain` was renamed `llm-wiki` on July 30.** Kyle's answer to "is this
 yours, or something other people use?" was *both*: the private thing is a second
@@ -1051,6 +1045,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **61** | **Major block rhythm unified.** Kyle asked August 24 that Story, Unless the Lord, Contact, and matching peers feel fluid — not just hero-to-Story. `--gap-section` reduced site-wide to `clamp(3rem, 7vh, 4.5rem)`; `.topbar`, `.more`, `.follow-label`, and `.colophon` now use the same token so pillar spacing and end-of-page gaps match. |
 | **62** | **Date-to-title gap on list pages.** Kyle asked August 24 that dates on `/writing/` and the home summary sit as tight as on individual post pages. Root cause: `p + h2` / `p + h3` prose-spacing rules were still matching `.entry-date` (40–52px); post pages use `h1` and escaped. Fix: exclude `.entry-date` alongside `.eyebrow`. `verify_site.py` now measures the rendered gap on list pages. |
 | **63** | **No log/essay visual split.** Kyle asked August 24 to strike the differentiation: remove the "Log" label beside dates, and make every list title match the essay size/font/color. Dropped `.entry-kind`, `.entry-essay` / `.entry-log`, and the essay-only title bump; `.entry-title` now carries the larger type for every post. RSS descriptions are all "Writing". `kind: log` may remain in frontmatter as history but drives no markup. `verify_site.py` flipped the old "logs are marked" assertion rather than deleting it. |
+| **64** | **Unless the Lord → Upon the Waters.** Kyle asked August 24 to rename the writing house and swap the epigraph: Ecclesiastes 11:1 replaces Psalm 127:1a on `/writing/`; nav, home eyebrow, RSS, JSON-LD, and breadcrumbs all say Upon the Waters. URL stays `/writing/`. `h1` is Upon the Waters (was "Writing on faith, technology, and the daily striving"). The name held for `/builds/` since July is now spent. `verify_site.py` updated for nav and RSS title. |
 
 ---
 

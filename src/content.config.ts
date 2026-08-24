@@ -1,10 +1,12 @@
 /**
  * Two collections.
  *
- * `writing` — everything dated, one house. Unless the Lord at /writing/ is
+ * `writing` — everything dated, one house. Upon the Waters at /writing/ is
  * the door. A post is a full page at /writing/<id>/. August 24, 2026: the
- * log/essay visual split is struck — no Log label, one title style. `kind`
- * remains optional frontmatter history and defaults to essay when unset.
+ * log/essay visual split is struck — no Log label, one title style.
+ *
+ * August 24, 2026: Unless the Lord renamed Upon the Waters; Ecclesiastes
+ * 11:1 replaced Psalm 127:1a on /writing/. URL stays /writing/.
  *
  * `project` is a free-text label for "this post is about a named thing." It is
  * not a second door and it does not hide a post from the house.
@@ -15,7 +17,7 @@
  *
  * `builds` — ids for old /building/# and /builds/# deep links. The Markdown
  * bodies stay in the repo as source material; they are not rendered as product
- * pages or summarized on the home page. Unless the Lord holds the writing.
+ * pages or summarized on the home page. Upon the Waters holds the writing.
  */
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
@@ -29,7 +31,7 @@ const builds = defineCollection({
     order: z.number().int().positive(),
     // RENDERED nowhere on the site since August 24, 2026. Kept in frontmatter
     // because Kyle supplied each one-liner as exact text (handoff §6) and the
-    // files remain source material for Unless the Lord posts.
+    // files remain source material for Upon the Waters posts.
     oneLiner: z.string(),
     // NOT rendered. Was the /builds/<id>/ meta/og override. Those pages
     // redirect now. Kept so the files do not fail the schema.
