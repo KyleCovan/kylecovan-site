@@ -49,11 +49,12 @@ scripts/verify_site.py        site-level suite
 ```
 
 - **All CSS lives once in `src/styles/site.css`.** Never duplicate it.
-- **One writing door.** Unless the Lord at `/writing/` lists essays and dated
-  logs in one stream. A log is a kind inside that house (`kind: log`), not a
-  second blog. Every published post is a full page at `/writing/<id>/`. Unset
-  `kind` means essay. Optional free-text `project:` labels a named thing; it
-  does not hide a post and it is not a second door.
+- **One writing door.** Unless the Lord at `/writing/` lists every published
+  post in one stream. Every published post is a full page at `/writing/<id>/`.
+  Optional free-text `project:` labels a named thing; it does not hide a post
+  and it is not a second door. **No log/essay visual split** (August 24): no
+  "Log" label beside dates, and every title uses the same size, font and color.
+  `kind: log` may remain in frontmatter as history but drives no markup.
 - **Do not revive `build:` as the thing that hides a post from Unless the Lord.**
   That August lock is reversed. Old `/builds/` and `/builds/<id>/` URLs redirect
   into the house. Fragment ids for former builds live on `/writing/`.

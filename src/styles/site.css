@@ -558,30 +558,12 @@
     margin: 0;
     font-family: var(--serif);
     font-weight: 400;
-    font-size: clamp(1.16rem, 1.08rem + 0.42vw, 1.36rem);
+    font-size: clamp(1.4rem, 1.28rem + 0.7vw, 1.72rem);
     line-height: 1.3;
-    letter-spacing: -0.011em;
+    letter-spacing: -0.014em;
     color: var(--ink);
     text-wrap: balance;
     font-synthesis-weight: none;
-  }
-
-  /* Essays carry more weight than logs on the same stream. Size, not
-     font-weight: headings on this site stay 400. */
-  .entry-essay .entry-title {
-    font-size: clamp(1.4rem, 1.28rem + 0.7vw, 1.72rem);
-    letter-spacing: -0.014em;
-  }
-
-  .entry-kind {
-    display: inline-block;
-    margin-right: 0.65rem;
-    font-family: var(--sans);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
   }
 
   /* Old /building/#<id> and /builds/#<id> land here. The span has no

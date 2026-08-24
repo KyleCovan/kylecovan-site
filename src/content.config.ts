@@ -2,21 +2,20 @@
  * Two collections.
  *
  * `writing` — everything dated, one house. Unless the Lord at /writing/ is
- * the door. A post is a full page at /writing/<id>/ whether it is an essay
- * or a log. `kind: log` marks the frequent dated notes so a reader can skip
- * them without leaving the house. `kind` defaults to essay when unset, so
- * existing essays need no new field and no new filename scheme.
+ * the door. A post is a full page at /writing/<id>/. August 24, 2026: the
+ * log/essay visual split is struck — no Log label, one title style. `kind`
+ * remains optional frontmatter history and defaults to essay when unset.
  *
- * `project` is a free-text label for "this log is about a named thing." It is
+ * `project` is a free-text label for "this post is about a named thing." It is
  * not a second door and it does not hide a post from the house.
  *
  * August 21, 2026: the July 30 lock that sent any post with `build:` off
- * /writing/ and onto a product page is reversed. That field is gone. Logs
+ * /writing/ and onto a product page is reversed. That field is gone. Posts
  * live in the house. Old /builds/ URLs redirect; they are not a blog.
  *
  * `builds` — ids for old /building/# and /builds/# deep links. The Markdown
  * bodies stay in the repo as source material; they are not rendered as product
- * pages or summarized on the home page. Unless the Lord holds the logs.
+ * pages or summarized on the home page. Unless the Lord holds the writing.
  */
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
@@ -53,9 +52,8 @@ const writing = defineCollection({
     // Authored as ISO so it sorts correctly and lands in JSON-LD without a
     // parsing step; rendered as "July 28, 2026".
     date: z.coerce.date(),
-    // essay (default) or log. A log is a kind inside Unless the Lord, not a
-    // second blog. Unset means essay — do not make Kyle add a field to every
-    // scarce piece.
+    // Optional. essay (default) or log. Kept as frontmatter history;
+    // August 24 struck the visual split, so this field drives no markup.
     kind: z.enum(['essay', 'log']).default('essay'),
     // Free text, NOT a reference. A label for a named thing. It does not
     // hide the post and it does not mint a product page.

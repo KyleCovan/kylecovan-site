@@ -1,9 +1,7 @@
 ---
 /**
- * One page per published post — essays and logs. A log is still a full
- * post here. It is not hidden on a product page.
- *
- * draft: true stays out of getStaticPaths, so it never becomes a URL.
+ * One page per published post. draft: true stays out of getStaticPaths,
+ * so it never becomes a URL. No log/essay visual split — August 24, 2026.
  */
 import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
@@ -16,7 +14,6 @@ export const getStaticPaths = (async () => {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const isLog = post.data.kind === 'log';
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
@@ -85,10 +82,7 @@ const jsonLd = {
 >
 
   <header class="masthead-page">
-    <p class="entry-date">
-      {isLog && <span class="entry-kind">Log</span>}
-      {fmt(post.data.date)}
-    </p>
+    <p class="entry-date">{fmt(post.data.date)}</p>
     <h1>{post.data.title}</h1>
   </header>
 

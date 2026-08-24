@@ -299,12 +299,12 @@ The label is expressive and the URL is plain **on purpose**: URLs are functional
 and someone typing one guesses "writing", not a psalm. The name does its work on
 the page.
 
-**One writing door — August 21, 2026.** Essays and dated logs live in one house:
-Unless the Lord. A log is a kind inside that house (`kind: log` on the writing
-post), not a second blog. Every published post is a full page at
-`/writing/<id>/`. Unset `kind` means essay — existing essays need no new field.
+**One writing door — August 21, 2026.** Every dated post lives in one house:
+Unless the Lord. Every published post is a full page at `/writing/<id>/`.
 Optional free-text `project:` labels a named thing; it does not hide a post and
-it is not a second door.
+it is not a second door. `kind: log` may still appear in frontmatter as
+history, but **August 24 struck the log/essay visual split** — no "Log" label
+beside the date, and every title uses the same size, font and color.
 
 **The July 30 lock is reversed.** A `build:` field used to send a post off
 `/writing/` and onto a product page. That made Builds a second writing door —
@@ -1050,6 +1050,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **60** | **Writing list rhythm tightened.** Kyle asked August 24: dates closer to titles on `/writing/` and the home summary, less air between entries, and a smaller gap between the masthead role line and Story. `.entry-date` margin-bottom `0.55rem → 0.3rem`; `.entry + .entry` `3.25rem → 2.25rem`; home `.project` spacing reduced. |
 | **61** | **Major block rhythm unified.** Kyle asked August 24 that Story, Unless the Lord, Contact, and matching peers feel fluid — not just hero-to-Story. `--gap-section` reduced site-wide to `clamp(3rem, 7vh, 4.5rem)`; `.topbar`, `.more`, `.follow-label`, and `.colophon` now use the same token so pillar spacing and end-of-page gaps match. |
 | **62** | **Date-to-title gap on list pages.** Kyle asked August 24 that dates on `/writing/` and the home summary sit as tight as on individual post pages. Root cause: `p + h2` / `p + h3` prose-spacing rules were still matching `.entry-date` (40–52px); post pages use `h1` and escaped. Fix: exclude `.entry-date` alongside `.eyebrow`. `verify_site.py` now measures the rendered gap on list pages. |
+| **63** | **No log/essay visual split.** Kyle asked August 24 to strike the differentiation: remove the "Log" label beside dates, and make every list title match the essay size/font/color. Dropped `.entry-kind`, `.entry-essay` / `.entry-log`, and the essay-only title bump; `.entry-title` now carries the larger type for every post. RSS descriptions are all "Writing". `kind: log` may remain in frontmatter as history but drives no markup. `verify_site.py` flipped the old "logs are marked" assertion rather than deleting it. |
 
 ---
 

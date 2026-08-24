@@ -2,8 +2,8 @@
 /**
  * The writing index. Nav label "Unless the Lord", URL /writing/.
  *
- * The house. Essays and dated logs in one stream. A log is a kind inside
- * this page, not a second blog. Every item links to its own /writing/<id>/.
+ * The house. Every published post in one stream. Every item links to its
+ * own /writing/<id>/. No log/essay visual split — August 24, 2026.
  *
  * The label is expressive and the URL is plain, on purpose: URLs are functional
  * and a person typing one guesses "writing", not a psalm. The name does its
@@ -23,7 +23,6 @@ const fragmentIds = builds.map((b) => b.id);
 
 const items = posts.map((p) => ({
   post: p,
-  isLog: p.data.kind === 'log',
   href: `/writing/${p.id}/`,
 }));
 
@@ -101,12 +100,9 @@ const jsonLd = {
   ))}
 
   {items.length > 0 ? (
-    items.map(({ post, isLog, href }) => (
-      <article class:list={['entry', isLog ? 'entry-log' : 'entry-essay']}>
-        <p class="entry-date">
-          {isLog && <span class="entry-kind">Log</span>}
-          {fmt(post.data.date)}
-        </p>
+    items.map(({ post, href }) => (
+      <article class="entry">
+        <p class="entry-date">{fmt(post.data.date)}</p>
         <h2 class="entry-title"><a href={href}>{post.data.title}</a></h2>
       </article>
     ))
