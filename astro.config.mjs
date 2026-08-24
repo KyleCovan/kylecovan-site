@@ -17,8 +17,7 @@ const SITE = 'https://kylecovan.com';
  * signal either. Every date here traces to a file Kyle actually edited:
  *
  *   /writing/<id>/  that post's own date
- *   /writing/, /    generated FROM the writing collection (and, for home,
- *                   the builds names still listed there), so each is stale
+ *   /writing/, /    generated FROM the writing collection, so each is stale
  *                   the moment its newest member is
  *
  * August 21, 2026: /builds/ and /builds/<id>/ are redirects into the house.
@@ -62,11 +61,6 @@ const posts = collection('writing')
   }))
   .filter((p) => p.date && !p.draft);
 
-const builds = collection('builds').map((e) => ({
-  id: e.id,
-  updated: day(field(e.fm, 'updated')),
-}));
-
 /** Keyed by absolute URL, exactly as @astrojs/sitemap emits it. */
 /** @type {Record<string, string>} */
 const LASTMOD = {};
@@ -79,10 +73,8 @@ for (const p of posts) {
 const writingIndex = newest(...posts.map((p) => p.date));
 if (writingIndex) LASTMOD[`${SITE}/writing/`] = writingIndex;
 
-// The home page still names the builds and lists recent writing, so it
-// ages when either collection does.
-const home = newest(writingIndex, ...builds.map((b) => b.updated));
-if (home) LASTMOD[`${SITE}/`] = home;
+// The home page lists recent writing only; it ages with the house.
+if (writingIndex) LASTMOD[`${SITE}/`] = writingIndex;
 
 /* /privacy/ is the one page here that isn't generated from a collection, so it
    has no frontmatter to age it. Its date still isn't invented: a privacy policy

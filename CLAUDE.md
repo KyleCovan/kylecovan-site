@@ -26,8 +26,8 @@ rules, and decision history. **Read it before any change and update it after.**
 | `www` | 301 redirect rule → apex, path and query preserved |
 
 An **Astro** project, not hand-written HTML. Nav: **Kyle Covan · Unless the
-L**ORD** · Contact**. Pages are `/` (Story, Builds summary, Writing summary,
-Contact), `/writing/`, `/writing/<id>/`. Old `/builds/` URLs 301 into the house.
+L**ORD** · Contact**. Pages are `/` (Story, Writing summary, Contact),
+`/writing/`, `/writing/<id>/`. Old `/builds/` URLs 301 into the house.
 
 ```
 src/
@@ -40,7 +40,7 @@ src/
   data/videos.json            the video titles + urls
   data/portrait.txt           WebP data URI, 340px
   data/favicon.txt            PNG data URI, 64px
-  content/builds/*.md         names + one-liners for the home summary
+  content/builds/*.md         source material + fragment ids for old deep links
   content/writing/*.md        everything dated — essays and logs
   content.config.ts           both collection schemas
 public/                       og-2.png, robots.txt, _redirects

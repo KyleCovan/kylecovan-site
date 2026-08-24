@@ -9,14 +9,6 @@ import Base from '../layouts/Base.astro';
 import portrait from '../data/portrait.txt?raw';
 import { getCollection } from 'astro:content';
 
-/* Was src/data/projects.json. Now the builds collection: name, order, and
-   one-liner for the home summary. Product pages are gone; old /builds/ URLs
-   redirect into Unless the Lord. */
-const builds = (await getCollection('builds'))
-  .sort((a, b) => a.data.order - b.data.order);
-
-const buildLabel = (n: number) => `Project ${String(n).padStart(2, '0')}`;
-
 /* The three most recent posts, for the summary section. Every published
    post lives at /writing/<id>/ — essays and logs, one house. */
 const allPosts = (await getCollection('writing', ({ data }) => !data.draft))
@@ -146,76 +138,10 @@ const jsonLd = {
       rule that governed them travelled with them as a comment in that file.
       The nav pillar went with it. */}
 
-  {/* THE ONLY SECTION WHOSE EYEBROW AND HEADING ARE ONE SENTENCE. The eyebrow
-      sets it up, the h2 answers it, and `aria-labelledby` names BOTH ids so a
-      screen reader announces "Building in public. Because explaining it shows
-      me what I understand" rather than a heading that starts mid-thought. That
-      is why this eyebrow has an id and the other three don't — theirs are
-      labels, this one is load-bearing grammar. Don't remove either id.
-      verify_site.py asserts BOTH that every aria-labelledby target resolves
-      and that this section is still named by an .eyebrow first and an h2
-      last — the second check exists because "tidying" this back to one id
-      passes the first one while silently breaking the accessible name. */}
-  <section id="building" aria-labelledby="building-eyebrow building-heading">
-    <p class="eyebrow" id="building-eyebrow">Building in public</p>
-
-    {/* Kyle's line, August 4, replacing "Two systems, built for myself first"
-        and an interim "What I'm building, and what it's for" that never
-        shipped. The original broke twice over: it counted two builds when
-        three render, and "systems" is wrong for kylecovan.com, which is a
-        site. Everything since has been chosen against four traps.
-
-        NO COUNT — adding a build must never make the heading a lie again. The
-        same trap the hardcoded video and contrast counts were pulled out of,
-        except a heading fails silently and in public.
-
-        NO OWNER — client projects are coming to this section (Kyle, August 4),
-        so "built for myself first" had an expiry date on it. Lines that named
-        the mix ("some for me, some for clients") were rejected for needing a
-        rewrite the moment the mix changes.
-
-        NO EXPIRING TENSE — "What I'm building" claims everything below is in
-        flight, which stops being true the day a build is finished.
-
-        NO ABSOLUTE — a draft read "Because I don't understand it until I've
-        explained it." Kyle cut it: sometimes he explains from a place of
-        understanding he already had, so "until" made it a rule that isn't
-        always true. "Shows me what I understand" is true either way, because
-        on those days it shows him that.
-
-        Also rejected, and why: "hide" ("harder to hide what I don't
-        understand") implied he was concealing something. "Fool myself" was
-        about his self-image rather than the work. And the whole HELP angle
-        ("invites help I didn't know to ask for") was set aside for the
-        heading — see handoff §6. It is a paragraph, not a heading: in prose,
-        with evidence attached, it reads as collaboration; in a heading, with
-        nothing behind it, a prospect reads need. */}
-    <h2 id="building-heading">Because explaining it shows me what I understand</h2>
-    {/* Lede removed July 30. Retired, not reworded. */}
-
-    {/* Each build links to its own page rather than to an anchor on a shared
-        one. The qualifier span ("Nate Herk style") was removed on July 30 at
-        Kyle's request — as a subtitle it read as a borrowed credential. The
-        credit itself is kept in each build's `inspiration` frontmatter, to be
-        worked into the prose where it reads as a nod rather than a claim. */}
-    {builds.map(b => (
-      <article class="project">
-        <p class="project-index">{buildLabel(b.data.order)}</p>
-        <h3 class="project-title">{b.data.name}</h3>
-        <p class="one-liner">{b.data.oneLiner}</p>
-        {/* "Read more about <name>", not a bare "Read more". Naming the
-            destination gives screen-reader link lists and crawlers real
-            anchor text. Links into Unless the Lord at the matching fragment.
-            Derived from `name`, never typed per build. */}
-        <p class="more"><a href={`/writing/#${b.id}`}>Read more about {b.data.name}</a></p>
-      </article>
-    ))}
-  </section>
-
-  {/* The writing summary, added July 30 to mirror the builds summary above.
-      Every word here is either Kyle's or an approved line: the eyebrow is the
-      section's name, the h2 is the heading he picked for /writing/, and the
-      rest is post titles. No prose was invented for this block. */}
+  {/* August 24, 2026: the builds summary left with the August 21 one-door
+      merge. Project logs live in Unless the Lord in date order; the home page
+      goes Story → Unless the Lord → Contact. Old /building/# and /builds/#
+      deep links still land on /writing/ via silent fragment targets there. */}
   <section id="writing" aria-labelledby="writing-heading">
     <p class="eyebrow">Unless the L<span class="sc">ord</span></p>
 

@@ -14,9 +14,9 @@
  * /writing/ and onto a product page is reversed. That field is gone. Logs
  * live in the house. Old /builds/ URLs redirect; they are not a blog.
  *
- * `builds` — structured facts for the three things named on the home page
- * (name, one-liner, order). The Markdown bodies stay in the repo. They are
- * not rendered as product pages; that was the second door.
+ * `builds` — ids for old /building/# and /builds/# deep links. The Markdown
+ * bodies stay in the repo as source material; they are not rendered as product
+ * pages or summarized on the home page. Unless the Lord holds the logs.
  */
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
@@ -28,16 +28,14 @@ const builds = defineCollection({
     // Drives display order and the "Project 01" label, which is derived rather
     // than stored — storing it meant renumbering by hand on every insert.
     order: z.number().int().positive(),
-    // RENDERED on the home page as the `.one-liner`. Section 6 of
-    // docs/handoff.md puts it out of reach — changes come from Kyle as exact
-    // text, or from options he picks.
+    // RENDERED nowhere on the site since August 24, 2026. Kept in frontmatter
+    // because Kyle supplied each one-liner as exact text (handoff §6) and the
+    // files remain source material for Unless the Lord posts.
     oneLiner: z.string(),
     // NOT rendered. Was the /builds/<id>/ meta/og override. Those pages
     // redirect now. Kept so the files do not fail the schema.
     description: z.string().optional(),
-    // Not rendered. Still ages the home page's sitemap <lastmod> when the
-    // home summary lists these names. Optional on purpose: a missing date
-    // costs nothing, a wrong one costs the file's credibility.
+    // Not rendered. Optional; kept for file history only.
     updated: z.coerce.date().optional(),
     // Where the idea came from. Not rendered — see the note in the build files.
     inspiration: z.string().optional(),
