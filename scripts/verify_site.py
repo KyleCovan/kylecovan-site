@@ -209,6 +209,22 @@ with sync_playwright() as pw:
                  'home page is Story → Unless the Lord, no builds summary',
                  'ok' if hp and hp['no_building'] else 'still has #building')
 
+        # A post date is a label for the title beneath it, not a paragraph break.
+        # August 24: list pages were inheriting `p + h2` / `p + h3` spacing
+        # (40–52px) while individual post pages stayed at ~5px because the
+        # title there is an h1. Measure the rendered gap, not the selector.
+        if p in ('index.html', 'writing/index.html'):
+            date_gaps = pg.evaluate("""() => [...document.querySelectorAll('.entry-date')]
+                .map(d => {
+                  const t = d.nextElementSibling;
+                  if (!t) return null;
+                  return Math.round(t.getBoundingClientRect().top -
+                                    d.getBoundingClientRect().bottom);
+                }).filter(g => g !== null)""")
+            note(bool(date_gaps) and all(g <= 12 for g in date_gaps),
+                 f'{p}: dates sit tight on titles',
+                 str(date_gaps) if date_gaps else 'no .entry-date pairs')
+
         pg.close()
 
         # --- no horizontal overflow at 320px, on EVERY page ------------------

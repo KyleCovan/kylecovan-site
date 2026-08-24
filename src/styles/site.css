@@ -399,14 +399,16 @@
      follows the masthead rather than a paragraph, and was flush against the
      lede for the same reason. Measured, not assumed: it read 0px.
 
-     `.eyebrow` is EXCLUDED and that exclusion is load-bearing. An eyebrow is a
-     label FOR the heading under it, the same relationship `.entry-date` has to
-     `.entry-title`, so it has to stay tight. The first version of this rule
-     lacked the `:not()` and pushed all four home-page eyebrows from 28px to
-     52px, quietly breaking a pairing nobody had asked to change. Caught by
-     measuring the live site against the build, not by reading the CSS. */
-  p:not(.eyebrow) + h2, ul + h2, ol + h2, blockquote + h2, header + h2 { margin-top: 3.25rem; }
-  p:not(.eyebrow) + h3, ul + h3, ol + h3, blockquote + h3 { margin-top: 2.5rem; }
+     `.eyebrow` and `.entry-date` are EXCLUDED and that exclusion is
+     load-bearing. Both are labels FOR the heading under them, so they have to
+     stay tight. The first version of this rule lacked the `:not(.eyebrow)` and
+     pushed all four home-page eyebrows from 28px to 52px, quietly breaking a
+     pairing nobody had asked to change. Caught by measuring the live site
+     against the build, not by reading the CSS. August 24: `.entry-date` was
+     still matching `p + h2` / `p + h3`, which stacked 40–52px between the
+     date and title on list pages while post pages stayed at ~5px. */
+  p:not(.eyebrow):not(.entry-date) + h2, ul + h2, ol + h2, blockquote + h2, header + h2 { margin-top: 3.25rem; }
+  p:not(.eyebrow):not(.entry-date) + h3, ul + h3, ol + h3, blockquote + h3 { margin-top: 2.5rem; }
 
   /* `.subhead` was removed when "Startup operations, now AI orchestration"
      was promoted from a subheading inside Background to its own Approach
