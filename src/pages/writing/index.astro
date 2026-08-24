@@ -1,6 +1,6 @@
 ---
 /**
- * The writing index. Nav label "Upon the Waters", URL /writing/.
+ * The writing index. Nav label "In Your Sight", URL /writing/.
  *
  * The house. Every published post in one stream. Every item links to its
  * own /writing/<id>/. No log/essay visual split — August 24, 2026.
@@ -29,7 +29,7 @@ const items = posts.map((p) => ({
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 
-const title = 'Upon the Waters — Kyle Covan';
+const title = 'In Your Sight — Kyle Covan';
 const description =
   'Writing by Kyle Covan on faith, technology, and the daily striving.';
 
@@ -40,7 +40,7 @@ const jsonLd = {
       '@type': 'CollectionPage',
       '@id': 'https://kylecovan.com/writing/#page',
       url: 'https://kylecovan.com/writing/',
-      name: 'Upon the Waters',
+      name: 'In Your Sight',
       description: 'Writing on faith, technology, and the daily striving.',
       inLanguage: 'en',
       author: { '@id': 'https://kylecovan.com/#kyle' },
@@ -65,7 +65,7 @@ const jsonLd = {
       '@id': 'https://kylecovan.com/writing/#breadcrumbs',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Kyle Covan', item: 'https://kylecovan.com/' },
-        { '@type': 'ListItem', position: 2, name: 'Upon the Waters', item: 'https://kylecovan.com/writing/' },
+        { '@type': 'ListItem', position: 2, name: 'In Your Sight', item: 'https://kylecovan.com/writing/' },
       ],
     },
   ],
@@ -75,19 +75,21 @@ const jsonLd = {
   title={title}
   description={description}
   path="/writing/"
-  current="Upon the Waters"
+  current="In Your Sight"
   jsonLd={jsonLd}
 >
 
-  {/* Ecclesiastes 11:1 — above the h1, not as it. The verse is NOT the h1;
-      see the .epigraph note in site.css. August 24, 2026: replaced Psalm
-      127:1a when the house was renamed Upon the Waters. */}
+  {/* Psalm 19:14 — directly under the h1, not as it. The verse is NOT the h1;
+      see the .epigraph note in site.css. August 24, 2026: replaced
+      Ecclesiastes 11:1 when the house was renamed In Your Sight. */}
   <header class="masthead-page">
+    <h1>In Your Sight</h1>
     <p class="epigraph">
-      Cast your bread upon the waters, for you will find it after many days.
+      Let the words of my mouth and the meditation of my heart<br />
+      be acceptable in your sight,<br />
+      O Lord, my rock and my redeemer.
     </p>
-    <p class="epigraph-cite">Ecclesiastes 11:1, ESV</p>
-    <h1>Upon the Waters</h1>
+    <p class="epigraph-cite">Psalm 19:14, ESV</p>
   </header>
 
   {/* Silent targets for published /building/# and /builds/# deep links.

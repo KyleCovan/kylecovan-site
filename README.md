@@ -9,7 +9,7 @@ have been undone once already by a well-meaning rewrite.
 
 ## Publishing anything you write
 
-One file. The house is **Upon the Waters** at `/writing/`. Every published post lives
+One file. The house is **In Your Sight** at `/writing/`. Every published post lives
 in one stream; a log is a kind inside that house, not a second blog.
 
 ```bash
@@ -51,7 +51,7 @@ src/
 ├── layouts/Base.astro        head, top bar, footer. The only layout.
 ├── pages/
 │   ├── index.astro           home. Kyle's prose lives here — see §6.
-│   ├── writing/index.astro   Upon the Waters — all writing
+│   ├── writing/index.astro   In Your Sight — all writing
 │   ├── writing/[post].astro  one page per published post
 │   └── rss.xml.js            feed
 ├── content/builds/*.md       ← source material + fragment ids for old deep links
@@ -80,5 +80,5 @@ scripts/                      verify.py, verify_site.py
 - **The video rotator is the only executing JavaScript on the site**, and it runs
   during parse so there is no flash of the fallback entry. The `<script>` in the
   head is `application/ld+json`, which is inert data, not code.
-- Nav is three pillars: **Kyle Covan · Upon the Waters · Contact.** Privacy is
+- Nav is three pillars: **Kyle Covan · In Your Sight · Contact.** Privacy is
   in the footer. Builds is not a nav destination.

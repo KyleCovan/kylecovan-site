@@ -306,20 +306,17 @@
   .masthead-page h1 + .lede { margin-top: 1.5rem; }
 
   /* ---------- The epigraph ----------
-     Added July 30. /writing/ opens with Ecclesiastes 11:1, above the h1
-     rather than as it. Psalm 127:1a was here until August 24, 2026, when
-     the house was renamed Upon the Waters.
+     Added July 30. /writing/ carries Psalm 19:14 directly under the h1,
+     not as it. Ecclesiastes 11:1 was above the h1 until August 24, 2026,
+     when the house was renamed In Your Sight and Kyle asked for the verse
+     under the name.
 
-     The verse is NOT the h1 and must never become one. It is the first thing a
-     reader sees, but the h1 is what Google and a screen reader use to decide
-     what the page is about, and an h1 reading "Cast your bread upon the waters"
-     on a page about software is a mismatch that costs real ranking. Kyle asked
-     for the verse on top; this gives him exactly that layout with the semantics
-     intact.
+     The verse is NOT the h1 and must never become one. The h1 is what
+     Google and a screen reader use to decide what the page is about; an h1
+     reading the psalm on a writing index is a mismatch that costs ranking.
 
-     Serif, one step up from body, --ink-soft (6.77:1). No italics, no rule, no
-     indent, no quotation marks -- the site has no chrome anywhere else and a
-     bordered pull-quote would be the first card on it. */
+     Serif, one step up from body, --ink-soft (6.77:1). No italics, no rule,
+     no indent, no quotation marks — the site has no chrome anywhere else. */
 
   .epigraph {
     font-family: var(--serif);
@@ -336,6 +333,8 @@
     font-size: 0.8rem;
     color: var(--ink-faint);
   }
+
+  .masthead-page h1 + .epigraph { margin-top: 1.35rem; }
 
   .epigraph + .epigraph-cite + h1 { margin-top: 2.4rem; }
 
