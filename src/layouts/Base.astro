@@ -36,10 +36,13 @@ const {
 const SITE = 'https://kylecovan.com';
 const canonical = `${SITE}${path}`;
 
-/* Three pillars: his name (home), Upon the Waters, Contact.
+/* Three pillars: his name (home), In Your Sight, Contact.
 
-   August 24, 2026: Unless the Lord became Upon the Waters; Ecclesiastes
-   11:1 replaced Psalm 127:1a on /writing/. URL stays /writing/.
+   August 24, 2026: Upon the Waters became In Your Sight; Psalm 19:14
+   replaced Ecclesiastes 11:1 on /writing/ (verse sits under the h1). URL
+   stays /writing/.
+
+   August 24, 2026 (earlier): Unless the Lord became Upon the Waters.
 
    August 21, 2026: Builds left the nav. Old /builds/ URLs redirect into
    the house. Privacy stays in the footer.
@@ -52,7 +55,7 @@ const canonical = `${SITE}${path}`;
 const onHome = path === '/';
 const nav = [
   { label: 'Kyle Covan', href: '/' },
-  { label: 'Upon the Waters', href: '/writing/' },
+  { label: 'In Your Sight', href: '/writing/' },
   { label: 'Contact',    href: onHome ? '#contact' : '/#contact' },
 ];
 
@@ -85,7 +88,7 @@ const fallback = videos[0];
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content={`${SITE}/og-2.png`}>
 
-<link rel="alternate" type="application/rss+xml" title="Kyle Covan — Upon the Waters" href={`${SITE}/rss.xml`}>
+<link rel="alternate" type="application/rss+xml" title="Kyle Covan — In Your Sight" href={`${SITE}/rss.xml`}>
 
 {jsonLd && (
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />

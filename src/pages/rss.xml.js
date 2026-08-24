@@ -1,10 +1,10 @@
 /**
- * RSS feed for Upon the Waters.
+ * RSS feed for In Your Sight.
  *
  * The feed URL stays /rss.xml. Existing subscribers are pointed here and a
  * feed that 404s is a subscriber lost silently, with no error anyone sees.
  *
- * August 24, 2026: Unless the Lord renamed Upon the Waters.
+ * August 24, 2026: Upon the Waters renamed In Your Sight.
  */
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
@@ -28,7 +28,7 @@ export async function GET(context) {
   }));
 
   return rss({
-    title: 'Kyle Covan — Upon the Waters',
+    title: 'Kyle Covan — In Your Sight',
     description:
       'Writing by Kyle Covan on faith, technology, and the daily striving.',
     site: context.site,

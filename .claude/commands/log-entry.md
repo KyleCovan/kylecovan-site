@@ -1,5 +1,5 @@
 ---
-description: Add a post — essay or log — in Upon the Waters
+description: Add a post — essay or log — in In Your Sight
 argument-hint: [essay|log] [what it is about]
 ---
 
