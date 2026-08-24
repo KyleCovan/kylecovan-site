@@ -152,8 +152,7 @@ with sync_playwright() as pw:
                 const prev = h.previousElementSibling;
                 if (!prev) return null;
                 if (prev.classList.contains('eyebrow') ||
-                    prev.classList.contains('entry-date') ||
-                    prev.classList.contains('entry-kind')) return null;
+                    prev.classList.contains('entry-date')) return null;
                 const gap = h.getBoundingClientRect().top - prev.getBoundingClientRect().bottom;
                 return gap < 20 ? [h.textContent.trim().slice(0, 34), Math.round(gap)] : null;
             }).filter(Boolean)""")
@@ -516,15 +515,17 @@ for d in drafts:
     note(not (ROOT / 'writing' / d['id'] / 'index.html').exists(),
          f'draft has no public URL: {d["id"]}')
 
-# Logs are marked; essays are not buried under the same mark.
-logs = [p for p in published if p['kind'] == 'log']
-essays = [p for p in published if p['kind'] != 'log']
-if logs:
-    note('entry-kind' in writing_src and '>Log<' in writing_src,
-         'logs are marked on /writing/')
-if essays:
-    note(any(e['title'] in writing_src for e in essays),
-         'essays appear on /writing/')
+# August 24: no Log label and no title-size split. The old assertion
+# required entry-kind on /writing/; the rule flipped, so the test flips
+# with it rather than disappearing.
+note('entry-kind' not in writing_src and '>Log<' not in writing_src,
+     'no Log label on /writing/')
+note('entry-kind' not in home_src and '>Log<' not in home_src,
+     'no Log label on the home summary')
+note('entry-essay' not in writing_src and 'entry-log' not in writing_src,
+     'no log/essay title split on /writing/')
+note(any(e['title'] in writing_src for e in published),
+     'published posts appear on /writing/')
 
 print()
 print('SITE RESULT:', 'ALL CHECKS PASSED' if not fails else f'{len(fails)} FAILURE(S): {fails}')

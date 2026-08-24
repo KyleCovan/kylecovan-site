@@ -4,9 +4,9 @@
  * The feed URL stays /rss.xml. Existing subscribers are pointed here and a
  * feed that 404s is a subscriber lost silently, with no error anyone sees.
  *
- * August 21, 2026: the house is Unless the Lord. Essays and logs both appear.
- * The title used to say "Building in public"; that named the frequent log, not
- * the door.
+ * August 21, 2026: the house is Unless the Lord. Every published post
+ * appears. The title used to say "Building in public"; that named the
+ * frequent log, not the door. August 24: no Log/Writing description split.
  */
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
@@ -18,7 +18,7 @@ export async function GET(context) {
   const items = entries.map((e) => ({
     title: e.data.title,
     pubDate: e.data.date,
-    description: e.data.kind === 'log' ? 'Log' : 'Writing',
+    description: 'Writing',
     /* ABSOLUTE, deliberately. @astrojs/rss runs a relative link through
        createCanonicalURL, which honours the site's `trailingSlash: always`
        and appends a slash to the END OF THE WHOLE STRING — producing
