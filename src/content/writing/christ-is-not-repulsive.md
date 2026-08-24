@@ -1,22 +1,20 @@
 ---
-title: "Christ is not repulsive"
+title: "Jesus Christ is Not Repulsive"
 date: 2026-08-21
-draft: true
+updated: 2026-08-24
 same-thought: christ-is-not-repulsive
 ---
 
 <!-- granola:412861c4-1e82-421a-b9db-9a5ad9909d0e · Thought Folder · Christianity reflections and thoughts · UNPOSTED -->
 
-When somebody does not believe Christianity, they are believing a lie.
+When somebody does not believe in Jesus Christ, they are believing in a lie instead.
 
-That lie is not only the thing they put in its place. It is not only the system they think is better. The lie is also them defining Christianity as something other than it is. That is part of the lie.
+That lie consists of the thing they believe in instead of Him, as well as the false perception of who and what they think of Jesus Christ.
 
-If they saw Christianity for what it more accurately is, it would be irresistible. They would have to be graced to see it that clearly. That is still true. They would have to believe by faith. That is still true.
+If they accurately saw Jesus for who He is, He would become irresistible to them.
 
-I am pondering that. Not landing it.
+They would have to be graced by God to see Him that clearly. That is still true. They would have to believe by faith. That is still true.
 
-If they are repulsed, they are often repulsed by a picture that is not him. Christianity is not repulsive. Christ is not repulsive. He is relieving. He is the Savior.
+If they are repulsed, they are often repulsed by a picture that is not Him. Christianity is not repulsive. Jesus Christ is not repulsive. He is relieving. He is the Savior.
 
-Then there is the harder case. Some seem to see it accurately and still do not want it. They do not want that relationship with Christ. That is a scary thought. It is hard to comprehend.
-
-For me, by the grace of God.
+But then there are the harder cases. Some seem to see Him accurately and still do not want Him. They might see Him accurately, but not see their sin accurately. But if they don't see their sin accurately, I guess they don't see him accurately either, now that I think about it. And they don't want a relationship with Him as a result. That is a scary thought.
