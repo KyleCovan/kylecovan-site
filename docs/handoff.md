@@ -255,10 +255,11 @@ the creed.
 ### Rhythm
 
 - `--measure: 800px` — `.page` max-width, border-box, centred.
-- `--gap-section: clamp(5rem, 13vh, 9rem)`.
-- **`.masthead + section`** uses `clamp(3rem, 7vh, 4.5rem)` instead — the hero
-  is not a section, and the full section gap after the role line read as a dead
-  zone. Section-to-section rhythm is unchanged.
+- `--gap-section: clamp(3rem, 7vh, 4.5rem)` — every major block on the home
+  page (hero → Story, Story → Unless the Lord, Unless the Lord → Contact) and
+  the matching end-of-page gaps (top bar → masthead, "All writing", colophon,
+  `/writing/` follow row). Was `clamp(5rem, 13vh, 9rem)` until August 24; the
+  hero-to-Story fix alone left the other pillars feeling disconnected.
 - **Writing list rhythm** (home summary `.project`, `/writing/` `.entry`): date
   to title `0.3rem`; between entries `clamp(2.25rem, 5vh, 3.25rem)` on the
   home summary and `2.25rem` on `/writing/`. Tightened August 24 at Kyle's
@@ -1046,7 +1047,8 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **57** | **QA fixes: leaked Contact comment, `/sitemap.xml` redirect.** The `email_off` note above the home-page mailto used an Astro `{/* */}` block that itself contained the characters `{/* */}` as an example — the inner `*/` closed the comment early and leaked the rest of the note into live HTML between "Reach out anytime" and the email link. Rewrote the note so it never nests that delimiter; kept the `<!--email_off-->` HTML markers (those are load-bearing — Astro comments would be stripped and Cloudflare would re-break mailto). **`/sitemap.xml` → `/sitemap-index.xml` 301** in `public/_redirects` (Astro emits the index name; robots.txt was already correct; conventional short URL was a hard 404 after the August 6 custom 404). `verify.py` now asserts `email_off` survives into dist and `#contact` has no comment residue; `verify_site.py` accepts file redirect targets and asserts the sitemap rule. |
 | **58** | **One writing door — Unless the Lord.** Builds left the nav. Essays and dated logs live in one stream at `/writing/`; logs marked with `kind: log`, essays heavier when unmarked. Every published post is a full page at `/writing/<id>/`. The July 30 `build:` lock that hid posts on product pages is reversed; `project:` is free text, not a second door. Old `/building/` and `/builds/` URLs 301 into the house; fragment ids for former builds live on `/writing/`. RSS title names the house, not "Building in public". `draft: true` still stays off public lists. Both suites updated in the same change. Supersedes main's interim "build logs are not the blog" listing rule (§57 on main), which still treated `build:` as a hide field. |
 | **59** | **Builds summary removed from the home page.** Kyle asked August 24: scrolling should go Story → Unless the Lord → Contact, with no "Building in public" block and no Project 01/02/03 cards. The August 21 one-door merge had left that summary behind. Project logs stay in Unless the Lord in date order; old `/building/#` and `/builds/#` deep links still land on `/writing/` via silent fragment targets. `verify_site.py` now asserts `#building` is absent from the home page. |
-| **60** | **Writing list rhythm tightened.** Kyle asked August 24: dates closer to titles on `/writing/` and the home summary, less air between entries, and a smaller gap between the masthead role line and Story. `.entry-date` margin-bottom `0.55rem → 0.3rem`; `.entry + .entry` `3.25rem → 2.25rem`; home `.project` spacing reduced; new `.masthead + section` rule so only the hero-to-Story gap changes — `--gap-section` between sections stays as-is. |
+| **60** | **Writing list rhythm tightened.** Kyle asked August 24: dates closer to titles on `/writing/` and the home summary, less air between entries, and a smaller gap between the masthead role line and Story. `.entry-date` margin-bottom `0.55rem → 0.3rem`; `.entry + .entry` `3.25rem → 2.25rem`; home `.project` spacing reduced. |
+| **61** | **Major block rhythm unified.** Kyle asked August 24 that Story, Unless the Lord, Contact, and matching peers feel fluid — not just hero-to-Story. `--gap-section` reduced site-wide to `clamp(3rem, 7vh, 4.5rem)`; `.topbar`, `.more`, `.follow-label`, and `.colophon` now use the same token so pillar spacing and end-of-page gaps match. |
 
 ---
 

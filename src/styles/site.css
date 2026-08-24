@@ -23,7 +23,7 @@
 
     /* Rhythm */
     --measure: 800px;
-    --gap-section: clamp(5rem, 13vh, 9rem);
+    --gap-section: clamp(3rem, 7vh, 4.5rem);
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -63,11 +63,6 @@
   }
 
   section { margin-top: var(--gap-section); }
-
-  /* The hero is not a section, so the first block below it used to inherit the
-     full --gap-section and read as a dead zone after the role line. Tighter
-     here only; section-to-section rhythm stays on --gap-section. */
-  .masthead + section { margin-top: clamp(3rem, 7vh, 4.5rem); }
 
   /* ---------- Typography ---------- */
 
@@ -137,7 +132,7 @@
     align-items: baseline;
     justify-content: flex-start;
     gap: 0.8rem 1.4rem;
-    margin-bottom: clamp(3rem, 7vh, 4rem);
+    margin-bottom: var(--gap-section);
   }
 
   .topnav {
@@ -496,7 +491,7 @@
      reads as part of that project rather than as a page-level footer. */
 
   .more {
-    margin-top: clamp(3rem, 7vh, 4rem);
+    margin-top: var(--gap-section);
     font-size: 0.98rem;
   }
 
@@ -632,7 +627,7 @@
      belongs to the build-log heading and would read as a divider here. */
 
   .follow-label {
-    margin-top: clamp(3rem, 7vh, 4rem);
+    margin-top: var(--gap-section);
     font-family: var(--sans);
     font-size: 0.7rem;
     font-weight: 600;
@@ -688,7 +683,7 @@
      page-wide left alignment rather than stranding text mid-line. */
 
   .colophon {
-    margin-top: clamp(4rem, 10vh, 5.5rem);
+    margin-top: var(--gap-section);
     font-size: 0.8rem;
     color: var(--ink-faint);
     letter-spacing: 0.01em;
