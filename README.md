@@ -54,7 +54,7 @@ src/
 │   ├── writing/index.astro   Unless the Lord — essays and logs
 │   ├── writing/[post].astro  one page per published post
 │   └── rss.xml.js            feed
-├── content/builds/*.md       ← names + one-liners for the home summary
+├── content/builds/*.md       ← source material + fragment ids for old deep links
 ├── content/writing/*.md      ← everything dated goes here
 ├── content.config.ts         both collection schemas
 ├── data/

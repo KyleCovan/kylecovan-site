@@ -54,7 +54,7 @@ single closing line at the bottom of the home page.
 the work is in scope; offering the service is not. Rates, packages, "hire me" or
 any call to action on this site is not. August 21: that work is summarized on
 the home page and written about inside Unless the Lord — Builds is not a second
-writing door. The closing line and its dry note (§6) still carry the whole
+writing door and is not summarized on the home page. The closing line and its dry note (§6) still carry the whole
 two-site explanation.
 
 **The design reference is [andrewng.org](https://www.andrewng.org/).** What was
@@ -273,10 +273,8 @@ the creed.
 topbar        nav left, video line immediately after it
 masthead      portrait left, name / creed / role right
 #story        eyebrow "Story"      h2 Laying music down            (5 paragraphs)
-#approach     eyebrow "Approach"   h2 Startup operations, now AI orchestration
-#building     eyebrow "Building in public" — summary + two projects, each
-                                   deep-linking to its anchor on /building/
-#contact      eyebrow "Contact"    h2 Reach out anytime
+#writing       eyebrow "Unless the Lord" — three most recent posts + link
+#contact       eyebrow "Contact"    h2 Reach out anytime
 colophon
 ```
 
@@ -330,9 +328,9 @@ in a render at nav size: correct on macOS.
 ### `/builds/` — retired as a door, kept as redirects
 
 August 21, 2026: `/builds/` and `/builds/<id>/` are no longer pages. They 301
-into `/writing/`. The three build Markdown files remain for the home-page
-summary (name, one-liner, order). Their bodies are not rendered as product
-pages.
+into `/writing/`. The three build Markdown files remain in the repo as source
+material and as the canonical list of fragment ids for old deep links. Their
+bodies are not rendered as product pages and are not summarized on the home page.
 
 **Each former build id still exists on `/writing/`** (silent fragment targets).
 `/building/#personal-ai-os` was a real published URL. A server redirect cannot
@@ -1040,6 +1038,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **56** | **Tapo Canyon link restored** on the home-page closing line. Closes §7 item 5. Unlinked July 29 (§43) while the domain did not resolve; restored August 10 at Kyle's request ahead of tapocanyon.com going live. Sentence untouched — only the `<a href="https://tapocanyon.com">` came back. `verify.py` now asserts the anchor is present so it cannot quietly go plain-text again. |
 | **57** | **QA fixes: leaked Contact comment, `/sitemap.xml` redirect.** The `email_off` note above the home-page mailto used an Astro `{/* */}` block that itself contained the characters `{/* */}` as an example — the inner `*/` closed the comment early and leaked the rest of the note into live HTML between "Reach out anytime" and the email link. Rewrote the note so it never nests that delimiter; kept the `<!--email_off-->` HTML markers (those are load-bearing — Astro comments would be stripped and Cloudflare would re-break mailto). **`/sitemap.xml` → `/sitemap-index.xml` 301** in `public/_redirects` (Astro emits the index name; robots.txt was already correct; conventional short URL was a hard 404 after the August 6 custom 404). `verify.py` now asserts `email_off` survives into dist and `#contact` has no comment residue; `verify_site.py` accepts file redirect targets and asserts the sitemap rule. |
 | **58** | **One writing door — Unless the Lord.** Builds left the nav. Essays and dated logs live in one stream at `/writing/`; logs marked with `kind: log`, essays heavier when unmarked. Every published post is a full page at `/writing/<id>/`. The July 30 `build:` lock that hid posts on product pages is reversed; `project:` is free text, not a second door. Old `/building/` and `/builds/` URLs 301 into the house; fragment ids for former builds live on `/writing/`. RSS title names the house, not "Building in public". `draft: true` still stays off public lists. Both suites updated in the same change. Supersedes main's interim "build logs are not the blog" listing rule (§57 on main), which still treated `build:` as a hide field. |
+| **59** | **Builds summary removed from the home page.** Kyle asked August 24: scrolling should go Story → Unless the Lord → Contact, with no "Building in public" block and no Project 01/02/03 cards. The August 21 one-door merge had left that summary behind. Project logs stay in Unless the Lord in date order; old `/building/#` and `/builds/#` deep links still land on `/writing/` via silent fragment targets. `verify_site.py` now asserts `#building` is absent from the home page. |
 
 ---
 

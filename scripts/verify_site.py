@@ -185,28 +185,29 @@ with sync_playwright() as pw:
              f'{len(aria)} labelled region(s)')
         for a in broken: print('        ', a['el'], 'missing:', a['missing'])
 
-        # And specifically: the builds section must still be named by BOTH.
-        # The check above passes if someone "tidies" this back to naming only
-        # the heading, which would leave the section announcing itself as
-        # "Because explaining it shows me what I understand" — a fragment. This
-        # asserts the structure (eyebrow first, heading last) rather than the
-        # words, so Kyle can rewrite either line without touching the test.
+        # And specifically: the home page must not carry a builds summary.
+        # August 24, 2026: Kyle asked for Story → Unless the Lord → Contact.
+        # The August 21 one-door merge left a #building block behind; this
+        # asserts structure, not words, so copy can change without touching
+        # the test.
         if p == 'index.html':
-            bs = pg.evaluate(r"""() => {
-                const s = document.getElementById('building');
-                if (!s) return null;
-                const ids = (s.getAttribute('aria-labelledby') || '').split(/\s+/).filter(Boolean);
-                const els = ids.map(id => document.getElementById(id));
+            hp = pg.evaluate("""() => {
+                const story = document.getElementById('story');
+                const writing = document.getElementById('writing');
+                const building = document.getElementById('building');
                 return {
-                    n: ids.length,
-                    first_is_eyebrow: !!(els[0] && els[0].classList.contains('eyebrow')),
-                    last_is_h2: !!(els[els.length - 1] && els[els.length - 1].tagName === 'H2'),
-                    name: els.map(e => e ? e.textContent : '').join(' ').replace(/\s+/g, ' ').trim(),
+                    has_story: !!story,
+                    has_writing: !!writing,
+                    no_building: !building,
+                    story_before_writing: !!(story && writing &&
+                        story.compareDocumentPosition(writing) & Node.DOCUMENT_POSITION_FOLLOWING),
+                    no_building_in_public: !document.body.textContent.includes('Building in public'),
                 };
             }""")
-            note(bool(bs) and bs['n'] == 2 and bs['first_is_eyebrow'] and bs['last_is_h2'],
-                 'builds section is named by its eyebrow AND its heading',
-                 bs['name'] if bs else 'no #building section')
+            note(bool(hp) and hp['has_story'] and hp['has_writing'] and hp['no_building']
+                 and hp['story_before_writing'] and hp['no_building_in_public'],
+                 'home page is Story → Unless the Lord, no builds summary',
+                 'ok' if hp and hp['no_building'] else 'still has #building')
 
         pg.close()
 
