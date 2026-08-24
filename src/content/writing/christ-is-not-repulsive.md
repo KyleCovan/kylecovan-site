@@ -1,5 +1,5 @@
 ---
-title: "Jesus Christ is Not Repulsive"
+title: "Jesus Christ is not repulsive"
 date: 2026-08-21
 updated: 2026-08-24
 same-thought: christ-is-not-repulsive

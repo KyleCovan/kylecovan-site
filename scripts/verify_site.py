@@ -378,6 +378,27 @@ for f in sorted((SRC / 'writing').glob('*.md')):
 published = [p for p in posts if p['date'] and not p['draft']]
 drafts = [p for p in posts if p['draft']]
 
+# August 24: writing titles are sentence case — first word and proper names only.
+# Full-sentence titles still skip the trailing period; mid-title Title Case breaks
+# the list's continuity (e.g. "not" stays lowercase).
+TITLE_CASE_ALLOWED = {'I', 'AI', 'iMac', 'Jesus', 'Christ', 'Bible', 'God', 'Lord'}
+
+def mid_title_caps(title):
+    words = re.findall(r"[A-Za-z']+", title)
+    bad = []
+    for i, w in enumerate(words):
+        if i == 0 or w in TITLE_CASE_ALLOWED or re.fullmatch(r'[A-Z]{2,}', w):
+            continue
+        if w[0].isupper():
+            bad.append(w)
+    return bad
+
+for p in posts:
+    caps = mid_title_caps(p['title'])
+    note(not caps, f"writing title is sentence case: {p['id']}",
+         f"unexpected caps mid-title: {', '.join(caps)}" if caps else p['title'])
+    note('.' not in p['title'], f"writing title has no period: {p['id']}", p['title'])
+
 # Every published post owns /writing/<id>/, essay or log. lastmod is its date.
 for p in published:
     url = f"https://kylecovan.com/writing/{p['id']}/"

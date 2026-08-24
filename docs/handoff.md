@@ -538,6 +538,16 @@ beats have been read. Placing it earlier reads more naturally sentence-to-
 sentence but breaks the three-beat arc and makes the closing line about AI the
 section's last word instead of gratitude. **Don't move it and don't reword it.**
 
+### Writing post titles
+
+**Sentence case everywhere the title appears** — `/writing/`, the home summary,
+each post's `h1`, RSS, and metadata. Only the first word and proper names are
+capitalized (`Jesus Christ`, `AI`, `iMac`, etc.). Mid-title Title Case breaks
+the list's continuity: *All clouds are not equal*, not *All Clouds Are Not
+Equal*. Full-sentence titles **omit the trailing period**; a question mark is
+fine when the title is a question. `verify_site.py` checks frontmatter for both
+rules.
+
 ### "Startup operations, now AI orchestration" — MOVED July 30, not deleted
 
 **These two paragraphs now live at
@@ -1043,6 +1053,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **63** | **No log/essay visual split.** Kyle asked August 24 to strike the differentiation: remove the "Log" label beside dates, and make every list title match the essay size/font/color. Dropped `.entry-kind`, `.entry-essay` / `.entry-log`, and the essay-only title bump; `.entry-title` now carries the larger type for every post. RSS descriptions are all "Writing". `kind: log` may remain in frontmatter as history but drives no markup. `verify_site.py` flipped the old "logs are marked" assertion rather than deleting it. |
 | **64** | **Unless the Lord → Upon the Waters.** Kyle asked August 24 to rename the writing house and swap the epigraph: Ecclesiastes 11:1 replaces Psalm 127:1a on `/writing/`; nav, home eyebrow, RSS, JSON-LD, and breadcrumbs all say Upon the Waters. URL stays `/writing/`. `h1` is Upon the Waters (was "Writing on faith, technology, and the daily striving"). The name held for `/builds/` since July is now spent. `verify_site.py` updated for nav and RSS title. |
 | **65** | **Upon the Waters → In Your Sight.** Kyle asked August 24 to rename again: Psalm 19:14 (ESV) replaces Ecclesiastes 11:1 and sits **under** the h1 rather than above it. Nav, home eyebrow, RSS, JSON-LD, and breadcrumbs all say In Your Sight. URL stays `/writing/`. `verify_site.py` updated. |
+| **66** | **Writing titles stay sentence case.** Kyle asked August 24 to fix "Jesus Christ is Not Repulsive" — mid-title caps on *not* and *repulsive* broke the continuity of every other title on the list. Frontmatter corrected; `verify_site.py` now flags unexpected mid-title capitals and trailing periods in writing titles. |
 
 ---
 
