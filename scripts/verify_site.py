@@ -185,7 +185,7 @@ with sync_playwright() as pw:
         for a in broken: print('        ', a['el'], 'missing:', a['missing'])
 
         # And specifically: the home page must not carry a builds summary.
-        # August 24, 2026: Kyle asked for Story → Unless the Lord → Contact.
+        # August 24, 2026: Kyle asked for Story → Upon the Waters → Contact.
         # The August 21 one-door merge left a #building block behind; this
         # asserts structure, not words, so copy can change without touching
         # the test.
@@ -205,7 +205,7 @@ with sync_playwright() as pw:
             }""")
             note(bool(hp) and hp['has_story'] and hp['has_writing'] and hp['no_building']
                  and hp['story_before_writing'] and hp['no_building_in_public'],
-                 'home page is Story → Unless the Lord, no builds summary',
+                 'home page is Story → Upon the Waters, no builds summary',
                  'ok' if hp and hp['no_building'] else 'still has #building')
 
         # A post date is a label for the title beneath it, not a paragraph break.
@@ -465,7 +465,7 @@ note(feed.exists(), 'rss.xml is built')
 if feed.exists():
     xml = feed.read_text()
     channel_title = re.search(r'<channel>\s*<title>(.*?)</title>', xml, re.S)
-    note(channel_title is not None and 'Unless the Lord' in channel_title.group(1),
+    note(channel_title is not None and 'Upon the Waters' in channel_title.group(1),
          'rss channel title names the house',
          channel_title.group(1) if channel_title else 'missing')
     note('Building in public' not in (channel_title.group(1) if channel_title else ''),
@@ -499,8 +499,18 @@ nav_labels = re.findall(
     r'<nav class="topnav"[^>]*>.*?</nav>', home_src, re.S)
 nav_html = nav_labels[0] if nav_labels else ''
 note('Builds' not in nav_html, 'nav has no Builds item')
-note('Unless the L' in nav_html or 'Unless the Lord' in nav_html,
-     'nav still has Unless the Lord')
+note('Upon the Waters' in nav_html,
+     'nav still has Upon the Waters')
+note('Unless the Lord' not in nav_html,
+     'nav no longer says Unless the Lord')
+note('Cast your bread upon the waters' in writing_src,
+     '/writing/ epigraph is Ecclesiastes 11:1')
+note('<h1>Upon the Waters</h1>' in writing_src,
+     '/writing/ h1 is Upon the Waters')
+note('Psalm 127' not in writing_src,
+     '/writing/ no longer carries Psalm 127')
+note('Unless the Lord' not in writing_src,
+     '/writing/ no longer says Unless the Lord')
 note(nav_html.count('href="/writing/"') == 1 and 'href="/builds/"' not in nav_html,
      'nav writing door is /writing/ only')
 
@@ -520,6 +530,8 @@ for d in drafts:
 # with it rather than disappearing.
 note('entry-kind' not in writing_src and '>Log<' not in writing_src,
      'no Log label on /writing/')
+note('Upon the Waters' in home_src and 'Unless the Lord' not in home_src,
+     'home summary names Upon the Waters')
 note('entry-kind' not in home_src and '>Log<' not in home_src,
      'no Log label on the home summary')
 note('entry-essay' not in writing_src and 'entry-log' not in writing_src,

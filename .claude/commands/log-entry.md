@@ -1,5 +1,5 @@
 ---
-description: Add a post — essay or log — in Unless the Lord
+description: Add a post — essay or log — in Upon the Waters
 argument-hint: [essay|log] [what it is about]
 ---
 

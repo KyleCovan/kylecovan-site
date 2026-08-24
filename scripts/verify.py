@@ -170,7 +170,7 @@ with sync_playwright() as pw:
         return {
           items: links.map(a => {
             const h = a.getAttribute('href');
-            // Only in-page anchors can be resolved here. "Unless the Lord"
+            // Only in-page anchors can be resolved here. "Upon the Waters"
             // points at /writing/; cross-page links are verified by
             // verify_site.py.
             return {label: a.textContent.trim(), href: h,

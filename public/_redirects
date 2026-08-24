@@ -5,8 +5,7 @@
 # Google's index and in anything anyone shared, so they redirect rather
 # than 404.
 #
-# August 21, 2026: the house is Unless the Lord. Builds is not a second
-# blog. Every old builds URL leads into /writing/.
+# August 24, 2026: the house is Upon the Waters. URL stays /writing/.
 #
 # 301 (permanent) is deliberate: it passes ranking signal to the new URL and
 # tells Google to replace the old one in its index. A 302 would leave the dead

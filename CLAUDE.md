@@ -25,15 +25,15 @@ rules, and decision history. **Read it before any change and update it after.**
 | Live | **https://kylecovan.com** (also `kylecovan-site.pages.dev`) |
 | `www` | 301 redirect rule → apex, path and query preserved |
 
-An **Astro** project, not hand-written HTML. Nav: **Kyle Covan · Unless the
-L**ORD** · Contact**. Pages are `/` (Story, Writing summary, Contact),
+An **Astro** project, not hand-written HTML. Nav: **Kyle Covan · Upon the
+Waters · Contact**. Pages are `/` (Story, Writing summary, Contact),
 `/writing/`, `/writing/<id>/`. Old `/builds/` URLs 301 into the house.
 
 ```
 src/
   layouts/Base.astro          head, top bar, footer, the one inline script
   pages/index.astro           home
-  pages/writing/index.astro   the writing index — "Unless the Lord"
+  pages/writing/index.astro   the writing index — "Upon the Waters"
   pages/writing/[post].astro  one page per published post
   pages/rss.xml.js            RSS feed
   styles/site.css             ALL the CSS, once
@@ -49,13 +49,13 @@ scripts/verify_site.py        site-level suite
 ```
 
 - **All CSS lives once in `src/styles/site.css`.** Never duplicate it.
-- **One writing door.** Unless the Lord at `/writing/` lists every published
+- **One writing door.** Upon the Waters at `/writing/` lists every published
   post in one stream. Every published post is a full page at `/writing/<id>/`.
   Optional free-text `project:` labels a named thing; it does not hide a post
   and it is not a second door. **No log/essay visual split** (August 24): no
   "Log" label beside dates, and every title uses the same size, font and color.
   `kind: log` may remain in frontmatter as history but drives no markup.
-- **Do not revive `build:` as the thing that hides a post from Unless the Lord.**
+- **Do not revive `build:` as the thing that hides a post from Upon the Waters.**
   That August lock is reversed. Old `/builds/` and `/builds/<id>/` URLs redirect
   into the house. Fragment ids for former builds live on `/writing/`.
 - **Substantively rewriting a post body means bumping its `date` / `updated`
@@ -67,9 +67,9 @@ scripts/verify_site.py        site-level suite
   because "did the body change since this date?" is a git-history question.
 - **Never render a build's `prompts` array.** Those were the old "What the log
   will cover" bullets — a list of promises on a page with nothing behind it.
-- **`.epigraph` is not the `h1`.** `/writing/` opens with Psalm 127:1a above its
-  heading. The verse must never become the heading; see the note in the CSS. Do
-  not move Ecclesiastes 11:1 onto that page unless Kyle says to.
+- **`.epigraph` is not the `h1`.** `/writing/` opens with Ecclesiastes 11:1
+  above its heading. The verse must never become the heading; see the note in
+  the CSS. The page name is **Upon the Waters**.
 - **`public/_redirects` keeps `/building/` and `/builds/` alive.** Those URLs
   were indexed. Never delete a rule from that file without checking what still
   links to it.

@@ -306,9 +306,9 @@
   .masthead-page h1 + .lede { margin-top: 1.5rem; }
 
   /* ---------- The epigraph ----------
-     Added July 30. /writing/ opens with Psalm 127:1a, above the h1 rather
-     than as it. Ecclesiastes 11:1 lived on /builds/; that page redirects
-     now. Do not move that verse onto this page unless Kyle says to.
+     Added July 30. /writing/ opens with Ecclesiastes 11:1, above the h1
+     rather than as it. Psalm 127:1a was here until August 24, 2026, when
+     the house was renamed Upon the Waters.
 
      The verse is NOT the h1 and must never become one. It is the first thing a
      reader sees, but the h1 is what Google and a screen reader use to decide
@@ -339,15 +339,12 @@
 
   .epigraph + .epigraph-cite + h1 { margin-top: 2.4rem; }
 
-  /* Small caps for the divine name. Kyle asked for this twice, for both the nav
-     and the verse: it is how LORD renders the Tetragrammaton in every major
-     English translation, so it is the correct setting of Psalm 127:1a rather
-     than decoration.
-
-     Only "ord" is wrapped, so the underlying text stays "Lord" -- copy/paste
-     and screen readers both get the word, not four letters. Fonts without true
-     small-cap glyphs will synthesise them and the result reads slightly light;
-     that is a known limitation, flagged to Kyle, and worst at nav size. */
+  /* Small caps for the divine name. Used when LORD appears in copy; the nav
+     no longer carries Psalm 127:1a after August 24, 2026. Only "ord" is
+     wrapped, so the underlying text stays "Lord" — copy/paste and screen
+     readers both get the word, not four letters. Fonts without true small-cap
+     glyphs will synthesise them and the result reads slightly light; that is
+     a known limitation, flagged to Kyle, and worst at nav size. */
 
   .sc { font-variant-caps: small-caps; }
 
