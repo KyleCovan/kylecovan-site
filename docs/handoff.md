@@ -281,7 +281,7 @@ the creed.
 topbar        nav left, video line immediately after it
 masthead      portrait left, name / creed / role right
 #story        eyebrow "Story"      h2 Laying music down            (5 paragraphs)
-#writing       eyebrow "In Your Sight" — three most recent posts + link
+#writing       eyebrow "In Your Sight" + h2 "Writing on faith…" — three recent posts + link
 #contact       eyebrow "Contact"    h2 Reach out anytime
 colophon
 ```
@@ -290,7 +290,7 @@ colophon
 
 ```
 topbar        nav only, In Your Sight marked aria-current, no video line
-masthead-page h1 In Your Sight + Psalm 19:14 + cite + list of posts
+masthead-page h1 In Your Sight + Psalm 19:14 + cite + h2 tagline + list of posts
 follow        "Follow along" + RSS · YouTube · X · LinkedIn
 more          back to kylecovan.com
 ```

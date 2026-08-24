@@ -336,6 +336,8 @@
 
   .masthead-page h1 + .epigraph { margin-top: 1.35rem; }
 
+  .epigraph-cite + h2 { margin-top: 2rem; }
+
   .epigraph + .epigraph-cite + h1 { margin-top: 2.4rem; }
 
   /* Small caps for the divine name. Psalm 19:14 on /writing/ wraps only "ord"

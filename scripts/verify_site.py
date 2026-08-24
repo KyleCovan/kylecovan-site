@@ -509,6 +509,8 @@ note('O L<span class="sc">ord</span>' in writing_src,
      '/writing/ epigraph sets Lord in small caps')
 note('<h1>In Your Sight</h1>' in writing_src,
      '/writing/ h1 is In Your Sight')
+note('Writing on faith, technology, and the daily striving' in writing_src,
+     '/writing/ tagline sits under the verse')
 note('Cast your bread upon the waters' not in writing_src,
      '/writing/ no longer carries Ecclesiastes 11:1')
 note('Upon the Waters' not in writing_src,
@@ -534,6 +536,8 @@ note('entry-kind' not in writing_src and '>Log<' not in writing_src,
      'no Log label on /writing/')
 note('In Your Sight' in home_src and 'Upon the Waters' not in home_src,
      'home summary names In Your Sight')
+note('Writing on faith, technology, and the daily striving' in home_src,
+     'home writing section keeps the tagline')
 note('entry-kind' not in home_src and '>Log<' not in home_src,
      'no Log label on the home summary')
 note('entry-essay' not in writing_src and 'entry-log' not in writing_src,
