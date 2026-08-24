@@ -2,7 +2,6 @@
 title: "Jesus Christ is Not Repulsive"
 date: 2026-08-21
 updated: 2026-08-24
-draft: true
 same-thought: christ-is-not-repulsive
 ---
 
