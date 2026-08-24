@@ -23,7 +23,7 @@
 
     /* Rhythm */
     --measure: 800px;
-    --gap-section: clamp(5rem, 13vh, 9rem);
+    --gap-section: clamp(3rem, 7vh, 4.5rem);
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -132,7 +132,7 @@
     align-items: baseline;
     justify-content: flex-start;
     gap: 0.8rem 1.4rem;
-    margin-bottom: clamp(3rem, 7vh, 4rem);
+    margin-bottom: var(--gap-section);
   }
 
   .topnav {
@@ -419,9 +419,11 @@
     color: var(--ink-soft);
   }
 
-  /* ---------- Building in public ---------- */
+  /* ---------- Building in public ----------
+     `.project` now only styles the home-page writing summary (three recent
+     posts). Builds left the home page August 24, 2026. */
 
-  .project { margin-top: clamp(3.75rem, 9vh, 5.5rem); }
+  .project { margin-top: clamp(2.25rem, 5vh, 3.25rem); }
 
   .project-index {
     font-family: var(--sans);
@@ -489,7 +491,7 @@
      reads as part of that project rather than as a page-level footer. */
 
   .more {
-    margin-top: clamp(3rem, 7vh, 4rem);
+    margin-top: var(--gap-section);
     font-size: 0.98rem;
   }
 
@@ -537,9 +539,9 @@
     color: var(--ink-faint);
   }
 
-  .entry { margin-top: 1.85rem; }
+  .entry { margin-top: 1.5rem; }
 
-  .entry + .entry { margin-top: 3.25rem; }
+  .entry + .entry { margin-top: 2.25rem; }
 
   .entry-date {
     font-family: var(--sans);
@@ -547,7 +549,7 @@
     font-weight: 500;
     letter-spacing: 0.05em;
     color: var(--terracotta);
-    margin-bottom: 0.55rem;
+    margin-bottom: 0.3rem;
   }
 
   .entry-title {
@@ -625,7 +627,7 @@
      belongs to the build-log heading and would read as a divider here. */
 
   .follow-label {
-    margin-top: clamp(3rem, 7vh, 4rem);
+    margin-top: var(--gap-section);
     font-family: var(--sans);
     font-size: 0.7rem;
     font-weight: 600;
@@ -681,7 +683,7 @@
      page-wide left alignment rather than stranding text mid-line. */
 
   .colophon {
-    margin-top: clamp(4rem, 10vh, 5.5rem);
+    margin-top: var(--gap-section);
     font-size: 0.8rem;
     color: var(--ink-faint);
     letter-spacing: 0.01em;
