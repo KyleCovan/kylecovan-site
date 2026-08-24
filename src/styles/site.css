@@ -64,6 +64,11 @@
 
   section { margin-top: var(--gap-section); }
 
+  /* The hero is not a section, so the first block below it used to inherit the
+     full --gap-section and read as a dead zone after the role line. Tighter
+     here only; section-to-section rhythm stays on --gap-section. */
+  .masthead + section { margin-top: clamp(3rem, 7vh, 4.5rem); }
+
   /* ---------- Typography ---------- */
 
   h1, h2, h3 {
@@ -419,9 +424,11 @@
     color: var(--ink-soft);
   }
 
-  /* ---------- Building in public ---------- */
+  /* ---------- Building in public ----------
+     `.project` now only styles the home-page writing summary (three recent
+     posts). Builds left the home page August 24, 2026. */
 
-  .project { margin-top: clamp(3.75rem, 9vh, 5.5rem); }
+  .project { margin-top: clamp(2.25rem, 5vh, 3.25rem); }
 
   .project-index {
     font-family: var(--sans);
@@ -537,9 +544,9 @@
     color: var(--ink-faint);
   }
 
-  .entry { margin-top: 1.85rem; }
+  .entry { margin-top: 1.5rem; }
 
-  .entry + .entry { margin-top: 3.25rem; }
+  .entry + .entry { margin-top: 2.25rem; }
 
   .entry-date {
     font-family: var(--sans);
@@ -547,7 +554,7 @@
     font-weight: 500;
     letter-spacing: 0.05em;
     color: var(--terracotta);
-    margin-bottom: 0.55rem;
+    margin-bottom: 0.3rem;
   }
 
   .entry-title {
