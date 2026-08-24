@@ -17,4 +17,4 @@ They would have to be graced by God to see Him that clearly. That is still true.
 
 If they are repulsed, they are often repulsed by a picture that is not Him. Christianity is not repulsive. Jesus Christ is not repulsive. He is relieving. He is the Savior.
 
-But then there are the harder cases. Some seem to see Him accurately and still do not want Him. They might see Him accurately, but not see their sin accurately. But if they don't see their sin accurately, I guess they actually don't see him accurately either. And they don't want a relationship with Him as a result. That is a scary thought.
+But then there are the harder cases. Some seem to see Him accurately and still do not want Him. They might see Him accurately, but not see their sin accurately. But if they don't see their sin accurately, I guess they don't actually see Him accurately either.
