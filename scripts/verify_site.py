@@ -505,6 +505,8 @@ note('Upon the Waters' not in nav_html,
      'nav no longer says Upon the Waters')
 note('Let the words of my mouth and the meditation of my heart' in writing_src,
      '/writing/ epigraph is Psalm 19:14')
+note('O L<span class="sc">ord</span>' in writing_src,
+     '/writing/ epigraph sets Lord in small caps')
 note('<h1>In Your Sight</h1>' in writing_src,
      '/writing/ h1 is In Your Sight')
 note('Cast your bread upon the waters' not in writing_src,
