@@ -370,10 +370,16 @@ you are already standing on while nothing said "home"; his name does that job.
 ### The rotating video link
 
 31 `{title, url}` objects in `src/data/videos.json`, serialised into an inline
-`<script>` placed immediately after the `.topbar` markup. **Placement is
-deliberate: the script runs during parse, before first paint**, so the random
-pick is swapped in with no flash of the default. Moving it to the end of
-`<body>` or wrapping it in `DOMContentLoaded` reintroduces the flash.
+`<script>` placed immediately after the footer `.watching` markup on **every
+page**. **Placement is deliberate: the script runs during parse, before first
+paint**, so the random pick is swapped in with no flash of the default. Moving
+it to the end of `<body>` or wrapping it in `DOMContentLoaded` reintroduces the
+flash.
+
+**August 26, 2026:** the line moved out of the top bar and into the footer. Each
+full page load — home, In Your Sight, a post, privacy — picks a new title. Nav
+between pillars is a new load, so Kyle Covan and In Your Sight will usually
+show different picks.
 
 **Graceful degradation:** entry 01 ships hardcoded as a real, valid link, so the
 page works with JS disabled.
@@ -381,51 +387,14 @@ page works with JS disabled.
 **The link opens in a new tab** — `target="_blank" rel="noopener noreferrer"`.
 The `noopener` matters: it stops the opened tab getting a handle on the page.
 
-### Layout — rewritten July 29, twice. Read this before touching it.
+### Layout — footer row (August 26, 2026)
 
-**Desktop: `justify-content: flex-start`, `gap: 0.8rem 1.4rem`.** The video line
-sits **directly after "Contact"**, on the same column gap the nav uses between
-its own items.
+The video line sits on its own flex row below copyright, full width, flush left. `.colophon .watching` uses `flex: 0 0
+100%` and `max-width: 100%` for containment. Long titles wrap internally.
+**`verify.py` asserts flush-left and column containment at five widths.**
 
-It was `space-between` until July 29, which pinned the line to the column's far
-right edge. On a 1440px laptop that left a wide gap between "Contact" and the
-line, and Kyle read the two as unrelated rather than as one utility row. Tuned
-by eye: 2.2rem read as detached, 1.8rem was closer, **1.4rem is what he chose.**
-What keeps it from reading as a fifth nav pillar is everything other than
-spacing — it is a `<p>` not a nav `<a>`, it keeps the resting underline the nav
-links drop, and it is the only link in the row that leaves the site.
-
-**Phones (below 34rem): the top bar becomes a column and the video line moves
-ABOVE the nav, still flush left.** Below 34rem the two cannot share a row; the
-line used to wrap *underneath* the nav, where it read as an orphaned tail of it.
-
-**It was centred for a few hours on July 29 and then reverted, at Kyle's
-choice.** Recorded because the reasoning matters: moving it above the nav was
-the fix; centring was a separate change solving nothing, and it made the video
-line the only element on either page not sitting on the column's left edge.
-Wrapping settled it — 8 of 32 titles wrap at 320px, and centred two-line text
-goes ragged on both sides while left-aligned wraps break cleanly against the
-same edge the nav uses. **`verify.py` now asserts above-nav *and* flush-left on
-phones**, so a drift back to centred fails the suite rather than passing quietly.
-
-### `flex: 0 0 auto` on `.watching` — still load-bearing
-
-```css
-.watching { flex: 0 0 auto; max-width: 100%; }
-```
-
-The box is content-width and **refuses to shrink**. A title that fits sits on
-the nav's line; a title that doesn't **can't shrink, so it wraps to its own flex
-line** — and under `flex-start` that lands it flush left, on the same edge as
-the nav and every heading below.
-
-`flex: 0 1 auto` with a `min-width` looks equivalent and isn't: the box then
-stays min-width wide even for a three-word title, so short titles float
-mid-row. That bug shipped briefly and was caught in a render. Don't go back.
-
-`max-width: 100%` is *containment*, not the 46ch cap that was removed. Without
-it a long title on a narrow screen pushes past the column and scrolls the page
-sideways.
+The top bar is nav only. The July 29 top-bar video rules (gap with Contact,
+above-nav on phones) no longer apply.
 
 ### What survives from the old §5
 
@@ -1063,6 +1032,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **65** | **Upon the Waters → In Your Sight.** Kyle asked August 24 to rename again: Psalm 19:14 (ESV) replaces Ecclesiastes 11:1 and sits **under** the h1 rather than above it. Nav, home eyebrow, RSS, JSON-LD, and breadcrumbs all say In Your Sight. URL stays `/writing/`. `verify_site.py` updated. |
 | **66** | **Writing titles stay sentence case.** Kyle asked August 24 to fix "Jesus Christ is Not Repulsive" — mid-title caps on *not* and *repulsive* broke the continuity of every other title on the list. Frontmatter corrected; `verify_site.py` now flags unexpected mid-title capitals and trailing periods in writing titles. |
 | **67** | **Story essay replaced; "Laying music down" moved to In Your Sight.** Home `#story` now renders **Every new direction leaves an old one** — six photos, one shared Astro component, data URIs via `essay_images.py` so §2 holds. The music paragraphs became `/writing/laying-music-down/` (July 27). The Anna paragraph was queued to **content-queue** `blog/grateful-for-anna.md` (August 26). |
+| **68** | **Footer reshuffle.** "Built in partnership with AI Andrew Ng" removed from the home footer; seed draft in `content-queue/built-in-partnership-with-ai-andrew-ng/`. The rotating liked-video link moved from the top bar to the footer on **every** page — each full load picks a new title. Top bar is nav only. Privacy copy updated. Hi Anna removed from In Your Sight footers the same evening. |
 
 ---
 

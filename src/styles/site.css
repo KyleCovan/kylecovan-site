@@ -1,7 +1,7 @@
   /* ============================================================
      kylecovan.com — warm minimalist single page
      No external requests. System fonts only.
-     One inline script: the rotating video link in the masthead.
+     One inline script: the rotating video link in the footer.
      ============================================================ */
 
   :root {
@@ -88,43 +88,9 @@
     margin-bottom: 1.75rem;
   }
 
-  /* ---------- Top bar: section nav + rotating video link ----------
-     One quiet utility row across the top. Nav sits left, the video line
-     sits right, and both are 0.85rem sans in --ink-faint so they read as
-     typographic peers rather than one outranking the other.
-
-     `justify-content` was `space-between` until July 29, which pinned the
-     video line to the column's far right edge. On a 1440px laptop that left a
-     wide empty gap between "Contact" and the line, and Kyle read the two as
-     unrelated rather than as one utility row. It is now `flex-start`: the
-     video line sits directly after the nav on the SAME 1.4rem column gap the
-     nav uses between its own items. Kyle tuned this by eye on July 29:
-     2.2rem read as detached, 1.8rem was closer, 1.4rem was the one he chose.
-     The effect is deliberate - the video line spaces like a fifth item in the
-     row rather than like a separate block sharing the line. What still keeps
-     it from reading as a nav pillar is everything else: it is a <p> not a nav
-     <a>, it carries the resting underline the nav links drop, and it is the
-     only link in the row that leaves the site.
-
-     The exact flex shorthand on `.watching` still matters more than it looks:
-
-       flex: 0 0 auto   the box is content-width and REFUSES to shrink.
-
-     A title that fits sits on the same line as the nav. A title that doesn't
-     fit can't shrink, so it wraps to its own flex line instead - and under
-     flex-start that lands it flush left, on the same edge as the nav and
-     every heading below. That is the left-edge rule surviving intact in the
-     wrapped case, exactly as it did under space-between.
-
-     `flex: 0 1 auto` with a min-width looks equivalent and isn't: the box
-     then stays min-width wide even for a three-word title, so short titles
-     float in the middle of the row instead of sitting right. Don't go back.
-
-     `max-width: 100%` is containment, not the 46ch cap §5 forbids. Since
-     the box can't shrink, without it a long title on a narrow screen would
-     push past the column and scroll the page sideways. It only ever binds
-     at the column edge, so it cannot cause the desktop wrapping the old
-     cap caused. */
+  /* ---------- Top bar: section nav ----------
+     One quiet utility row across the top. Nav only since August 26, 2026 —
+     the rotating video link moved to the footer on every page. */
 
   .topbar {
     display: flex;
@@ -144,9 +110,8 @@
     letter-spacing: 0.004em;
   }
 
-  /* Nav links carry no resting underline. Four underlines plus the video
-     link on one row turns the top of the page into noise, and these are
-     chrome rather than prose. This is the one deliberate exception to the
+  /* Nav links carry no resting underline. Three underlines on one row turns
+     the top of the page into noise, and these are chrome rather than prose. This is the one deliberate exception to the
      "--underline governs every link" rule in §3; hover and focus restore
      the full terracotta treatment, so the affordance is still there. */
 
@@ -162,57 +127,17 @@
     text-underline-offset: 0.24em;
   }
 
-  .watching {
-    flex: 0 0 auto;
-    max-width: 100%;
-    font-family: var(--sans);
-    font-size: 0.85rem;
-    line-height: 1.6;
-    letter-spacing: 0.004em;
-    color: var(--ink-faint);
-    text-wrap: pretty;
-  }
-
-  .watching a {
-    color: var(--ink-faint);
-    text-underline-offset: 0.24em;
-  }
-
-  .watching a:hover, .watching a:focus-visible {
-    color: var(--terracotta);
-  }
-
   /* ---------- Top bar on phones ----------
-     Below 34rem the nav and the video line have no room to share a row. The
-     line used to wrap underneath the nav, where it read as an orphaned tail of
-     the nav rather than a line of its own. It now sits ABOVE the nav.
-
-     It was briefly centred as well (July 29) and that was reverted the same
-     day: moving it above the nav was the fix, centring was a separate change
-     solving nothing, and it made the video line the only element on either
-     page not sitting on the column's left edge. Wrapping settled it -- 8 of 32
-     titles wrap at 320px, and centred two-line text goes ragged on both sides
-     while left-aligned wraps break cleanly against the same edge the nav uses.
-
-     So: order only. No text-align here. Desktop is untouched -- nav left,
-     video line flush right on one row, exactly as before, including the
-     flex: 0 0 auto behaviour documented above.
-
-     The same query trims the page's top padding. 15vh of it on an 844px-tall
-     phone is ~127px of empty cream above the nav, which reads as a rendering
-     bug rather than as generous whitespace. */
+     Below 34rem the same query trims the page's top padding. 15vh of it on an
+     844px-tall phone is ~127px of empty cream above the nav, which reads as a
+     rendering bug rather than as generous whitespace. */
 
   @media (max-width: 34rem) {
     .page { padding-top: clamp(2.25rem, 6vh, 3.25rem); }
 
     .topbar {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.9rem;
       margin-bottom: clamp(2.25rem, 5vh, 3rem);
     }
-
-    .watching { order: -1; }
   }
 
   /* Anchor targets get a little air so a jumped-to heading isn't flush
@@ -682,9 +607,8 @@
   }
 
   /* ---------- Colophon ----------
-     Flex row: copyright hard left, AI credit hard right. Below ~430px
-     the row wraps and both items stack flush left, preserving the
-     page-wide left alignment rather than stranding text mid-line. */
+     Copyright on the first row. The rotating video line sits on its own row
+     below, full width, flush left. */
 
   .colophon {
     margin-top: var(--gap-section);
@@ -700,10 +624,24 @@
 
   .colophon p { margin: 0; }
 
-  .colophon .credit { text-align: right; }
+  .colophon .watching {
+    flex: 0 0 100%;
+    max-width: 100%;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    letter-spacing: 0.004em;
+    color: var(--ink-faint);
+    text-wrap: pretty;
+  }
 
-  @media (max-width: 27rem) {
-    .colophon .credit { text-align: left; }
+  .colophon .watching a {
+    color: var(--ink-faint);
+    text-underline-offset: 0.24em;
+  }
+
+  .colophon .watching a:hover, .colophon .watching a:focus-visible {
+    color: var(--terracotta);
   }
 
   /* ---------- Links ----------

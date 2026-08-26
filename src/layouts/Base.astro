@@ -19,7 +19,6 @@ export interface Props {
   path: string;              // "/", "/writing/", "/writing/<id>/"
   ogType?: string;
   jsonLd?: unknown;
-  showWatching?: boolean;    // the rotating video line — home page only
   current?: string;          // nav pillar to mark aria-current
 }
 
@@ -29,7 +28,6 @@ const {
   path,
   ogType = 'website',
   jsonLd,
-  showWatching = false,
   current,
 } = Astro.props;
 
@@ -109,62 +107,7 @@ const fallback = videos[0];
           </a>
         ))}
       </nav>
-      {showWatching && (
-        <p class="watching">
-          {/* The trailing label does two jobs. It names the destination, which
-              this row never did: it was a bare sentence in the top bar with
-              nothing to say it was a link at all, let alone one leaving the
-              site. And it frames the title as SOMEONE ELSE'S video that Kyle
-              saved, not as Kyle's own words. "Going Against the Stream on
-              YouTube" read as a boast about him rather than the title of a
-              sermon he was watching, and any title in the list can be misread
-              that way. "from my YouTube watch list" fixes the whole list at
-              once instead of pruning titles one by one.
-
-              A COLON, and a LOWERCASE "from". The colon is Kyle's call over the
-              comma. Lowercase is the same rule that governs every other colon
-              on this site: a capital follows a colon only before a complete
-              sentence or a direct question, and "from my liked videos on
-              YouTube" is a fragment. Compare `.epigraph-cite` and the
-              one-liners, which are lowercase after their colons for the same
-              reason.
-
-              Wording is the literal truth, checked with him rather than
-              assumed: these are the videos he pressed Like on, so the line says
-              that. "Watch list" was drafted first as the safest hedge, on the
-              grounds that "liked" would claim a YouTube feature he might not
-              have used. He confirmed he had. The specific claim is better than
-              the safe one when the specific claim is true.
-
-              THE LABEL MUST FOLLOW THE LINK, NOT PRECEDE IT. Written as a
-              "Watching on YouTube:" prefix first, and verify.py rejected it at
-              all five widths: the assertion measures the ANCHOR's left edge,
-              and a prefix pushed it 145px inboard, off the column edge that
-              every heading below shares. That is §3's left-edge rule, and the
-              test was right. Trailing text leaves the link flush left.
-
-              The inline script below replaces only the anchor's text, so this
-              suffix survives the random swap. */}
-          <a id="watching-link"
-             href={fallback.url}
-             target="_blank"
-             rel="noopener noreferrer">{fallback.title}</a>: from my liked videos on YouTube
-        </p>
-      )}
     </div>
-
-    {showWatching && (
-      <script is:inline set:html={`
-      (function () {
-        "use strict";
-        var VIDEOS = ${JSON.stringify(videos)};
-        var link = document.getElementById("watching-link");
-        if (!link || !VIDEOS.length) return;
-        var pick = VIDEOS[Math.floor(Math.random() * VIDEOS.length)];
-        link.textContent = pick.title;
-        link.setAttribute("href", pick.url);
-      }());`} />
-    )}
 
     <slot />
 
@@ -175,10 +118,60 @@ const fallback = videos[0];
         a privacy policy is plumbing, and the footer is where a reader looks
         for it. */}
     <p>© <span>2026</span> Kyle Covan · <a href="/privacy/">Privacy</a></p>
-    {onHome && (
-      <p class="credit">Built in partnership with
-        <a href="https://avatar.andrewng.org" target="_blank" rel="noopener noreferrer">AI Andrew Ng</a></p>
-    )}
+    <p class="watching">
+      {/* The trailing label does two jobs. It names the destination, which
+          this row never did: it was a bare sentence in the top bar with
+          nothing to say it was a link at all, let alone one leaving the
+          site. And it frames the title as SOMEONE ELSE'S video that Kyle
+          saved, not as Kyle's own words. "Going Against the Stream on
+          YouTube" read as a boast about him rather than the title of a
+          sermon he was watching, and any title in the list can be misread
+          that way. "from my YouTube watch list" fixes the whole list at
+          once instead of pruning titles one by one.
+
+          A COLON, and a LOWERCASE "from". The colon is Kyle's call over the
+          comma. Lowercase is the same rule that governs every other colon
+          on this site: a capital follows a colon only before a complete
+          sentence or a direct question, and "from my liked videos on
+          YouTube" is a fragment. Compare `.epigraph-cite` and the
+          one-liners, which are lowercase after their colons for the same
+          reason.
+
+          Wording is the literal truth, checked with him rather than
+          assumed: these are the videos he pressed Like on, so the line says
+          that. "Watch list" was drafted first as the safest hedge, on the
+          grounds that "liked" would claim a YouTube feature he might not
+          have used. He confirmed he had. The specific claim is better than
+          the safe one when the specific claim is true.
+
+          THE LABEL MUST FOLLOW THE LINK, NOT PRECEDE IT. Written as a
+          "Watching on YouTube:" prefix first, and verify.py rejected it at
+          all five widths: the assertion measures the ANCHOR's left edge,
+          and a prefix pushed it 145px inboard, off the column edge that
+          every heading below shares. That is §3's left-edge rule, and the
+          test was right. Trailing text leaves the link flush left.
+
+          August 26, 2026: moved from the top bar to the footer on every
+          page. Each full page load picks a new title — navigation between
+          Kyle Covan, In Your Sight, and a post is a new pick.
+
+          The inline script below replaces only the anchor's text, so this
+          suffix survives the random swap. */}
+      <a id="watching-link"
+         href={fallback.url}
+         target="_blank"
+         rel="noopener noreferrer">{fallback.title}</a>: from my liked videos on YouTube
+    </p>
+    <script is:inline set:html={`
+    (function () {
+      "use strict";
+      var VIDEOS = ${JSON.stringify(videos)};
+      var link = document.getElementById("watching-link");
+      if (!link || !VIDEOS.length) return;
+      var pick = VIDEOS[Math.floor(Math.random() * VIDEOS.length)];
+      link.textContent = pick.title;
+      link.setAttribute("href", pick.url);
+    }());`} />
   </footer>
 </div>
 </body>

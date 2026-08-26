@@ -100,19 +100,7 @@ with sync_playwright() as pw:
     if not ok: fails.append(('overflow', sw))
     pg.close()
 
-    # --- 3. Top bar: containment, left edge, no collision ------------
-    #
-    # The old assertion was "every watching rect shares the h1's left edge".
-    # That stopped describing the design when the nav joined the video line on
-    # one row and the portrait moved left of the h1. What matters now:
-    #   (a) the video line never escapes the column,
-    #   (b) it never collides with the nav,
-    #   (c) when it drops to its own flex row it lands flush on the column's
-    #       left edge — the surviving half of §5's rule.
-    #   (d) below 34rem (544px) the top bar becomes a column and the video
-    #       line moves ABOVE the nav, still flush on the column's left edge.
-    #       Kyle asked for this on July 29 after seeing it on iOS. Note the
-    #       left-edge rule survives on phones too -- only the ORDER changed.
+    # --- 3. Footer video line: containment, left edge ----------------
     wraps = {}
     for w in (1440, 768, 430, 390, 320):
         pg = b.new_page(viewport={'width': w, 'height': 900})
@@ -123,42 +111,23 @@ with sync_playwright() as pw:
                 const a = document.getElementById('watching-link');
                 a.textContent = t;
                 const p = a.closest('.watching').getBoundingClientRect();
-                const nav = document.querySelector('.topnav').getBoundingClientRect();
                 const col = document.querySelector('main').getBoundingClientRect();
                 const rects = [...a.getClientRects()];
-                const ownRow = p.top >= nav.bottom - 1;
-                const aboveNav = p.bottom <= nav.top + 1;
-                const collide = !(p.right <= nav.left + 1 || p.left >= nav.right - 1 ||
-                                  p.bottom <= nav.top + 1 || p.top >= nav.bottom - 1);
-                return {n: rects.length, ownRow, aboveNav, collide,
+                return {n: rects.length,
                         lefts: rects.map(x => Math.round(x.left*100)/100),
                         right: Math.round(Math.max(...rects.map(x => x.right))*100)/100,
                         colL: Math.round(col.left*100)/100,
-                        colR: Math.round(col.right*100)/100,
-                        colC: Math.round((col.left+col.right)/2*100)/100,
-                        centers: rects.map(x => Math.round((x.left+x.right)/2*100)/100)};
+                        colR: Math.round(col.right*100)/100};
             }""", t)
             if r['n'] > 1: n_wrapped += 1
-            if r['collide']:
-                bad.append(('collision', w, t[:28]))
             if r['right'] > r['colR'] + 0.5 or min(r['lefts']) < r['colL'] - 0.5:
                 bad.append(('escapes column', w, t[:28], r['lefts'], r['right'], r['colR']))
-            if w <= 544:
-                # Phone layout: the line sits ABOVE the nav and, like every
-                # other element on both pages, flush on the column's left edge.
-                # It was centred for a few hours on July 29 and reverted; if a
-                # future change re-centres it, this is the assertion that will
-                # say so rather than letting it drift in unnoticed.
-                if not r['aboveNav']:
-                    bad.append(('phone: video line not above nav', w, t[:28]))
-                if abs(min(r['lefts']) - r['colL']) > 0.5:
-                    bad.append(('phone: not flush left', w, t[:28], min(r['lefts']), r['colL']))
-            elif r['ownRow'] and abs(min(r['lefts']) - r['colL']) > 0.5:
-                bad.append(('own row not flush left', w, t[:28], min(r['lefts']), r['colL']))
+            if abs(min(r['lefts']) - r['colL']) > 0.5:
+                bad.append(('not flush left', w, t[:28], min(r['lefts']), r['colL']))
         wraps[w] = n_wrapped
-        print(f"[topbar]    {w}px -> {n_wrapped}/{N_VIDEOS} titles wrap internally | "
+        print(f"[footer]    {w}px -> {n_wrapped}/{N_VIDEOS} titles wrap internally | "
               f"{'OK' if not bad else 'FAIL'}")
-        for e in bad[:3]: print("   ", e); fails.append(('topbar', e))
+        for e in bad[:3]: print("   ", e); fails.append(('footer', e))
         pg.close()
 
     # --- 3b. Nav anchors all resolve, nav flush with the column -------

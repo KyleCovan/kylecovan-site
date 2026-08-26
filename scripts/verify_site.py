@@ -539,12 +539,31 @@ note('Upon the Waters' not in writing_src,
 note(nav_html.count('href="/writing/"') == 1 and 'href="/builds/"' not in nav_html,
      'nav writing door is /writing/ only')
 
-# August 26, 2026: AI Andrew Ng credit is home-page only — not every footer.
-CREDIT = 'Built in partnership with'
-note(CREDIT in home_src and 'AI Andrew Ng' in home_src,
-     'home page credits AI Andrew Ng')
-note(CREDIT not in writing_src and 'AI Andrew Ng' not in writing_src,
+# August 26, 2026: footer — rotating video on every page; no Hi Anna.
+note('AI Andrew Ng' not in home_src and 'Built in partnership with' not in home_src,
+     'home page has no AI Andrew Ng credit')
+note('watching-link' in home_src and 'from my liked videos on YouTube' in home_src,
+     'home footer has the rotating video line')
+note('.topbar' in home_src and 'watching-link' not in home_src.split('</nav>')[0],
+     'home top bar has no video line')
+note('Hi Anna' not in home_src,
+     'home page has no Hi Anna footer')
+note('AI Andrew Ng' not in writing_src and 'Built in partnership with' not in writing_src,
      '/writing/ has no AI Andrew Ng credit')
+note('Hi Anna' not in writing_src,
+     '/writing/ has no Hi Anna footer')
+note('watching-link' in writing_src,
+     '/writing/ footer has the rotating video line')
+post_src = (ROOT / 'writing/new-direction-reflections/index.html').read_text()
+note('Hi Anna' not in post_src,
+     'writing posts have no Hi Anna footer')
+note('watching-link' in post_src,
+     'writing posts carry the rotating video line')
+privacy_src = (ROOT / 'privacy/index.html').read_text()
+note('Hi Anna' not in privacy_src,
+     'privacy has no Hi Anna footer')
+note('watching-link' in privacy_src,
+     'privacy footer has the rotating video line')
 
 # Published posts appear on /writing/; drafts do not.
 for p in published:
