@@ -539,6 +539,13 @@ note('Upon the Waters' not in writing_src,
 note(nav_html.count('href="/writing/"') == 1 and 'href="/builds/"' not in nav_html,
      'nav writing door is /writing/ only')
 
+# August 26, 2026: AI Andrew Ng credit is home-page only — not every footer.
+CREDIT = 'Built in partnership with'
+note(CREDIT in home_src and 'AI Andrew Ng' in home_src,
+     'home page credits AI Andrew Ng')
+note(CREDIT not in writing_src and 'AI Andrew Ng' not in writing_src,
+     '/writing/ has no AI Andrew Ng credit')
+
 # Published posts appear on /writing/; drafts do not.
 for p in published:
     note(p['title'] in writing_src, f'/writing/ lists published post: {p["id"]}')

@@ -175,8 +175,10 @@ const fallback = videos[0];
         a privacy policy is plumbing, and the footer is where a reader looks
         for it. */}
     <p>© <span>2026</span> Kyle Covan · <a href="/privacy/">Privacy</a></p>
-    <p class="credit">Built in partnership with
-      <a href="https://avatar.andrewng.org" target="_blank" rel="noopener noreferrer">AI Andrew Ng</a></p>
+    {onHome && (
+      <p class="credit">Built in partnership with
+        <a href="https://avatar.andrewng.org" target="_blank" rel="noopener noreferrer">AI Andrew Ng</a></p>
+    )}
   </footer>
 </div>
 </body>
