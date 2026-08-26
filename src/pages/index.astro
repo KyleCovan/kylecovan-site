@@ -6,6 +6,7 @@
  * already after a draft undid them.
  */
 import Base from '../layouts/Base.astro';
+import NewDirectionReflections from '../components/essay/NewDirectionReflections.astro';
 import portrait from '../data/portrait.txt?raw';
 import { getCollection } from 'astro:content';
 
@@ -93,42 +94,11 @@ const jsonLd = {
   <section id="story" aria-labelledby="story-heading">
     <p class="eyebrow">Story</p>
 
-    <h2 id="story-heading">Laying music down</h2>
-    <p>
-      For decades I poured my energy into music, but I realized music had
-      become a stumbling block of pride, even though I was in denial about how
-      much it pulled my focus away from what mattered most. Late in 2025 I was
-      convicted of how big that stumbling block had become. By the grace of
-      God the appetite for creating music left me entirely. What I had chased
-      for decades, I now
-      wanted taken away. So I gladly (and gratefully) laid music down. For me
-      the benefit came immediately. I had more time, energy, and desire to put
-      Jesus Christ first in my life.
-    </p>
-    <p>
-      In the following nine months I wasn't sure what kind of long-term work I
-      would do, or how I would carry the
-      responsibilities Jesus Christ has given me: my wife, our bills, a
-      household to provide for. Other changes were underway too. We had
-      recently moved across the country. In God's timing, the desire and drive
-      to learn and build AI surfaced.
-    </p>
-    <p>
-      Today I build AI agents and automations that take repetitive work off a
-      person's plate, and I aim to help others manage their businesses and
-      lives more effectively. My prayer is that I approach this new work with
-      reverence and an appropriate fear and trembling before God. Music showed
-      me how quietly a good thing can take first place in my life, and I don't
-      want AI to become the thing music was.
-    </p>
-    {/* Anna, in Kyle's exact words. Last on purpose: "every step of this
-        journey" looks back over the whole section, so it only lands once all
-        three paragraphs above have been read. Don't move it or reword it. */}
-    <p>
-      I am deeply grateful for my wife, Anna. She has been my constant
-      partner, supporter, and helper since long before we even started dating,
-      standing by me in every step of this journey.
-    </p>
+    {/* "Laying music down" moved to /writing/laying-music-down/ on August 26.
+        The essay below is one component shared with that post's URL — see
+        src/components/essay/NewDirectionReflections.astro. */}
+    <h2 id="story-heading">Every new direction leaves an old one</h2>
+    <NewDirectionReflections />
   </section>
 
   {/* The Approach section moved OUT on July 30, it was not deleted. Kyle's two

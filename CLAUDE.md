@@ -78,6 +78,8 @@ scripts/verify_site.py        site-level suite
   portrait, the favicon and the share card from `headshot.jpg` and
   `headshot-favicon.jpg`:
   `source .venv/bin/activate && python3 build_assets.py`.
+  Essay photos: `essay_images.py` from `assets/essay/<slug>/` into
+  `src/data/essay/<slug>/` as WebP data URIs.
   The favicon has its own tighter crop of the same photo on purpose; read the
   note in that script before merging the two sources.
 - **The share card's filename is versioned (`og-2.png`) and must change every

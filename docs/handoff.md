@@ -280,7 +280,8 @@ the creed.
 ```
 topbar        nav left, video line immediately after it
 masthead      portrait left, name / creed / role right
-#story        eyebrow "Story"      h2 Laying music down            (5 paragraphs)
+#story        eyebrow "Story"      h2 Every new direction leaves an old one
+                                   (essay + six photos)
 #writing       eyebrow "In Your Sight" + h2 "Writing on faith…" — three recent posts + link
 #contact       eyebrow "Contact"    h2 Reach out anytime
 colophon
@@ -313,7 +314,9 @@ the Brandur / Adactio failure. `build:` is gone from the schema. Old `/builds/`
 URLs redirect into the house.
 
 **There is exactly one full copy of any text on the site.** Every published
-post has one URL under `/writing/`.
+post has one URL under `/writing/`. **Exception, August 26:** the Story essay
+`new-direction-reflections` is one Astro component rendered on the home page
+and at `/writing/new-direction-reflections/` — not two maintained copies.
 
 ### The epigraphs — the verse is never the `h1`
 
@@ -474,7 +477,13 @@ the bio line "more time, energy, and desire to **put** Jesus Christ first in my
 life" exactly. Changed in three places: `.creed`, the `og:image:alt` meta, and
 the share-card source.
 
-### "Laying music down" — four paragraphs
+### "Laying music down" — moved to `/writing/laying-music-down/`
+
+August 26, 2026: the three music paragraphs left the home page #story section and
+became a writing post dated July 27. Every §6 correction below still governs the
+post body — do not reword it.
+
+### "Laying music down" — four paragraphs (home page, July 28; now the post)
 
 Roughly ten passes with Kyle on July 28. **Every one of the following was a
 specific correction Kyle made. Do not undo any of them.**
@@ -523,7 +532,7 @@ specific correction Kyle made. Do not undo any of them.**
   "In that quiet."
 - **Paragraph breaks are Kyle's.** Do not merge them.
 
-### The Anna paragraph
+### The Anna paragraph — queued, not on the home page
 
 > I am deeply grateful for my wife, Anna. She has been my constant partner,
 > supporter, and helper since long before we even started dating, standing by me
@@ -532,11 +541,10 @@ specific correction Kyle made. Do not undo any of them.**
 **Kyle's exact words, verbatim.** Note "I am," not "I'm" — the page-wide
 contraction sweep does *not* apply to text Kyle supplied directly.
 
-**It sits last in the Story section on purpose.** "Every step of this journey"
-looks back over the whole section, so it only lands correctly once all three
-beats have been read. Placing it earlier reads more naturally sentence-to-
-sentence but breaks the three-beat arc and makes the closing line about AI the
-section's last word instead of gratitude. **Don't move it and don't reword it.**
+**August 26, 2026:** removed from the home page `#story` section and queued for
+a future blog post at `content-queue/content-queue/blog/grateful-for-anna.md` in
+the **content-queue** repo (not the `content-queue/` folder in kylecovan-site).
+**Don't reword it** when expanding into a full post.
 
 ### Writing post titles
 
@@ -1046,14 +1054,15 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **56** | **Tapo Canyon link restored** on the home-page closing line. Closes §7 item 5. Unlinked July 29 (§43) while the domain did not resolve; restored August 10 at Kyle's request ahead of tapocanyon.com going live. Sentence untouched — only the `<a href="https://tapocanyon.com">` came back. `verify.py` now asserts the anchor is present so it cannot quietly go plain-text again. |
 | **57** | **QA fixes: leaked Contact comment, `/sitemap.xml` redirect.** The `email_off` note above the home-page mailto used an Astro `{/* */}` block that itself contained the characters `{/* */}` as an example — the inner `*/` closed the comment early and leaked the rest of the note into live HTML between "Reach out anytime" and the email link. Rewrote the note so it never nests that delimiter; kept the `<!--email_off-->` HTML markers (those are load-bearing — Astro comments would be stripped and Cloudflare would re-break mailto). **`/sitemap.xml` → `/sitemap-index.xml` 301** in `public/_redirects` (Astro emits the index name; robots.txt was already correct; conventional short URL was a hard 404 after the August 6 custom 404). `verify.py` now asserts `email_off` survives into dist and `#contact` has no comment residue; `verify_site.py` accepts file redirect targets and asserts the sitemap rule. |
 | **58** | **One writing door — Unless the Lord.** Builds left the nav. Essays and dated logs live in one stream at `/writing/`; logs marked with `kind: log`, essays heavier when unmarked. Every published post is a full page at `/writing/<id>/`. The July 30 `build:` lock that hid posts on product pages is reversed; `project:` is free text, not a second door. Old `/building/` and `/builds/` URLs 301 into the house; fragment ids for former builds live on `/writing/`. RSS title names the house, not "Building in public". `draft: true` still stays off public lists. Both suites updated in the same change. Supersedes main's interim "build logs are not the blog" listing rule (§57 on main), which still treated `build:` as a hide field. |
-| **59** | **Builds summary removed from the home page.** Kyle asked August 24: scrolling should go Story → Unless the Lord → Contact, with no "Building in public" block and no Project 01/02/03 cards. The August 21 one-door merge had left that summary behind. Project logs stay in Unless the Lord in date order; old `/building/#` and `/builds/#` deep links still land on `/writing/` via silent fragment targets. `verify_site.py` now asserts `#building` is absent from the home page. |
+| **59** | **Builds summary removed from the home page.** Kyle asked August 24: scrolling should go Story → In Your Sight → Contact, with no "Building in public" block and no Project 01/02/03 cards. The August 21 one-door merge had left that summary behind. Project logs stay in In Your Sight in date order; old `/building/#` and `/builds/#` deep links still land on `/writing/` via silent fragment targets. `verify_site.py` now asserts `#building` is absent from the home page. |
 | **60** | **Writing list rhythm tightened.** Kyle asked August 24: dates closer to titles on `/writing/` and the home summary, less air between entries, and a smaller gap between the masthead role line and Story. `.entry-date` margin-bottom `0.55rem → 0.3rem`; `.entry + .entry` `3.25rem → 2.25rem`; home `.project` spacing reduced. |
-| **61** | **Major block rhythm unified.** Kyle asked August 24 that Story, Unless the Lord, Contact, and matching peers feel fluid — not just hero-to-Story. `--gap-section` reduced site-wide to `clamp(3rem, 7vh, 4.5rem)`; `.topbar`, `.more`, `.follow-label`, and `.colophon` now use the same token so pillar spacing and end-of-page gaps match. |
+| **61** | **Major block rhythm unified.** Kyle asked August 24 that Story, In Your Sight, Contact, and matching peers feel fluid — not just hero-to-Story. `--gap-section` reduced site-wide to `clamp(3rem, 7vh, 4.5rem)`; `.topbar`, `.more`, `.follow-label`, and `.colophon` now use the same token so pillar spacing and end-of-page gaps match. |
 | **62** | **Date-to-title gap on list pages.** Kyle asked August 24 that dates on `/writing/` and the home summary sit as tight as on individual post pages. Root cause: `p + h2` / `p + h3` prose-spacing rules were still matching `.entry-date` (40–52px); post pages use `h1` and escaped. Fix: exclude `.entry-date` alongside `.eyebrow`. `verify_site.py` now measures the rendered gap on list pages. |
 | **63** | **No log/essay visual split.** Kyle asked August 24 to strike the differentiation: remove the "Log" label beside dates, and make every list title match the essay size/font/color. Dropped `.entry-kind`, `.entry-essay` / `.entry-log`, and the essay-only title bump; `.entry-title` now carries the larger type for every post. RSS descriptions are all "Writing". `kind: log` may remain in frontmatter as history but drives no markup. `verify_site.py` flipped the old "logs are marked" assertion rather than deleting it. |
 | **64** | **Unless the Lord → Upon the Waters.** Kyle asked August 24 to rename the writing house and swap the epigraph: Ecclesiastes 11:1 replaces Psalm 127:1a on `/writing/`; nav, home eyebrow, RSS, JSON-LD, and breadcrumbs all say Upon the Waters. URL stays `/writing/`. `h1` is Upon the Waters (was "Writing on faith, technology, and the daily striving"). The name held for `/builds/` since July is now spent. `verify_site.py` updated for nav and RSS title. |
 | **65** | **Upon the Waters → In Your Sight.** Kyle asked August 24 to rename again: Psalm 19:14 (ESV) replaces Ecclesiastes 11:1 and sits **under** the h1 rather than above it. Nav, home eyebrow, RSS, JSON-LD, and breadcrumbs all say In Your Sight. URL stays `/writing/`. `verify_site.py` updated. |
 | **66** | **Writing titles stay sentence case.** Kyle asked August 24 to fix "Jesus Christ is Not Repulsive" — mid-title caps on *not* and *repulsive* broke the continuity of every other title on the list. Frontmatter corrected; `verify_site.py` now flags unexpected mid-title capitals and trailing periods in writing titles. |
+| **67** | **Story essay replaced; "Laying music down" moved to In Your Sight.** Home `#story` now renders **Every new direction leaves an old one** — six photos, one shared Astro component, data URIs via `essay_images.py` so §2 holds. The music paragraphs became `/writing/laying-music-down/` (July 27). The Anna paragraph was queued to **content-queue** `blog/grateful-for-anna.md` (August 26). |
 
 ---
 

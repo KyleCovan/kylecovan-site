@@ -224,9 +224,10 @@
      row, which is why the whole hero still reads as a single left-aligned
      unit inside the 800px column.
 
-     The portrait is the page's only image. It is a WebP data URI, so the
-     "zero external requests / one file" rule holds: nothing is fetched, it
-     travels inside the HTML. It ships at 340px for a slot that never
+     The portrait is a WebP data URI, so the zero-external-requests rule holds
+     for the masthead: nothing is fetched, it travels inside the HTML. Essay
+     photos in #story and on /writing/ use the same pattern — see
+     essay_images.py. It ships at 340px for a slot that never
      exceeds 156px, so it stays sharp at 2x and beyond. Don't scale the CSS
      box past 170px without re-exporting a larger source.
 
@@ -402,9 +403,32 @@
      pairing nobody had asked to change. Caught by measuring the live site
      against the build, not by reading the CSS. August 24: `.entry-date` was
      still matching `p + h2` / `p + h3`, which stacked 40–52px between the
-     date and title on list pages while post pages stayed at ~5px. */
-  p:not(.eyebrow):not(.entry-date) + h2, ul + h2, ol + h2, blockquote + h2, header + h2 { margin-top: 3.25rem; }
+     date and title on list pages while post pages stayed at ~5px. August 26:
+     `figure + h2` added for essay section headings after photos. */
+  p:not(.eyebrow):not(.entry-date) + h2, ul + h2, ol + h2, blockquote + h2,
+  header + h2, figure + h2 { margin-top: 3.25rem; }
   p:not(.eyebrow):not(.entry-date) + h3, ul + h3, ol + h3, blockquote + h3 { margin-top: 2.5rem; }
+
+  /* Essay figures — no borders (§2). Captions sit close under the image. */
+  figure {
+    margin: 0;
+  }
+
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+  }
+
+  figcaption {
+    margin-top: 0.75em;
+    font-size: 0.9em;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  p + figure, figure + p, h2 + figure { margin-top: 1.5em; }
 
   /* `.subhead` was removed when "Startup operations, now AI orchestration"
      was promoted from a subheading inside Background to its own Approach
