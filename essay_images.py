@@ -21,8 +21,8 @@ WEBP_QUALITY = 80
 
 ESSAYS = {
     'new-direction-reflections': [
-        'two-paths-old-and-new-direction.jpg',
-        'door-in-the-field-new-direction.jpg',
+        'previa-palm-canyon-quartzsite-arizona.jpg',
+        'nomad-trailer-former-home.jpg',
         'forest-path-at-dusk.jpg',
         'music-studio-mid-session.jpg',
         'grandmother-and-grandson-portrait.jpg',
