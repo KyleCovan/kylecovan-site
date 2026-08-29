@@ -2,9 +2,12 @@
 /**
  * One page per published post. draft: true stays out of getStaticPaths,
  * so it never becomes a URL. No log/essay visual split — August 24, 2026.
+ *
+ * new-direction-reflections is draft (August 29); its body still lives in
+ * NewDirectionReflections.astro for when it returns. Until then this template
+ * is Markdown-only.
  */
 import Base from '../../layouts/Base.astro';
-import NewDirectionReflections from '../../components/essay/NewDirectionReflections.astro';
 import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 
@@ -15,7 +18,6 @@ export const getStaticPaths = (async () => {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const useComponent = post.id === 'new-direction-reflections';
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
@@ -88,7 +90,7 @@ const jsonLd = {
     <h1>{post.data.title}</h1>
   </header>
 
-  {useComponent ? <NewDirectionReflections /> : <Content />}
+  <Content />
 
   <p class="more"><a href="/writing/">All writing</a></p>
 

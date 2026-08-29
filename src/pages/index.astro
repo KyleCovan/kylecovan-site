@@ -6,7 +6,6 @@
  * already after a draft undid them.
  */
 import Base from '../layouts/Base.astro';
-import NewDirectionReflections from '../components/essay/NewDirectionReflections.astro';
 import portrait from '../data/portrait.txt?raw';
 import { getCollection } from 'astro:content';
 
@@ -90,25 +89,15 @@ const jsonLd = {
     </div>
   </header>
 
-  <section id="story" aria-labelledby="story-heading">
-    <p class="eyebrow">Story</p>
-
-    {/* "Laying music down" moved to /writing/laying-music-down/ on August 26.
-        The essay below is one component shared with that post's URL — see
-        src/components/essay/NewDirectionReflections.astro. */}
-    <h2 id="story-heading">Every new direction leaves an old one</h2>
-    <NewDirectionReflections />
-  </section>
-
   {/* The Approach section moved OUT on July 30, it was not deleted. Kyle's two
       paragraphs are now the first post, verbatim, at
       src/content/writing/startup-operations-now-ai-orchestration.md — every §6
       rule that governed them travelled with them as a comment in that file.
       The nav pillar went with it. */}
 
-  {/* August 24, 2026: the house is In Your Sight. Project logs live there
-      in date order; the home page goes Story → In Your Sight → Contact.
-      Old /building/# and /builds/# deep links still land on /writing/. */}
+  {/* August 29, 2026: #story taken down with new-direction-reflections.
+      Home page is masthead → In Your Sight → Contact. Old /building/# and
+      /builds/# deep links still land on /writing/. */}
   <section id="writing" aria-labelledby="writing-heading">
     <p class="eyebrow">In Your Sight</p>
 

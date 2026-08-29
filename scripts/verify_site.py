@@ -184,29 +184,32 @@ with sync_playwright() as pw:
              f'{len(aria)} labelled region(s)')
         for a in broken: print('        ', a['el'], 'missing:', a['missing'])
 
-        # And specifically: the home page must not carry a builds summary.
-        # August 24, 2026: Kyle asked for Story → In Your Sight → Contact.
-        # The August 21 one-door merge left a #building block behind; this
-        # asserts structure, not words, so copy can change without touching
-        # the test.
+        # And specifically: the home page must not carry a builds summary or
+        # a Story essay. August 24 asked for Story → In Your Sight → Contact;
+        # August 29 took Story down — masthead → In Your Sight → Contact.
+        # Asserts structure, not words, so copy can change without touching
+        # the test. The old "has_story" rule flipped rather than disappearing.
         if p == 'index.html':
             hp = pg.evaluate("""() => {
                 const story = document.getElementById('story');
                 const writing = document.getElementById('writing');
                 const building = document.getElementById('building');
+                const masthead = document.querySelector('header.masthead');
                 return {
-                    has_story: !!story,
+                    no_story: !story,
                     has_writing: !!writing,
                     no_building: !building,
-                    story_before_writing: !!(story && writing &&
-                        story.compareDocumentPosition(writing) & Node.DOCUMENT_POSITION_FOLLOWING),
+                    masthead_before_writing: !!(masthead && writing &&
+                        masthead.compareDocumentPosition(writing) & Node.DOCUMENT_POSITION_FOLLOWING),
                     no_building_in_public: !document.body.textContent.includes('Building in public'),
+                    no_story_eyebrow: !document.body.textContent.includes('Every new direction leaves an old one'),
                 };
             }""")
-            note(bool(hp) and hp['has_story'] and hp['has_writing'] and hp['no_building']
-                 and hp['story_before_writing'] and hp['no_building_in_public'],
-                 'home page is Story → In Your Sight, no builds summary',
-                 'ok' if hp and hp['no_building'] else 'still has #building')
+            note(bool(hp) and hp['no_story'] and hp['has_writing'] and hp['no_building']
+                 and hp['masthead_before_writing'] and hp['no_building_in_public']
+                 and hp['no_story_eyebrow'],
+                 'home page is masthead → In Your Sight, no Story, no builds summary',
+                 'ok' if hp and hp['no_story'] and hp['no_building'] else str(hp))
 
         # A post date is a label for the title beneath it, not a paragraph break.
         # August 24: list pages were inheriting `p + h2` / `p + h3` spacing
@@ -460,6 +463,10 @@ if rd.exists():
                  f'{src_path} leads into the house', dest)
     note(any(r[0] == '/sitemap.xml' and r[1] == '/sitemap-index.xml' for r in rules),
          '_redirects maps /sitemap.xml → /sitemap-index.xml')
+    # August 29: story essay taken down; keep the old URL from 404ing.
+    note(any(r[0].rstrip('/') == '/writing/new-direction-reflections'
+             and r[1].rstrip('/') == '/writing' for r in rules),
+         '_redirects maps story essay URL into the house')
     writing_src = (ROOT / 'writing/index.html').read_text()
     build_ids = [f.stem for f in (SRC / 'builds').glob('*.md')]
     for bid in build_ids:
@@ -554,11 +561,17 @@ note('Hi Anna' not in writing_src,
      '/writing/ has no Hi Anna footer')
 note('watching-link' in writing_src,
      '/writing/ footer has the rotating video line')
-post_src = (ROOT / 'writing/new-direction-reflections/index.html').read_text()
+post_src = (ROOT / 'writing/christ-is-not-repulsive/index.html').read_text()
 note('Hi Anna' not in post_src,
      'writing posts have no Hi Anna footer')
 note('watching-link' in post_src,
      'writing posts carry the rotating video line')
+note(not (ROOT / 'writing/new-direction-reflections/index.html').exists(),
+     'draft story essay has no public URL')
+note('Every new direction leaves an old one' not in writing_src,
+     'draft story essay stays off /writing/')
+note('Every new direction leaves an old one' not in home_src,
+     'draft story essay stays off the home page')
 privacy_src = (ROOT / 'privacy/index.html').read_text()
 note('Hi Anna' not in privacy_src,
      'privacy has no Hi Anna footer')
