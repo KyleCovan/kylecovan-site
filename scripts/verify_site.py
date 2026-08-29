@@ -598,6 +598,11 @@ note('In Your Sight' in home_src and 'Upon the Waters' not in home_src,
      'home summary names In Your Sight')
 note('Writing on faith, technology, and the daily striving' in home_src,
      'home writing section keeps the tagline')
+# August 29: role line left the masthead. Creed stays last under the name.
+# The phrase may still appear in <title>/meta/JSON-LD — assert the visible
+# .role element is gone, not that the words never appear.
+note('class="role"' not in home_src and "class='role'" not in home_src,
+     'home masthead has no role line')
 note('entry-kind' not in home_src and '>Log<' not in home_src,
      'no Log label on the home summary')
 note('entry-essay' not in writing_src and 'entry-log' not in writing_src,

@@ -280,7 +280,7 @@ the creed.
 
 ```
 topbar        nav left
-masthead      portrait left, name / creed / role right
+masthead      portrait left, name / creed right
 #writing       eyebrow "In Your Sight" + h2 "Writing on faith…" — three recent posts + link
 #contact       eyebrow "Contact"    h2 Reach out anytime
 colophon
@@ -603,12 +603,17 @@ asked whether it should be centred and agreed it shouldn't.
 
 ### The masthead
 
-Name / creed / role, beside the portrait. Kyle considered adding four capability
-areas under his title and decided they belong on tapocanyon.com. Three reasons
-still valid: a four-phase process arc is methodology and methodology is the
-business side; a fourth line means the creed is no longer the last thing read
-before scrolling; and Kyle described these as areas he *wants to excel in*,
-which a masthead would render as an accomplished claim. **Don't reopen.**
+Name / creed, beside the portrait. **August 29, 2026:** the role line
+("AI Builder, Strategist, and Partner") left the masthead so the creed is the
+last thing under the name. The phrase remains in the page `<title>`, meta
+description, and JSON-LD `jobTitle` for crawlers until Kyle asks otherwise.
+
+Kyle considered adding four capability areas under his title and decided they
+belong on tapocanyon.com. Three reasons still valid: a four-phase process arc is
+methodology and methodology is the business side; a fourth line means the creed
+is no longer the last thing read before scrolling; and Kyle described these as
+areas he *wants to excel in*, which a masthead would render as an accomplished
+claim. **Don't reopen.**
 
 ### The build log — Project 01, entry one
 
@@ -1041,6 +1046,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **69** | **Story essay photos replaced with Kyle's real images.** Five photos, all real — AI fork and meadow door removed. Lineup: Previa at Palm Canyon (van life), forest path at dusk, music studio (Iowa), grandma portrait (2010), sun on horizon. Nomad trailer tried and struck: a former home under "the new direction has already started" read as judgment on a chapter Kyle is grateful for. Tobi tried in "Every letting go" and removed — two loss photos was one too many. |
 | **70** | **Story essay trail caption tees up Calibration.** Forest path caption: *A path through the forest.* Calibration opener: *How do we gauge what is healthiest?* Prose above the trail: *Rest assured, the new direction has already started.* |
 | **71** | **Story essay taken down.** Kyle asked August 29 to remove the latest blog and the home `#story` section so the page goes masthead → In Your Sight → Contact. `new-direction-reflections` is `draft: true`; component and photos kept; old URL 301s to `/writing/`. `verify_site.py` flipped the old "has_story" assertion rather than deleting it. |
+| **72** | **Masthead role line removed.** Kyle asked August 29 to drop "AI Builder, Strategist, and Partner" from under the creed. Creed is the last masthead line. Title / meta / JSON-LD still carry the phrase. |
 
 ---
 

@@ -279,12 +279,9 @@
 
   .topnav a[aria-current="page"] { color: var(--ink); }
 
-  .role {
-    font-size: clamp(1.1rem, 1.02rem + 0.4vw, 1.28rem);
-    color: var(--ink-soft);
-    margin-top: 0.9rem;
-    letter-spacing: -0.004em;
-  }
+  /* .role (AI Builder, Strategist, and Partner) left August 29, 2026.
+     Creed is the last line under the name. Title/meta/JSON-LD still carry
+     the phrase for crawlers; only the visible masthead line was removed. */
 
   /* ---------- Section headings ---------- */
 
