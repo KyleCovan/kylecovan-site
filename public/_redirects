@@ -31,6 +31,15 @@
 /writing/new-direction-reflections/  /writing/  301
 /writing/new-direction-reflections   /writing/  301
 #
+# August 30, 2026: three early posts taken off the blog (draft). Same pattern —
+# URLs were live; redirect into the house rather than 404.
+/writing/too-many-ideas/                        /writing/  301
+/writing/too-many-ideas                         /writing/  301
+/writing/startup-operations-now-ai-orchestration/  /writing/  301
+/writing/startup-operations-now-ai-orchestration   /writing/  301
+/writing/four-ai-operating-systems/             /writing/  301
+/writing/four-ai-operating-systems              /writing/  301
+#
 # Conventional /sitemap.xml → Astro's sitemap-index.xml. robots.txt already
 # points at the real file; this catches tools and humans that still request the
 # short name. Same pattern as tapocanyon.com. (Kept from main, August 12 QA.)

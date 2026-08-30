@@ -467,6 +467,15 @@ if rd.exists():
     note(any(r[0].rstrip('/') == '/writing/new-direction-reflections'
              and r[1].rstrip('/') == '/writing' for r in rules),
          '_redirects maps story essay URL into the house')
+    # August 30: three early posts taken off the blog; same redirect rule.
+    for taken_down in (
+        'too-many-ideas',
+        'startup-operations-now-ai-orchestration',
+        'four-ai-operating-systems',
+    ):
+        note(any(r[0].rstrip('/') == f'/writing/{taken_down}'
+                 and r[1].rstrip('/') == '/writing' for r in rules),
+             f'_redirects maps /writing/{taken_down}/ into the house')
     writing_src = (ROOT / 'writing/index.html').read_text()
     build_ids = [f.stem for f in (SRC / 'builds').glob('*.md')]
     for bid in build_ids:
