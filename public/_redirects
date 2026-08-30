@@ -26,6 +26,11 @@
 /builds/kylecovan-com/     /writing/  301
 /builds/kylecovan-com      /writing/  301
 #
+# August 29, 2026: story essay taken down (draft). The URL was live briefly —
+# redirect into the house rather than 404.
+/writing/new-direction-reflections/  /writing/  301
+/writing/new-direction-reflections   /writing/  301
+#
 # Conventional /sitemap.xml → Astro's sitemap-index.xml. robots.txt already
 # points at the real file; this catches tools and humans that still request the
 # short name. Same pattern as tapocanyon.com. (Kept from main, August 12 QA.)

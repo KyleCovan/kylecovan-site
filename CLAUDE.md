@@ -26,7 +26,7 @@ rules, and decision history. **Read it before any change and update it after.**
 | `www` | 301 redirect rule → apex, path and query preserved |
 
 An **Astro** project, not hand-written HTML. Nav: **Kyle Covan · In Your
-Sight · Contact**. Pages are `/` (Story, Writing summary, Contact),
+Sight · Contact**. Pages are `/` (Writing summary, Contact),
 `/writing/`, `/writing/<id>/`. Old `/builds/` URLs 301 into the house.
 
 ```

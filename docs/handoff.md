@@ -256,10 +256,11 @@ the creed.
 
 - `--measure: 800px` — `.page` max-width, border-box, centred.
 - `--gap-section: clamp(3rem, 7vh, 4.5rem)` — every major block on the home
-  page (hero → Story, Story → In Your Sight, In Your Sight → Contact) and
+  page (hero → In Your Sight → Contact) and
   the matching end-of-page gaps (top bar → masthead, "All writing", colophon,
   `/writing/` follow row). Was `clamp(5rem, 13vh, 9rem)` until August 24; the
   hero-to-Story fix alone left the other pillars feeling disconnected.
+  August 29: Story left; the same token still spaces masthead → writing.
 - **Writing list rhythm** (home summary `.project`, `/writing/` `.entry`): date
   to title `0.3rem`; between entries `clamp(2.25rem, 5vh, 3.25rem)` on the
   home summary and `2.25rem` on `/writing/`. Tightened August 24 at Kyle's
@@ -278,14 +279,17 @@ the creed.
 ### Home page
 
 ```
-topbar        nav left, video line immediately after it
-masthead      portrait left, name / creed / role right
-#story        eyebrow "Story"      h2 Every new direction leaves an old one
-                                   (essay + six photos)
+topbar        nav left
+masthead      portrait left, name / creed right
 #writing       eyebrow "In Your Sight" + h2 "Writing on faith…" — three recent posts + link
 #contact       eyebrow "Contact"    h2 Reach out anytime
 colophon
 ```
+
+August 29, 2026: `#story` left. The home page is masthead → In Your Sight →
+Contact. The story essay (`new-direction-reflections`) is `draft: true`; its
+body stays in `NewDirectionReflections.astro` for when it returns. Its old URL
+301s into `/writing/`.
 
 ### `/writing/` — nav label "In Your Sight", URL `/writing/`
 
@@ -314,9 +318,9 @@ the Brandur / Adactio failure. `build:` is gone from the schema. Old `/builds/`
 URLs redirect into the house.
 
 **There is exactly one full copy of any text on the site.** Every published
-post has one URL under `/writing/`. **Exception, August 26:** the Story essay
-`new-direction-reflections` is one Astro component rendered on the home page
-and at `/writing/new-direction-reflections/` — not two maintained copies.
+post has one URL under `/writing/`. The August 26 home+#writing dual render of
+`new-direction-reflections` ended August 29 when that essay went draft and
+`#story` left the home page.
 
 ### The epigraphs — the verse is never the `h1`
 
@@ -362,10 +366,11 @@ in the footer.
 **Every pillar is a real destination.** Contact is the one remaining
 in-page anchor, and off the home page it becomes `/#contact`.
 
-**July 30 history, still true.** "Building" became "Builds" (tense), then Builds
-left entirely. Story left the nav because it pointed at an anchor on the page
-you are already standing on while nothing said "home"; his name does that job.
-`#story` stays. Approach left and its words moved to a post.
+**July 30 history.** "Building" became "Builds" (tense), then Builds left
+entirely. Story left the nav because it pointed at an anchor on the page you
+were already standing on while nothing said "home"; his name does that job.
+August 29: `#story` itself left the home page with the story essay. Approach
+left and its words moved to a post.
 
 ### The rotating video link
 
@@ -598,12 +603,17 @@ asked whether it should be centred and agreed it shouldn't.
 
 ### The masthead
 
-Name / creed / role, beside the portrait. Kyle considered adding four capability
-areas under his title and decided they belong on tapocanyon.com. Three reasons
-still valid: a four-phase process arc is methodology and methodology is the
-business side; a fourth line means the creed is no longer the last thing read
-before scrolling; and Kyle described these as areas he *wants to excel in*,
-which a masthead would render as an accomplished claim. **Don't reopen.**
+Name / creed, beside the portrait. **August 29, 2026:** the role line
+("AI Builder, Strategist, and Partner") left the masthead so the creed is the
+last thing under the name. The phrase remains in the page `<title>`, meta
+description, and JSON-LD `jobTitle` for crawlers until Kyle asks otherwise.
+
+Kyle considered adding four capability areas under his title and decided they
+belong on tapocanyon.com. Three reasons still valid: a four-phase process arc is
+methodology and methodology is the business side; a fourth line means the creed
+is no longer the last thing read before scrolling; and Kyle described these as
+areas he *wants to excel in*, which a masthead would render as an accomplished
+claim. **Don't reopen.**
 
 ### The build log — Project 01, entry one
 
@@ -1035,6 +1045,8 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **68** | **Footer reshuffle.** "Built in partnership with AI Andrew Ng" removed from the home footer; seed draft in `content-queue/built-in-partnership-with-ai-andrew-ng/`. The rotating liked-video link moved from the top bar to the footer on **every** page — each full load picks a new title. Top bar is nav only. Privacy copy updated. Hi Anna removed from In Your Sight footers the same evening. |
 | **69** | **Story essay photos replaced with Kyle's real images.** Five photos, all real — AI fork and meadow door removed. Lineup: Previa at Palm Canyon (van life), forest path at dusk, music studio (Iowa), grandma portrait (2010), sun on horizon. Nomad trailer tried and struck: a former home under "the new direction has already started" read as judgment on a chapter Kyle is grateful for. Tobi tried in "Every letting go" and removed — two loss photos was one too many. |
 | **70** | **Story essay trail caption tees up Calibration.** Forest path caption: *A path through the forest.* Calibration opener: *How do we gauge what is healthiest?* Prose above the trail: *Rest assured, the new direction has already started.* |
+| **71** | **Story essay taken down.** Kyle asked August 29 to remove the latest blog and the home `#story` section so the page goes masthead → In Your Sight → Contact. `new-direction-reflections` is `draft: true`; component and photos kept; old URL 301s to `/writing/`. `verify_site.py` flipped the old "has_story" assertion rather than deleting it. |
+| **72** | **Masthead role line removed.** Kyle asked August 29 to drop "AI Builder, Strategist, and Partner" from under the creed. Creed is the last masthead line. Title / meta / JSON-LD still carry the phrase. |
 
 ---
 
