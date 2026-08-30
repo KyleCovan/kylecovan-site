@@ -1,6 +1,7 @@
 ---
 title: Startup operations, now AI orchestration
 date: 2026-07-30
+draft: true
 ---
 
 <!--

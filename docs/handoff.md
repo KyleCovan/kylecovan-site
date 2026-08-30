@@ -530,14 +530,16 @@ Equal*. Full-sentence titles **omit the trailing period**; a question mark is
 fine when the title is a question. `verify_site.py` checks frontmatter for both
 rules.
 
-### "Startup operations, now AI orchestration" — MOVED July 30, not deleted
+### "Startup operations, now AI orchestration" — MOVED July 30, draft August 30
 
-**These two paragraphs now live at
-`src/content/writing/startup-operations-now-ai-orchestration.md`**, verbatim,
-as the first post. Not a word changed. The Approach section and its nav pillar
-were retired; the words were promoted to a post with room to breathe rather than
-being cut. **Every rule below still governs them and travelled with them as a
-comment at the top of that file.** If the post is ever edited, read them first.
+**These two paragraphs live at
+`src/content/writing/startup-operations-now-ai-orchestration.md`**, verbatim.
+The Approach section and its nav pillar were retired July 30; the words were
+promoted to a post rather than cut. **August 30:** Kyle took the post (and the
+July 28 / August 3 posts) off the blog via `draft: true` — file kept, old URL
+301s to `/writing/`. **Every rule below still governs them and travelled with
+them as a comment at the top of that file.** If the post is ever edited or
+republished, read them first.
 
 1. **No governing-metaphor language for the professional experience.** A draft
    read "That is the lens I bring to everything I build now." Kyle cut it: for
@@ -1047,6 +1049,7 @@ rewrite — each assertion was regeneralised. Two changes are worth knowing:
 | **70** | **Story essay trail caption tees up Calibration.** Forest path caption: *A path through the forest.* Calibration opener: *How do we gauge what is healthiest?* Prose above the trail: *Rest assured, the new direction has already started.* |
 | **71** | **Story essay taken down.** Kyle asked August 29 to remove the latest blog and the home `#story` section so the page goes masthead → In Your Sight → Contact. `new-direction-reflections` is `draft: true`; component and photos kept; old URL 301s to `/writing/`. `verify_site.py` flipped the old "has_story" assertion rather than deleting it. |
 | **72** | **Masthead role line removed.** Kyle asked August 29 to drop "AI Builder, Strategist, and Partner" from under the creed. Creed is the last masthead line. Title / meta / JSON-LD still carry the phrase. |
+| **73** | **Three early posts taken off the blog.** Kyle asked August 30 to remove July 28 (`too-many-ideas`), July 30 (`startup-operations-now-ai-orchestration`), and August 3 (`four-ai-operating-systems`) completely from In Your Sight. Same pattern as §71: `draft: true`, files kept (Approach copy rules travel with the July 30 file), old URLs 301 into `/writing/`. `verify_site.py` asserts the three redirects. |
 
 ---
 
