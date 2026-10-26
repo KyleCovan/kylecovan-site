@@ -22,10 +22,9 @@ const recentPosts = allPosts.slice(0, 3).map(p => ({
 const fmtDate = (d: Date) =>
   d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 
-const title = 'Kyle Covan — AI Builder, Strategist, and Partner';
+const title = 'Kyle Covan';
 const description =
-  'Kyle Covan — AI Builder, Strategist, and Partner. Startup operations meets AI agent orchestration. ' +
-  'Building a personal AI OS and an AI-powered second brain in public.';
+  'Kyle Covan. Striving to put Jesus Christ first. Writing on faith, technology, and the daily striving.';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -36,12 +35,9 @@ const jsonLd = {
       name: 'Kyle Covan',
       url: 'https://kylecovan.com/',
       image: 'https://kylecovan.com/og-2.png',
-      jobTitle: 'AI Builder, Strategist, and Partner',
       email: 'mailto:kyle@kylecovan.com',
       description:
-        "Kyle Covan builds AI agents and automations that take repetitive work off a person's plate. " +
-        'Years in startup operations, now AI orchestration.',
-      knowsAbout: ['AI agents', 'AI automation', 'Startup operations', 'Workflow automation'],
+        "Kyle Covan. Striving to put Jesus Christ first.",
       sameAs: [
         'https://www.youtube.com/@KyleCovan',
         'https://x.com/kylecovan',
@@ -53,9 +49,7 @@ const jsonLd = {
       '@id': 'https://kylecovan.com/#website',
       url: 'https://kylecovan.com/',
       name: 'Kyle Covan',
-      description:
-        'Startup operations meets AI agent orchestration. Building a personal AI OS and an ' +
-        'AI-powered second brain in public.',
+      description: description,
       inLanguage: 'en',
       publisher: { '@id': 'https://kylecovan.com/#kyle' },
     },
@@ -88,15 +82,6 @@ const jsonLd = {
     </div>
   </header>
 
-  {/* The Approach section moved OUT on July 30, it was not deleted. Kyle's two
-      paragraphs are now the first post, verbatim, at
-      src/content/writing/startup-operations-now-ai-orchestration.md — every §6
-      rule that governed them travelled with them as a comment in that file.
-      The nav pillar went with it. */}
-
-  {/* August 29, 2026: #story taken down with new-direction-reflections.
-      Home page is masthead → In Your Sight → Contact. Old /building/# and
-      /builds/# deep links still land on /writing/. */}
   <section id="writing" aria-labelledby="writing-heading">
     <p class="eyebrow">In Your Sight</p>
 
@@ -117,51 +102,14 @@ const jsonLd = {
 
     <h2 id="contact-heading">Reach out anytime</h2>
 
-    {/* email_off is Cloudflare's opt-out from Scrape Shield's Email Address
-        Obfuscation, and it has to stay.
-
-        WHAT IT FIXES. With obfuscation on, Cloudflare rewrote this href at the
-        edge into /cdn-cgi/l/email-protection#<hash> and injected a decoder
-        script. That URL returns a 404. So the only contact path on the site was
-        dead for anyone without JavaScript, and for every crawler and AI agent —
-        while the injected script also broke the one-executing-script rule in
-        CLAUDE.md.
-
-        WHY OPTING OUT COSTS NOTHING. It was never protecting the address. The
-        JSON-LD Person block above publishes "email": "mailto:kyle@kylecovan.com"
-        in plaintext on this same page, and Cloudflare does not touch it. The
-        obfuscated hash also decodes with one line of XOR — confirmed, it
-        returned the address in seconds. The feature was buying a dead link and
-        no privacy.
-
-        Hiding the address for real would mean pulling it from the JSON-LD too,
-        which costs the machine-readable contact signal. That is a different
-        decision and Kyle chose against it on August 6.
-
-        A raw HTML comment, NOT an Astro comment. Astro comments never reach the
-        output — nesting an example of their delimiter here once closed this
-        block early and leaked the rest of the note onto the live page. Verified
-        present in dist/index.html after building — if it ever stops surviving
-        the build, this silently reverts to a 404. */}
     <p>
       <!--email_off--><a class="email" href="mailto:kyle@kylecovan.com">kyle@kylecovan.com</a><!--/email_off-->
     </p>
 
-    {/* The line breaks inside these tags are load-bearing: each sits between a
-        `>` and the next `<a`, so the separators keep their exact 0.35rem
-        margins with no stray whitespace text node. Don't reflow this block. */}
     <p class="socials">
       <a href="https://www.youtube.com/@KyleCovan" rel="me">YouTube</a><span class="sep" aria-hidden="true">·</span
       ><a href="https://x.com/kylecovan" rel="me">X</a><span class="sep" aria-hidden="true">·</span
       ><a href="https://www.linkedin.com/in/kylecovan/" rel="me">LinkedIn</a>
-    </p>
-
-    <p class="closing">
-      <a href="https://tapocanyon.com">Tapo Canyon</a> is where I work with
-      clients.
-      <span class="note">
-        This page is personal. That one is for business.
-      </span>
     </p>
   </section>
 
